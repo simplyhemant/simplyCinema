@@ -67,7 +67,6 @@ public class JwtProvider {
     }
 
 
-
     public String getEmailFromJwtToken(String jwt) {
         if (jwt != null && jwt.startsWith("Bearer ")) {
             jwt = jwt.substring(7);
