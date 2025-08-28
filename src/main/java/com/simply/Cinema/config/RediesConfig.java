@@ -49,7 +49,7 @@ public class RediesConfig {
           RedisTemplate<String, Object> template = new RedisTemplate<>();
           template.setConnectionFactory(redisConnectionFactory());
 
-          // 🔥 Custom ObjectMapper with JavaTimeModule
+          // Custom ObjectMapper with JavaTimeModule
           ObjectMapper mapper = new ObjectMapper();
           mapper.registerModule(new JavaTimeModule());
           mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // ISO format
@@ -58,7 +58,7 @@ public class RediesConfig {
           GenericJackson2JsonRedisSerializer serializer =
                   new GenericJackson2JsonRedisSerializer(mapper);
 
-          // 🔐 Key & Value serializers
+          // Key & Value serializers
           template.setKeySerializer(new StringRedisSerializer());
           template.setValueSerializer(serializer);
           template.setHashKeySerializer(new StringRedisSerializer());
