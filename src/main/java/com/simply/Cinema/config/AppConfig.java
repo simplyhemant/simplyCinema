@@ -40,6 +40,7 @@ public class AppConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -63,20 +64,20 @@ public class AppConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
 
-                        // 🛡️ Role-based routes
+                        // role-based
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/owner/**").hasAnyRole("THEATRE_OWNER")
                         .requestMatchers("/counter-staff/**").hasAnyRole("COUNTER_STAFF", "THEATRE_OWNER")
                         .requestMatchers("/customer/**").hasAnyRole("CUSTOMER")
 
-                        // ✅ Allow everything else (like static files, home page)
+                        //  Allow everything else (like static files, home page)
                         .anyRequest().permitAll()
                 )
-                .addFilterBefore(jwtTokenValidator, BasicAuthenticationFilter.class) // ✅ Use injected bean
+                .addFilterBefore(jwtTokenValidator, BasicAuthenticationFilter.class) //Use injected bean
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .formLogin(AbstractHttpConfigurer::disable) // 🔥 Disable default form login
-                .httpBasic(AbstractHttpConfigurer::disable); // 🔥 Disable HTTP Basic Auth
+                .formLogin(AbstractHttpConfigurer::disable) // Disable default form login
+                .httpBasic(AbstractHttpConfigurer::disable); // Disable HTTP Basic Auth
 
         return http.build();
     }

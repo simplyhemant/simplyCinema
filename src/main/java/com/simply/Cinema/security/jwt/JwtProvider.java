@@ -15,33 +15,33 @@ import java.util.*;
 @Service
 public class JwtProvider {
 
-    // 24-hour expiration
+    // 24 hrs
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 1000;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(JwtConstants.SECRET_KEY.getBytes());
     }
 
-    // ✅ Spring Flow: Email + Password
+    // Spring Flow: Email + Password
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
 
         List<String> roleNames = new ArrayList<>();
         for (UserRole role : user.getRoles()) {
             if (Boolean.TRUE.equals(role.getIsActive())) {
-                roleNames.add(role.getRole().name()); // e.g., "ROLE_CUSTOMER"
+                roleNames.add(role.getRole().name());
             }
         }
 
-        claims.put("roles", roleNames);       // ✅ correct claim key
+        claims.put("roles", roleNames);
         claims.put("userId", user.getId());
 
         return Jwts.builder()
-                .setSubject(user.getEmail())                // ✅ this is your "email"
+                .setSubject(user.getEmail())
                 .addClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // explicitly use HS256
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -51,7 +51,7 @@ public class JwtProvider {
         // Convert enums to strings
         List<String> roleNames = new ArrayList<>();
         for (UserRoleEnum role : roles) {
-            roleNames.add(role.name()); // e.g., "ROLE_CUSTOMER"
+            roleNames.add(role.name());
         }
 
         claims.put("roles", roleNames);
@@ -62,7 +62,7 @@ public class JwtProvider {
                 .addClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 1 hour
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // explicitly use HS256
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -80,7 +80,7 @@ public class JwtProvider {
                 .parseClaimsJws(jwt)
                 .getBody();
 
-        return claims.getSubject(); // This gives you the email
+        return claims.getSubject(); // gives email
     }
 
 

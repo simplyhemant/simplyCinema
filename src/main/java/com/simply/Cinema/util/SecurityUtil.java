@@ -13,8 +13,8 @@ public class SecurityUtil {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
-            return userDetails.getId();  // ✅ getId() comes from your CustomUserDetails wrapper
-        }                                // ✅ Direct access to your User ID
+            return userDetails.getId();  //  getId() comes from CustomUserDetails wrapper
+        }                                //  Direct access to User ID
 
         throw new RuntimeException("Unable to extract user ID from SecurityContext");
     }

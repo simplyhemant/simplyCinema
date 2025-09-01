@@ -55,7 +55,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
                 System.out.println("Subject:---------------------------------------------------------- " + claims.getSubject());
 
-                String email = claims.getSubject(); // ✅ correct
+                String email = claims.getSubject();
                 String roles = String.join(",", (List<String>) claims.get("roles")); // ✅ fix: roles not authorities
 
                 List<GrantedAuthority> authorities =

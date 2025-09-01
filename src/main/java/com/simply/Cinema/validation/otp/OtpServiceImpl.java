@@ -90,10 +90,6 @@ public class OtpServiceImpl implements OtpService {
             otpVerificationRepo.save(otpVerificationCode);
             throw new UserException("Invalid OTP.");
         }
-
-        // ✅ OTP is correct, delete OTP
-       // otpVerificationRepo.delete(otpVerificationCode);
-
     }
 
     private boolean isEmail(String contact) {

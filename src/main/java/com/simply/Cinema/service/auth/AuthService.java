@@ -1,6 +1,5 @@
 package com.simply.Cinema.service.auth;
 
-
 import com.simply.Cinema.core.user.dto.OtpDto;
 import com.simply.Cinema.core.user.dto.UserLoginDto;
 import com.simply.Cinema.core.user.dto.UserRegistrationDto;

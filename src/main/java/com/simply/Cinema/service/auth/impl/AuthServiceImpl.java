@@ -203,7 +203,7 @@ public class AuthServiceImpl implements AuthService {
     public void sendPhoneOtpForSignup(String phone) throws UserException, MessagingException {
 
         if (userRepo.existsByPhone(phone)) {
-            throw new UserException("Email is already registered.");
+            throw new UserException("Phone is already registered.");
         }
 
         otpService.sendOtp(phone);
@@ -299,7 +299,7 @@ public class AuthServiceImpl implements AuthService {
             throw new UserException("Invalid OTP.");
         }
 
-        // ✅ OTP is valid, delete it
+        // OTP is valid, delete it
         otpVerificationRepo.delete(otpVerificationcode);
 
         User user = userRepo.findByEmail(req.getEmail())
@@ -321,10 +321,10 @@ public class AuthServiceImpl implements AuthService {
             throw new UserException("User has no active roles.");
         }
 
-        // ✅ Generate JWT token
+        // Generate JWT token
         String token = jwtProvider.generateTokenDirect(user.getEmail(), roles);
 
-        // ✅ Prepare Auth Response
+        // Prepare Auth Response
         AuthResponse res = new AuthResponse();
         res.setJwt(token);
         res.setMessage("Login successful");
