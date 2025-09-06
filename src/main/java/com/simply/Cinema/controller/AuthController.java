@@ -83,11 +83,13 @@ public class AuthController {
         String token;
 
         if (req.getEmail() != null && !req.getEmail().isBlank()) {
-            // 🔹 Email OTP flow
+
             token = authService.verifyEmailOtpAndRegister(req);
+
         } else if (req.getPhone() != null && !req.getPhone().isBlank()) {
-            // 🔹 Phone OTP flow
+
             token = authService.verifyPhoneOtpAndRegister(req);
+
         } else {
             throw new UserException("Invalid input.");
         }
@@ -110,10 +112,10 @@ public class AuthController {
         AuthResponse authResponse;
 
         if (req.getEmail() != null && !req.getEmail().isBlank()) {
-            // 🔹 Email OTP Login
+            // Email OTP Login
             authResponse = authService.loginWithEmailOtp(req);
         } else if (req.getPhone() != null && !req.getPhone().isBlank()) {
-            // 🔹 Phone OTP Login
+            // Phone OTP Login
             authResponse = authService.loginWithPhoneOtp(req);
         } else {
             throw new UserException("Invalid input.");

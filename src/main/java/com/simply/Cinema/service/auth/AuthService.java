@@ -9,25 +9,25 @@ import jakarta.mail.MessagingException;
 
 public interface AuthService {
 
-    // 🔹 Normal Signup with Email and Password (no OTP)
+    //  Normal Signup with Email and Password (no OTP)
     String createUser(UserRegistrationDto req) throws UserException;
 
-    // 🔹 Normal Login with Email and Password (returns JWT token)
+    //  Normal Login with Email and Password (returns JWT token)
     AuthResponse loginUser(UserLoginDto req) throws UserException;
 
-    // 🔹 Email OTP Signup
+    //  Email OTP Signup
      void sendEmailOtpForSignup(String email) throws UserException, MessagingException;
      String verifyEmailOtpAndRegister(UserRegistrationDto req) throws UserException;
 
-    // 🔹 Email OTP Login
+    //  Email OTP Login
     void sendEmailOtpForLogin(String email) throws UserException, MessagingException;
     AuthResponse loginWithEmailOtp(OtpDto req) throws UserException;
 
-    // 🔹 Phone OTP Signup
+    //  Phone OTP Signup
      void sendPhoneOtpForSignup(String phone) throws UserException, MessagingException ;
      String verifyPhoneOtpAndRegister(UserRegistrationDto req) throws UserException;
 
-    // 🔹 Phone OTP Login
+    //  Phone OTP Login
      void sendPhoneOtpForLogin(String phone) throws UserException, MessagingException;
      AuthResponse loginWithPhoneOtp(OtpDto req) throws UserException;
 

@@ -31,7 +31,7 @@ public class CityServiceImpl implements CityService {
             throw new BusinessException("City with the same name and state already exists.");
         }
 
-        // ✅ Get currently logged-in user ID
+        //  Get currently logged-in user ID
         Long currentUserId = SecurityUtil.getCurrentUserId();
 
         //CityDto ➝ City (for saving)
@@ -45,7 +45,7 @@ public class CityServiceImpl implements CityService {
         city.setTimezone(cityDto.getTimezone());
         city.setCreatedAt(LocalDateTime.now());
 
-        // ✅ Set `isActive` based on input:
+        //  Set `isActive` based on input:
         // - If user provides a value (true/false), use it.
         // - If user leaves it null, default to true (active by default).
         city.setIsActive(cityDto.getIsActive() != null ? cityDto.getIsActive() : true);
@@ -71,24 +71,24 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityDto updateCity(Long cityId, CityDto cityDto) throws ResourceNotFoundException, BusinessException {
 
-        // ✅ Get currently logged-in user ID
+        //  Get currently logged-in user ID
         Long currentUserId = SecurityUtil.getCurrentUserId();
 
         City city = cityRepo.findById(cityId)
                 .orElseThrow(() -> new BusinessException("City not found with id "+cityId));
 
-        // 📝 Update fields only if new values are provided
+        //  Update fields only if new values are provided
         if (cityDto.getName() != null) city.setName(cityDto.getName());
         if (cityDto.getState() != null) city.setState(cityDto.getState());
         if (cityDto.getCountry() != null) city.setCountry(cityDto.getCountry());
         if (cityDto.getTimezone() != null) city.setTimezone(cityDto.getTimezone());
 
-        // ✅ Optional: handle isActive explicitly
+        //  Optional: handle isActive explicitly
         if (cityDto.getIsActive() != null) {
             city.setIsActive(cityDto.getIsActive());
         }
 
-        // 💾 Save updated city entity
+        //  Save updated city entity
         City updatedCity = cityRepo.save(city);
 
         // 🔁 Convert back to DTO and return

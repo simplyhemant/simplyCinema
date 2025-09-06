@@ -31,13 +31,13 @@ public class UserController {
             @RequestBody UserProfileDto dto,
             @RequestHeader("Authorization") String jwt) {
 
-        // 🔐 Extract user from JWT
+        //  Extract user from JWT
         UserProfileDto loggedInUser = userService.findUserBYJwtToken(jwt);
 
-        // 🔄 Update profile
+        //  Update profile
         User updatedUser = userService.updateUserProfile(loggedInUser.getId(), dto);
 
-        // 🎯 Convert updated User to UserProfileDto to return
+        //  Convert updated User to UserProfileDto to return
         UserProfileDto updatedDto = new UserProfileDto();
         updatedDto.setId(updatedUser.getId());
         updatedDto.setEmail(updatedUser.getEmail());

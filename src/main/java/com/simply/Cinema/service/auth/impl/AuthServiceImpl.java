@@ -12,7 +12,6 @@ import com.simply.Cinema.core.user.repository.UserRoleRepo;
 import com.simply.Cinema.exception.UserException;
 import com.simply.Cinema.response.AuthResponse;
 import com.simply.Cinema.security.jwt.JwtProvider;
-import com.simply.Cinema.service.UserDetailsServiceImpl;
 import com.simply.Cinema.service.auth.AuthService;
 import com.simply.Cinema.service.systemConfig.impl.AuditLogService;
 import com.simply.Cinema.validation.otp.OtpService;
@@ -45,7 +44,6 @@ public class AuthServiceImpl implements AuthService {
     private final OtpVerificationRepo otpVerificationRepo;
     private final OtpService otpService;
     private final AuditLogService auditLogService;
-    private final UserDetailsServiceImpl userDetailsService;
 
     @Override
     public String createUser(UserRegistrationDto req) throws UserException {
@@ -369,7 +367,8 @@ public class AuthServiceImpl implements AuthService {
             throw new UserException("Invalid OTP.");
         }
 
-        otpVerificationRepo.delete(otpVerificationCode); // ✅ OTP used
+        //otp used
+        otpVerificationRepo.delete(otpVerificationCode);
 
         User user = userRepo.findByPhone(req.getPhone())
                 .orElseThrow(() -> new UserException("User not found."));
@@ -390,10 +389,10 @@ public class AuthServiceImpl implements AuthService {
             throw new UserException("User has no active roles.");
         }
 
-        // ✅ Generate JWT token
+        // Generate JWT token
         String token = jwtProvider.generateTokenDirect(user.getPhone(), roles);
 
-        // ✅ Prepare Auth Response
+        // Prepare Auth Response
         AuthResponse res = new AuthResponse();
         res.setJwt(token);
         res.setMessage("Login successful");
