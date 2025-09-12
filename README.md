@@ -55,15 +55,3 @@ This backend will eventually power a **full-featured cinema booking system** wit
 - **Planned** → Kafka for async events (notifications, analytics)  
 
 ---
-
-## 📂 Project Structure  
-
-src/main/java/com/simplycinema
-│── config/ # Security & Redis configurations
-│── controller/ # REST API controllers
-│── dto/ # Data Transfer Objects
-│── model/ # Entity classes
-│── repository/ # Spring Data JPA repositories
-│── service/ # Service interfaces
-│── serviceimpl/ # Service implementations
-│── exception/ # Custom exceptions & handlers
