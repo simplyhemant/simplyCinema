@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
 @Service
 @RequiredArgsConstructor
 public class SeatLockServiceImpl implements SeatLockService {
@@ -22,24 +23,6 @@ public class SeatLockServiceImpl implements SeatLockService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     private static final long LOCK_DURATION = 300; // 5 mins in seconds
-
-
-//    @Override
-//    public void lockSeats(Long showId, List<Long> seatIds, Long userId)
-//            throws ResourceNotFoundException, SeatLockException, ValidationException, AuthenticationException, AuthorizationException {
-//
-//        for (Long seatId : seatIds) {
-//            String key = generateKey(showId, seatId); // e.g., lock:show_123_seat_101
-//
-//            if (redisTemplate.hasKey(key)) {
-//                throw new SeatLockException("Seat with ID " + seatId + " is already locked.");
-//            }
-//
-//            SeatLockInfo lockInfo = new SeatLockInfo(userId, showId, seatId, LocalDateTime.now());
-//
-//            redisTemplate.opsForValue().set(key, lockInfo, Duration.ofSeconds(LOCK_DURATION));
-//        }
-//    }
 
     @Autowired
     private RedisService redisService;
@@ -58,7 +41,6 @@ public class SeatLockServiceImpl implements SeatLockService {
             redisService.set(key, lockInfo, LOCK_DURATION);
         }
     }
-
 
 
     @Override

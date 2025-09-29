@@ -19,14 +19,6 @@ public class SecurityUtil {
         throw new RuntimeException("Unable to extract user ID from SecurityContext");
     }
 
-//    public static boolean hasRole(String roleName) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null) {
-//            return authentication.getAuthorities().stream()
-//                    .anyMatch(auth -> auth.getAuthority().equals(roleName));
-//        }
-//        return false;
-//    }
 
     public static boolean hasRole(String roleName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
