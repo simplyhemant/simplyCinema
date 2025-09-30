@@ -79,7 +79,7 @@ public class SeatServiceImpl implements SeatService {
 //        // Save all seats to DB
 //        List<Seat> savedSeats = seatRepo.saveAll(seatEntities);
 //
-//        // ✅ Update totalSeats in screen
+//        // Update totalSeats in screen
 //        screen.setTotalSeats(savedSeats.size());
 //        screenRepo.save(screen);
 //
@@ -119,28 +119,28 @@ public class SeatServiceImpl implements SeatService {
         Screen screen = screenRepo.findById(screenId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + screenId));
 
-        // ✅ Authorization check
+        //  Authorization check
         if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied.");
         }
 
-        // ✅ Prevent duplicate layout creation
+        //  Prevent duplicate layout creation
         List<Seat> existingSeats = seatRepo.findByScreenId(screenId);
         if (!existingSeats.isEmpty()) {
             throw new BusinessException("Seat layout already exists for this screen. Please update instead.");
         }
 
-        // ✅ Generate seats using helper method
+        //  Generate seats using helper method
         List<Seat> generatedSeats = generateSeatsFromLayout(layoutDto, screen);
 
-        // ✅ Save seats to DB
+        //  Save seats to DB
         List<Seat> savedSeats = seatRepo.saveAll(generatedSeats);
 
-        // ✅ Update screen total seat count
+        // Update screen total seat count
         screen.setTotalSeats(savedSeats.size());
         screenRepo.save(screen);
 
-        // ✅ Convert seats to DTOs manually
+        //  Convert seats to DTOs manually
         List<SeatDto> seatDtoList = new ArrayList<>();
         for (Seat seat : savedSeats) {
             SeatDto seatDto = new SeatDto();
@@ -169,7 +169,7 @@ public class SeatServiceImpl implements SeatService {
         response.setPremiumSeatCount(layoutDto.getPremiumSeatCount());
         response.setRegularSeatCount(layoutDto.getRegularSeatCount());
 
-        // ✅ Audit log
+        // Audit log
         auditLogService.logEvent("seat_layout", AuditAction.CREATE, screenId, currentUserId);
 
         return response;
@@ -289,29 +289,29 @@ public class SeatServiceImpl implements SeatService {
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
 
-        // ✅ Check if screen exists
+        //  Check if screen exists
         Screen screen = screenRepo.findById(layoutId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + layoutId));
 
-        // ✅ Authorization check
+        //  Authorization check
         if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied. you are not the owner of this screen.");
         }
 
-        // ✅ Fetch existing seats
+        //  Fetch existing seats
         List<Seat> existingSeats = seatRepo.findByScreenId(layoutId);
         if (existingSeats.isEmpty()) {
             throw new ResourceNotFoundException("No seat layout found for this screen.");
         }
 
-        // ✅ Validate input
+        // Validate input
         if (layoutDto.getSeats() == null || layoutDto.getSeats().isEmpty()) {
             throw new ValidationException("Seat list cannot be null or empty for update.");
         }
 
         List<Seat> updatedSeats = new ArrayList<>();
 
-        // ✅ Update only the provided seat IDs
+        //  Update only the provided seat IDs
         for (SeatDto dto : layoutDto.getSeats()) {
             if (dto.getId() == null || dto.getRowNumber() == null || dto.getSeatNumber() == null || dto.getSeatType() == null) {
                 throw new ValidationException("Seat ID, rowNumber, seatNumber, and seatType must be provided.");
@@ -340,10 +340,9 @@ public class SeatServiceImpl implements SeatService {
             updatedSeats.add(matchedSeat);
         }
 
-        // ✅ Save updated seats
         seatRepo.saveAll(updatedSeats);
 
-        // ✅ Fetch all seats again to calculate accurate counts
+        // Fetch all seats again to calculate accurate counts
         List<Seat> allSeats = seatRepo.findByScreenId(layoutId);
 
         int vipCount = 0;
@@ -385,14 +384,14 @@ public class SeatServiceImpl implements SeatService {
             responseSeatDtos.add(seatDto);
         }
 
-        // ✅ Calculate max seats per any row
+        //  Calculate max seats per any row
         for (Integer count : rowSeatMap.values()) {
             if (count > maxSeatsPerRow) {
                 maxSeatsPerRow = count;
             }
         }
 
-        // ✅ Build response
+        // Build response
         SeatLayoutDto response = new SeatLayoutDto();
         response.setScreenId(layoutId);
         response.setLayoutName(layoutDto.getLayoutName());
@@ -431,7 +430,7 @@ public class SeatServiceImpl implements SeatService {
 
         seatRepo.deleteAll(seats);
 
-        // ✅ Update screen's totalSeats to 0
+        // Update screen's totalSeats to 0
         screen.setTotalSeats(0);
         screenRepo.save(screen);  // Save updated screen
 
@@ -665,6 +664,19 @@ public class SeatServiceImpl implements SeatService {
         if (layoutDto.getSeatsPerRow() == null || layoutDto.getSeatsPerRow() <= 0) {
             throw new ValidationException("seatsPerRow must be provided and > 0.");
         }
+
+        if (layoutDto.getVipSeatCount() == null || layoutDto.getVipSeatCount() < 0) {
+            throw new ValidationException("vipSeatCount must be provided and >= 0.");
+        }
+
+        if (layoutDto.getPremiumSeatCount() == null || layoutDto.getPremiumSeatCount() < 0) {
+            throw new ValidationException("premiumSeatCount must be provided and >= 0.");
+        }
+
+        if (layoutDto.getRegularSeatCount() == null || layoutDto.getRegularSeatCount() < 0) {
+            throw new ValidationException("regularSeatCount must be provided and >= 0.");
+        }
+
 
         // Uses Math.ceil() to ensure you round up in case of partial last row.
 

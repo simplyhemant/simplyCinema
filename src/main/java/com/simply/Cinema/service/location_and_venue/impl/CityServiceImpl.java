@@ -133,14 +133,20 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public List<CityDto> getAllCities() {
-
         List<City> cities = cityRepo.findAll();
 
-        return cities.stream()
-                .map(this::convertToDto) // Convert each entity to DTO
-                .toList();               // Collect into List<CityDto>
+        if (cities == null || cities.isEmpty()) {
+            return new ArrayList<>(); // return empty, not error
+        }
 
+        List<CityDto> cityDtos = new ArrayList<>();
+        for (City city : cities) {
+            cityDtos.add(convertToDto(city));
+        }
+        return cityDtos;
     }
+
+
 
     @Override
     public List<CityDto> getActiveCities() {

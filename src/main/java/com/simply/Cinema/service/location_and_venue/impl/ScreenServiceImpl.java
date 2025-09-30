@@ -183,6 +183,7 @@ public class ScreenServiceImpl implements ScreenService {
                 .orElseThrow(() -> new ResourceNotFoundException("Theatre not found with id: " + theatreId));
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+
         if (!theatre.getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied. You are not the owner of this theatre.");
         }

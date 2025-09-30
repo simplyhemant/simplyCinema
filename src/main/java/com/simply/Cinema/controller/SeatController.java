@@ -30,6 +30,7 @@ public class SeatController{
             @PathVariable Long screenId) throws ResourceNotFoundException, ValidationException, BusinessException{
 
         SeatLayoutDto createdLayout = seatService.createSeatLayout(screenId, seatLayoutDto);
+
         return ResponseEntity.ok(createdLayout);
     }
 
