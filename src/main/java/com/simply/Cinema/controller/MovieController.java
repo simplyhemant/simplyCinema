@@ -27,7 +27,7 @@ public class MovieController {
 //        return ResponseEntity.ok(movieDtoList);
 //    }
 
-    @PreAuthorize("hasRole('THEATRE_OWNER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<MovieDto> createMovie(@RequestBody MovieDto movieDto){
 

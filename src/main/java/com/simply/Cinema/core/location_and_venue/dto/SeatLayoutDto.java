@@ -1,6 +1,5 @@
 package com.simply.Cinema.core.location_and_venue.dto;
 
-import com.simply.Cinema.core.location_and_venue.Enum.SeatType;
 import lombok.Data;
 
 import java.util.List;

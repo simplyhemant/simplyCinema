@@ -57,6 +57,7 @@ public class Movie {
 
 
     // Relationships
+    @NonNull
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieGenre> genres;
 

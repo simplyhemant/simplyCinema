@@ -34,14 +34,27 @@ public class SeatController{
         return ResponseEntity.ok(createdLayout);
     }
 
-    @PutMapping("/{layoutId}/update")
+    @PostMapping("/{screenId}/update")
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     public ResponseEntity<SeatLayoutDto> updateSeatLayout(
+            @RequestBody SeatLayoutDto seatLayoutDto,
+            @PathVariable Long screenId)
+            throws ResourceNotFoundException, ValidationException, BusinessException {
+
+        SeatLayoutDto updatedLayout = seatService.updateSeatLayout(screenId, seatLayoutDto);
+
+        return ResponseEntity.ok(updatedLayout);
+    }
+
+
+    @PutMapping("/{layoutId}/update")
+    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    public ResponseEntity<SeatLayoutDto> updateSeat(
             @PathVariable Long layoutId,
             @RequestBody SeatLayoutDto seatLayoutDto
     ) throws ResourceNotFoundException, ValidationException{
 
-        SeatLayoutDto updateLayout = seatService.updateSeatLayout(layoutId, seatLayoutDto);
+        SeatLayoutDto updateLayout = seatService.updateSeat(layoutId, seatLayoutDto);
         return ResponseEntity.ok(updateLayout);
     }
 

@@ -16,6 +16,8 @@ public interface SeatService {
 
     SeatLayoutDto updateSeatLayout(Long layoutId, SeatLayoutDto layoutDto) throws ResourceNotFoundException, ValidationException;
 
+    SeatLayoutDto updateSeat(Long layoutId, SeatLayoutDto layoutDto) throws ResourceNotFoundException, ValidationException;
+
     void deleteSeatLayout(Long layoutId) throws ResourceNotFoundException;
 
     // The purpose method is to retrieve a complete overview of seat layouts for every screen in the system.

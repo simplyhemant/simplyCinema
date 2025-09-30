@@ -98,9 +98,83 @@ public class SeatServiceImpl implements SeatService {
         return response;
     }
 
+    @Override
+    public SeatLayoutDto updateSeatLayout(Long screenId, SeatLayoutDto layoutDto)
+            throws ResourceNotFoundException, ValidationException, BusinessException {
+
+        Long currentUserId = SecurityUtil.getCurrentUserId();
+
+        // 1. Fetch screen
+        Screen screen = screenRepo.findById(screenId)
+                .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + screenId));
+
+        // 2. Authorization check
+        if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
+            throw new AuthorizationException("Access denied.");
+        }
+
+        // 3. Fetch existing seats
+        List<Seat> existingSeats = seatRepo.findByScreenId(screenId);
+
+        if (existingSeats.isEmpty() && !layoutDto.isAutoGenerateSeats()) {
+            throw new BusinessException("No existing seat layout found. Please create layout first.");
+        }
+
+        // 4. Regenerate seat layout if autoGenerateSeats is true
+        if (layoutDto.isAutoGenerateSeats()) {
+            // Delete existing seats
+            if (!existingSeats.isEmpty()) {
+                seatRepo.deleteAll(existingSeats);
+            }
+
+            // Generate new seats
+            List<Seat> newSeats = generateSeatsFromLayout(layoutDto, screen);
+            existingSeats = seatRepo.saveAll(newSeats);
+        } else {
+            // Optional: keep existing seats as-is and just update counts in screen
+            // or you can manually modify seat types/counts if needed
+        }
+
+        // 5. Update screen total seat count
+        screen.setTotalSeats(existingSeats.size());
+        screenRepo.save(screen);
+
+        // 6. Convert seats to SeatDto
+        List<SeatDto> seatDtoList = new ArrayList<>();
+        for (Seat seat : existingSeats) {
+            SeatDto seatDto = new SeatDto();
+            seatDto.setId(seat.getId());
+            seatDto.setScreenId(screenId);
+            seatDto.setRowNumber(seat.getRowNumber());
+            seatDto.setSeatNumber(seat.getSeatNumber());
+            seatDto.setSeatType(seat.getSeatType());
+            seatDto.setIsActive(seat.getIsActive());
+            seatDto.setCreatedAt(seat.getCreatedAt());
+
+            seatDtoList.add(seatDto);
+        }
+
+        // 7. Build response DTO
+        SeatLayoutDto response = new SeatLayoutDto();
+        response.setScreenId(screenId);
+        response.setLayoutName(layoutDto.getLayoutName());
+        response.setCreatedBy(String.valueOf(currentUserId));
+        response.setSeats(seatDtoList);
+        response.setAutoGenerateSeats(layoutDto.isAutoGenerateSeats());
+        response.setSeatsPerRow(layoutDto.getSeatsPerRow());
+        response.setVipSeatCount(layoutDto.getVipSeatCount());
+        response.setPremiumSeatCount(layoutDto.getPremiumSeatCount());
+        response.setRegularSeatCount(layoutDto.getRegularSeatCount());
+
+        // 8. Audit log
+        auditLogService.logEvent("seat_layout", AuditAction.UPDATE, screenId, currentUserId);
+
+        return response;
+    }
+
 
     @Override
-    public SeatLayoutDto updateSeatLayout(Long layoutId, SeatLayoutDto layoutDto)
+    public SeatLayoutDto updateSeat(Long layoutId, SeatLayoutDto layoutDto)
             throws ResourceNotFoundException, ValidationException {
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
