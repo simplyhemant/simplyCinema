@@ -36,6 +36,8 @@ public class OtpServiceImpl implements OtpService {
 
             emailService.sendVerificationOtpEmail(contact, otp);
 
+            System.out.println("otp ------> "+ otp);
+
         } else if (isPhone(contact)) {
 
             String formattedPhone = formatPhoneNumber(contact);
@@ -52,6 +54,8 @@ public class OtpServiceImpl implements OtpService {
             otpVerificationRepo.save(otpVerificationCode);
 
             smsService.sendSms(formattedPhone, otp);
+
+            System.out.println("otp ------> "+ otp);
 
         } else {
             throw new UserException("Invalid contact format.");
