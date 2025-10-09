@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
         Long userId;
         String email;
 
-        // 1️⃣ Check if JWT is provided
+        //  if JWT is provided
         if (jwt != null && !jwt.isEmpty()) {
             UserProfileDto userDto = userService.findUserBYJwtToken(jwt);
             userId = userDto.getId();
@@ -62,27 +62,27 @@ public class BookingServiceImpl implements BookingService {
             email = bookingDto.getEmail();
         }
 
-        // 2️⃣ Get Show entity
+        // set Show entity
         Long showId = bookingDto.getShowId();
         Show show = showRepo.findById(showId)
                 .orElseThrow(() -> new BookingException("Show not found with ID: " + showId));
 
-        // 3️⃣ Lock seats
+        // temporary lock seats
         List<Long> seatIds = bookingDto.getSeatIds();
         seatLockService.lockSeats(showId, seatIds, userId); // userId can be null for guest
 
-        // 4️⃣ Fetch ShowSeat entities
+        // ShowSeat entities
         List<ShowSeat> showSeats = showSeatRepo.findByShowAndSeatIds(show, seatIds);
         if (showSeats.size() != seatIds.size()) {
             throw new BookingException("Some seats are not available for booking");
         }
 
-        // 5️⃣ Calculate total and final amount
+        //  total and final amount
         double totalAmount = showSeats.stream().mapToDouble(ShowSeat::getPrice).sum();
         double discountAmount = 0.0; // add logic if coupon applied
         double finalAmount = totalAmount - discountAmount;
 
-        // 6️⃣ Create temporary booking object
+        //  temporary booking object
         Booking tempBooking = new Booking();
         tempBooking.setShow(show);
         tempBooking.setUser(user); // null if guest
@@ -91,7 +91,7 @@ public class BookingServiceImpl implements BookingService {
         tempBooking.setEmail(email);
         tempBooking.setCreatedAt(LocalDateTime.now());
 
-        // 7️⃣ Build response DTO
+        //  response DTO
         BookingResponseDto response = new BookingResponseDto();
         response.setBookingId(null);
         response.setShowId(showId);
@@ -106,6 +106,10 @@ public class BookingServiceImpl implements BookingService {
         return response;
     }
 
+    @Override
+    public BookingResponseDto confirmBooking(BookingDto bookingConfirmDto, String jwt) throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException {
+        return null;
+    }
 
 
     @Override
