@@ -2,6 +2,7 @@ package com.simply.Cinema.core.show_and_booking.repository;
 
 import com.simply.Cinema.core.location_and_venue.entity.Seat;
 import com.simply.Cinema.core.show_and_booking.entity.BookingSeat;
+import com.simply.Cinema.core.show_and_booking.entity.Show;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +17,8 @@ public interface BookingSeatRepo extends JpaRepository<BookingSeat, Long> {
     List<BookingSeat> findByBooking_Id(Long bookingId);
 
     List<BookingSeat> findBySeat_Id(Long seatId);
+
+    boolean existsByShowSeat_ShowAndShowSeat_Seat(Show show, Seat seat);
 
     @Query("SELECT bs.seat FROM BookingSeat bs WHERE bs.booking.id = :bookingId")
     List<Seat> findSeatsByBooking(@Param("bookingId") Long bookingId);

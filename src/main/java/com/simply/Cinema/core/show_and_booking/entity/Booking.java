@@ -29,6 +29,8 @@ public class Booking {
 
     private String bookingReference;
 
+    private String email;
+
     private Double totalAmount;
     private Double discountAmount;
     private Double finalAmount;

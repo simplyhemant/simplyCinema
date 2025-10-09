@@ -28,7 +28,7 @@ public class BookingResponseDto {
     private PaymentStatus paymentStatus;
     private BookingStatus bookingStatus;
     private String qrCode;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String email;
+
 
 }

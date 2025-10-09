@@ -1,6 +1,8 @@
 package com.simply.Cinema.core.show_and_booking.repository;
 
+import com.simply.Cinema.core.location_and_venue.entity.Seat;
 import com.simply.Cinema.core.show_and_booking.Enum.ShowSeatStatus;
+import com.simply.Cinema.core.show_and_booking.entity.Show;
 import com.simply.Cinema.core.show_and_booking.entity.ShowSeat;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,6 +24,8 @@ public interface ShowSeatRepo extends JpaRepository<ShowSeat, Long> {
     @Query("DELETE FROM ShowSeat ss WHERE ss.show.id = :showId")
     void deleteByShowId(@Param("showId") Long showId);
 
+    @Query("SELECT ss FROM ShowSeat ss WHERE ss.show = :show AND ss.seat.id IN :seatIds")
+    List<ShowSeat> findByShowAndSeatIds(@Param("show") Show show, @Param("seatIds") List<Long> seatIds);
     List<ShowSeat> findBySeat_Id(Long seatId);
 
     @Query("SELECT ss FROM ShowSeat ss WHERE ss.show.id = :showId AND ss.status = 'AVAILABLE'")

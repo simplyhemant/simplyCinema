@@ -14,10 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 public class BookingDto {
 
-    private Long userId;         // User making the booking
-    private Long showId;         // Show being booked
-    private List<Long> seatIds;  // Seats to book
-    private PaymentMethod paymentMethod;  // Chosen payment method
-    private String couponCode;   // Optional coupon
+    private Long userId;
+    private Long showId;
+    private List<Long> seatIds;
+    private PaymentMethod paymentMethod;
+    private String couponCode;
+
+    private String Email;
 
 }

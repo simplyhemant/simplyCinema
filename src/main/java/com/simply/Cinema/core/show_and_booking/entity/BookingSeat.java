@@ -24,5 +24,9 @@ public class BookingSeat {
     private Seat seat;
 
     private Double pricePaid;
+
+    @ManyToOne
+    private ShowSeat showSeat;
+
 }
 
