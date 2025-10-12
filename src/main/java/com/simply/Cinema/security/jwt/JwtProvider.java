@@ -74,7 +74,7 @@ public class JwtProvider {
             throw new IllegalArgumentException("Invalid Token Format");
         }
 
-        Claims claims = Jwts.parserBuilder()
+        Claims claims = Jwts.parser()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(jwt)
