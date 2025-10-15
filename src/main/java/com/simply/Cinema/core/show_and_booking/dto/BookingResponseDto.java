@@ -31,4 +31,6 @@ public class BookingResponseDto {
     private String email;
 
 
+    public void setGuestUserId(Long id) {
+    }
 }

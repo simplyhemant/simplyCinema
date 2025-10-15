@@ -15,8 +15,8 @@ public interface BookingService {
     BookingResponseDto confirmBooking(BookingDto bookingConfirmDto, String jwt)
             throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException;
 
-    BookingResponseDto modifyBooking(Long bookingId, BookingDto bookingDto)
-            throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException;
+//    BookingResponseDto modifyBooking(Long bookingId, BookingDto bookingDto)
+//            throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException;
 
     void cancelBooking(Long bookingId)
             throws AuthorizationException, BookingException, BusinessException, PaymentException;
