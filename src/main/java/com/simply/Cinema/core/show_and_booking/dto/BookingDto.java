@@ -22,4 +22,7 @@ public class BookingDto {
 
     private String Email;
 
+    private String paymentLinkId;        // Razorpay payment link ID
+    private String paymentToken;         // Razorpay payment/transaction ID
+
 }

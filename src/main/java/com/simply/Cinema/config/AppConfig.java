@@ -2,6 +2,8 @@ package com.simply.Cinema.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
 import com.simply.Cinema.security.jwt.JwtTokenValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -120,11 +122,6 @@ public class AppConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-    }
-
-    @Bean
-    public JwtTokenValidator jwtTokenValidator() {
-        return new JwtTokenValidator(); // or return new JwtTokenValidator(deps);
     }
 
 

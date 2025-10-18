@@ -2,7 +2,6 @@ package com.simply.Cinema.core.show_and_booking.entity;
 
 import com.simply.Cinema.core.show_and_booking.Enum.BookingStatus;
 import com.simply.Cinema.core.show_and_booking.Enum.PaymentStatus;
-import com.simply.Cinema.core.user.entity.GuestUser;
 import com.simply.Cinema.core.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,9 +43,9 @@ public class Booking {
 
     private String qrCode; // Base64 or file link
 
-    @ManyToOne
-    @JoinColumn(name = "guest_user_id")
-    private GuestUser guestUser;
+//    @ManyToOne
+//    @JoinColumn(name = "guest_user_id")
+//    private GuestUser guestUser;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

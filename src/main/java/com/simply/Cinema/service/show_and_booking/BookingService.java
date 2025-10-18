@@ -12,8 +12,8 @@ public interface BookingService {
     BookingResponseDto createBooking(BookingDto bookingDto,String jwt)
             throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException;
 
-    BookingResponseDto confirmBooking(BookingDto bookingConfirmDto, String jwt)
-            throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException;
+    BookingResponseDto confirmBooking(BookingDto bookingConfirmDto)
+            throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException, Exception;
 
 //    BookingResponseDto modifyBooking(Long bookingId, BookingDto bookingDto)
 //            throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException;
