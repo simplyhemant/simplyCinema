@@ -7,7 +7,6 @@ import com.simply.Cinema.core.show_and_booking.Enum.ShowSeatStatus;
 import com.simply.Cinema.core.show_and_booking.dto.BookingDto;
 import com.simply.Cinema.core.show_and_booking.dto.BookingPaymentDto;
 import com.simply.Cinema.core.show_and_booking.dto.BookingResponseDto;
-import com.simply.Cinema.core.show_and_booking.dto.PaymentResponseDto;
 import com.simply.Cinema.core.show_and_booking.entity.*;
 import com.simply.Cinema.core.show_and_booking.repository.*;
 import com.simply.Cinema.core.user.dto.UserProfileDto;
@@ -213,10 +212,15 @@ public class BookingServiceImpl implements BookingService {
         }
 
         // lock seats permanently
+//        for (ShowSeat seat : showSeats) {
+//            seat.setStatus(ShowSeatStatus.BOOKED);
+//            showSeatRepo.save(seat);
+//        }
+
         for (ShowSeat seat : showSeats) {
             seat.setStatus(ShowSeatStatus.BOOKED);
-            showSeatRepo.save(seat);
         }
+        showSeatRepo.saveAll(showSeats);
 
         // save booking
         Booking booking = new Booking();
