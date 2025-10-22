@@ -350,6 +350,7 @@ public class SeatServiceImpl implements SeatService {
             dto.setSeatType(seat.getSeatType());
             dto.setIsActive(seat.getIsActive());
             dto.setCreatedAt(seat.getCreatedAt());
+
             seatDtoList.add(dto);
         }
 

@@ -98,7 +98,6 @@ public class ShowServiceImpl implements ShowService {
         show.setUpdatedAt(LocalDateTime.now());
 
         // Do NOT set dynamic price multiplier (manual only)
-
         Show savedShow = showRepo.save(show);
         auditLogService.logEvent("show", AuditAction.CREATE, savedShow.getId(), currentUserId);
 

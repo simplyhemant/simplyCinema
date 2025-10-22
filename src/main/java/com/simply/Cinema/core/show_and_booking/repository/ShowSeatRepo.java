@@ -19,6 +19,8 @@ public interface ShowSeatRepo extends JpaRepository<ShowSeat, Long> {
 
     List<ShowSeat> findByShow_Id(Long showId);
 
+    List<ShowSeat> findByShow_IdAndStatus(Long showId, ShowSeatStatus status);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM ShowSeat ss WHERE ss.show.id = :showId")
@@ -26,31 +28,10 @@ public interface ShowSeatRepo extends JpaRepository<ShowSeat, Long> {
 
     @Query("SELECT ss FROM ShowSeat ss WHERE ss.show = :show AND ss.seat.id IN :seatIds")
     List<ShowSeat> findByShowAndSeatIds(@Param("show") Show show, @Param("seatIds") List<Long> seatIds);
+
+    int countByShow_Id(Long showId);
+
+    int countByShow_IdAndStatus(Long showId, ShowSeatStatus status);
+
     List<ShowSeat> findBySeat_Id(Long seatId);
-
-    @Query("SELECT ss FROM ShowSeat ss WHERE ss.show.id = :showId AND ss.status = 'AVAILABLE'")
-    List<ShowSeat> findAvailableSeats(@Param("showId") Long showId);
-
-    @Query("SELECT ss FROM ShowSeat ss WHERE ss.show.id = :showId AND ss.status = 'LOCKED'")
-    List<ShowSeat> findLockedSeats(@Param("showId") Long showId);
-
-    @Modifying
-    @Query("UPDATE ShowSeat ss SET ss.status = 'LOCKED', ss.lockedByUserId = :userId, ss.lockedUntil = :lockedUntil " +
-            "WHERE ss.show.id = :showId AND ss.seat.id IN :seatIds AND ss.status = 'AVAILABLE'")
-    int lockSeats(@Param("showId") Long showId,
-                  @Param("seatIds") List<Long> seatIds,
-                  @Param("userId") Long userId,
-                  @Param("lockedUntil") LocalDateTime lockedUntil);
-
-    @Modifying
-    @Query("UPDATE ShowSeat ss SET ss.status = 'AVAILABLE', ss.lockedByUserId = NULL, ss.lockedUntil = NULL " +
-            "WHERE ss.show.id = :showId AND ss.seat.id IN :seatIds AND ss.status = 'LOCKED'")
-    int unlockSeats(@Param("showId") Long showId, @Param("seatIds") List<Long> seatIds);
-
-    @Modifying
-    @Query("UPDATE ShowSeat ss SET ss.status = :status WHERE ss.show.id = :showId AND ss.seat.id = :seatId")
-    int updateSeatStatus(@Param("showId") Long showId,
-                         @Param("seatId") Long seatId,
-                         @Param("status") ShowSeatStatus status);
-
 }
