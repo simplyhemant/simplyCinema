@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShowSeatServiceImpl implements ShowSeatService {
 
-    private final ShowRepo showRepo;
     private final ShowSeatRepo showSeatRepo;
 
     @Override

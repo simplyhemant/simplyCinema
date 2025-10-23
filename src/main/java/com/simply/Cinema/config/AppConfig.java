@@ -68,7 +68,7 @@ public class AppConfig {
 
                         // role-based
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/owner/**").hasAnyRole("THEATRE_OWNER")
+                        .requestMatchers("/owner/**").hasRole("THEATRE_OWNER")
                         .requestMatchers("/counter-staff/**").hasAnyRole("COUNTER_STAFF", "THEATRE_OWNER")
                         .requestMatchers("/customer/**").hasAnyRole("CUSTOMER")
 

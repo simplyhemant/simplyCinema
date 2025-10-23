@@ -12,16 +12,16 @@ import java.util.Set;
 
 public interface RoleManagementService {
 
+
+    // admin roles
     void assignRole(Long userId, String roleName) throws UserException;
-
     Set<String> getRolesByUser(Long userId);
-
  //   boolean validateAccess(Long userId, String resource); // Simplified access validation
-
-   // Role createRole(String roleName);
-
     void deleteRole(Long roleId);
 
-  //  UserProfileDto changeUserRole(Long userId, String role) throws ResourceNotFoundException, BusinessException;
+
+    //theatre owner roles
+
+
 
 }

@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -133,14 +134,30 @@ public class BookingServiceImpl implements BookingService {
         Show show = showRepo.findById(bookingDto.getShowId())
                 .orElseThrow(() -> new BookingException("Show not found"));
 
-        // Lock seats temporarily
         List<Long> seatIds = bookingDto.getSeatIds();
-        seatLockService.lockSeats(show.getId(), seatIds, userId);
 
+        // Fetch all show seats
         List<ShowSeat> showSeats = showSeatRepo.findByShowAndSeatIds(show, seatIds);
+
+        // Validate all seats exist
         if (showSeats.size() != seatIds.size()) {
-            throw new BookingException("Some seats are not available for booking");
+            throw new BookingException("Some seats do not exist for this show");
         }
+
+        // Check if ALL seats are available BEFORE locking
+        List<Long> unavailableSeats = new ArrayList<>();
+        for (ShowSeat showSeat : showSeats) {
+            if (showSeat.getStatus() != ShowSeatStatus.AVAILABLE) {
+                unavailableSeats.add(showSeat.getSeat().getId());
+            }
+        }
+
+        if (!unavailableSeats.isEmpty()) {
+            throw new BookingException("The following seats are not available: " + unavailableSeats);
+        }
+
+        // Now lock seats (all are confirmed available)
+        seatLockService.lockSeats(show.getId(), seatIds, userId);
 
         double totalAmount = showSeats.stream().mapToDouble(ShowSeat::getPrice).sum();
         double discountAmount = 0.0;
@@ -160,13 +177,12 @@ public class BookingServiceImpl implements BookingService {
         response.setPaymentStatus(null);
         response.setQrCode(null);
 
-        // Store temp booking in Redis (optional)
+        // Store temp booking in Redis
         String bookingKey = "temp_booking:" + email + ":" + show.getId();
         redisService.set(bookingKey, response, 600); // 10 min TTL
 
         return response;
     }
-
 
     @Override
     @Transactional
@@ -218,6 +234,7 @@ public class BookingServiceImpl implements BookingService {
 //        }
 
         for (ShowSeat seat : showSeats) {
+            seat.setLockedByUserId(currentUserId);
             seat.setStatus(ShowSeatStatus.BOOKED);
         }
         showSeatRepo.saveAll(showSeats);
@@ -251,7 +268,7 @@ public class BookingServiceImpl implements BookingService {
         payment.setBooking(booking);
         payment.setAmount(tempBooking.getFinalAmount());
         payment.setPaymentMethod(
-                bookingConfirmDto.getPaymentMethod() != null ? bookingConfirmDto.getPaymentMethod() : PaymentMethod.UPI
+                bookingConfirmDto.getPaymentMethod() != null ? bookingConfirmDto.getPaymentMethod() : PaymentMethod.RAZORPAY
         );
 
         payment.setTransactionId(bookingConfirmDto.getPaymentToken());

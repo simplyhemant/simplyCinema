@@ -30,15 +30,15 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String adminEmail = auth.getName();
 
-        // ✅ Fetch admin
+        // Fetch admin
         User admin = userRepo.findByEmail(adminEmail)
                 .orElseThrow(() -> new UserException("Admin not found"));
 
-        // ✅ Fetch target user
+        // Fetch target user
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UserException("User not found with id: " + userId));
 
-        // 🎯 Convert String to Enum
+        // Convert String to Enum
         UserRoleEnum roleEnum;
         try {
             roleEnum = UserRoleEnum.valueOf(roleName.toUpperCase());
@@ -46,17 +46,17 @@ public class RoleManagementServiceImpl implements RoleManagementService {
             throw new UserException("Invalid role: " + roleName);
         }
 
-        // 🔁 Check if role already exists (soft-deleted or active)
+        // Check if role already exists (soft-deleted or active)
         for (UserRole existingRole : user.getRoles()) {
             if (existingRole.getRole() == roleEnum) {
                 if (Boolean.FALSE.equals(existingRole.getIsActive())) {
-                    // ✅ Reactivate soft-deleted role
+                    // Reactivate soft-deleted role
                     existingRole.setIsActive(true);
                     existingRole.setAssignedBy(admin.getId());
                     userRoleRepo.save(existingRole);
                     return;
                 } else {
-                    // ❌ Already assigned
+                    // Already assigned
                     throw new UserException("User already has role: " + roleName);
                 }
             }
