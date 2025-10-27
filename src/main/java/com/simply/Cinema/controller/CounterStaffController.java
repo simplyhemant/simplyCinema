@@ -1,11 +1,12 @@
 package com.simply.Cinema.controller;
 
+import com.simply.Cinema.core.show_and_booking.dto.BookingResponseDto;
+import com.simply.Cinema.core.show_and_booking.dto.CounterBookingDto;
 import com.simply.Cinema.core.user.dto.CounterStaffDto;
+import com.simply.Cinema.core.user.dto.CounterStaffResponseDto;
 import com.simply.Cinema.core.user.entity.CounterStaff;
-import com.simply.Cinema.exception.AuthorizationException;
-import com.simply.Cinema.exception.BusinessException;
-import com.simply.Cinema.exception.ResourceNotFoundException;
-import com.simply.Cinema.exception.ValidationException;
+import com.simply.Cinema.exception.*;
+import com.simply.Cinema.response.ApiResponse;
 import com.simply.Cinema.service.auth.CounterStaffService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/counter-staff")
@@ -27,39 +30,75 @@ public class CounterStaffController {
 
     //@PreAuthorize("hasRole('THEATRE_OWNER')")
 
+    // ------------------ COMMON ------------------
 
-    @PostMapping("/register")
-    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN')")
-    public ResponseEntity<CounterStaff> registerCounterStaff(@Valid @RequestBody CounterStaffDto request) {
+//    @PostMapping("/register")
+////    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN')")
+//    public ResponseEntity<CounterStaff> registerCounterStaff(@Valid @RequestBody CounterStaffDto request) {
+//
+//        try {
+//            CounterStaff counterStaff = counterStaffService.registerCounterStaff(request);
+//            return new ResponseEntity<CounterStaff>(counterStaff, HttpStatus.CREATED);
+//
+//        } catch (ValidationException e) {
+//            log.error("Validation error: " + e.getMessage());
+//            return new ResponseEntity<CounterStaff>(HttpStatus.BAD_REQUEST);
+//
+//        } catch (BusinessException e) {
+//            log.error("Business error: " + e.getMessage());
+//            return new ResponseEntity<CounterStaff>(HttpStatus.CONFLICT);
+//
+//        } catch (ResourceNotFoundException e) {
+//            log.error("Resource not found: " + e.getMessage());
+//            return new ResponseEntity<CounterStaff>(HttpStatus.NOT_FOUND);
+//
+//        } catch (AuthorizationException e) {
+//            log.error("Authorization error: " + e.getMessage());
+//            return new ResponseEntity<CounterStaff>(HttpStatus.FORBIDDEN);
+//
+//        } catch (Exception e) {
+//            log.error("Error registering counter staff: " + e.getMessage());
+//            return new ResponseEntity<CounterStaff>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
-        try {
-            CounterStaff counterStaff = counterStaffService.registerCounterStaff(request);
-            return new ResponseEntity<CounterStaff>(counterStaff, HttpStatus.CREATED);
+@PostMapping("/register")
+//@PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN')")
+public ResponseEntity<?> registerCounterStaff(@Valid @RequestBody CounterStaffDto request) {
 
-        } catch (ValidationException e) {
-            log.error("Validation error: " + e.getMessage());
-            return new ResponseEntity<CounterStaff>(HttpStatus.BAD_REQUEST);
+    try {
+        CounterStaffResponseDto response = counterStaffService.registerCounterStaff(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
-        } catch (BusinessException e) {
-            log.error("Business error: " + e.getMessage());
-            return new ResponseEntity<CounterStaff>(HttpStatus.CONFLICT);
+    } catch (ValidationException e) {
+        log.error("Validation error: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(e.getMessage(), false));
 
-        } catch (ResourceNotFoundException e) {
-            log.error("Resource not found: " + e.getMessage());
-            return new ResponseEntity<CounterStaff>(HttpStatus.NOT_FOUND);
+    } catch (BusinessException e) {
+        log.error("Business error: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiResponse(e.getMessage(), false));
 
-        } catch (AuthorizationException e) {
-            log.error("Authorization error: " + e.getMessage());
-            return new ResponseEntity<CounterStaff>(HttpStatus.FORBIDDEN);
+    } catch (ResourceNotFoundException e) {
+        log.error("Resource not found: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse(e.getMessage(), false));
 
-        } catch (Exception e) {
-            log.error("Error registering counter staff: " + e.getMessage());
-            return new ResponseEntity<CounterStaff>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    } catch (AuthorizationException e) {
+        log.error("Authorization error: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ApiResponse(e.getMessage(), false));
+
+    } catch (Exception e) {
+        log.error("Error registering counter staff: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse("Failed to register counter staff", false));
     }
+}
 
     @PutMapping("/{id}")
-//    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER', 'THEATRE_STAFF')")
     public ResponseEntity<CounterStaff> updateCounterStaff(
             @PathVariable Long id,
             @Valid @RequestBody CounterStaffDto request) {
@@ -87,7 +126,7 @@ public class CounterStaffController {
     }
 
     @GetMapping("/{id}")
-//    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN', 'COUNTER_STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER', 'THEATRE_STAFF')")
     public ResponseEntity<CounterStaff> getCounterStaffById(@PathVariable Long id) {
 
         try {
@@ -105,7 +144,7 @@ public class CounterStaffController {
     }
 
     @GetMapping("/theatre/{theatreId}")
-//    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER')")
     public ResponseEntity<List<CounterStaff>> getAllCounterStaff(@PathVariable Long theatreId) {
 
         try {
@@ -127,7 +166,7 @@ public class CounterStaffController {
     }
 
     @DeleteMapping("/{id}/deactivate")
-    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER')")
     public ResponseEntity<String> deactivateCounterStaff(@PathVariable Long id) {
 
         try {
@@ -149,7 +188,7 @@ public class CounterStaffController {
     }
 
     @PatchMapping("/{id}/duty-status")
-    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN', 'COUNTER_STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER', 'THEATRE_STAFF')")
     public ResponseEntity<CounterStaff> updateDutyStatus(
             @PathVariable Long id,
             @RequestParam Boolean isOnDuty) {
@@ -170,4 +209,36 @@ public class CounterStaffController {
             return new ResponseEntity<CounterStaff>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    // ----------- booking -----------
+
+    @PostMapping("/create/booking")
+    @PreAuthorize("hasAnyRole('THEATRE_STAFF', 'THEATRE_OWNER', 'COUNTER_STAFF')")
+    public ResponseEntity<?> createCounterBooking(@Valid @RequestBody CounterBookingDto request) {
+        try {
+            CounterBookingDto response = counterStaffService.createCounterBooking(request);
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("booking", response);
+            responseData.put("message", "Booking created successfully");
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+
+        } catch (AuthorizationException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse(e.getMessage(), false));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse(e.getMessage(), false));
+        } catch (BookingException | BusinessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse(e.getMessage(), false));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse("An unexpected error occurred: " + e.getMessage(), false));
+        }
+    }
+
+
 }

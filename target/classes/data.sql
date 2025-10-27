@@ -14,3 +14,4 @@ INSERT INTO language (name) VALUES ('Spanish');
 INSERT INTO language (name) VALUES ('French');
 INSERT INTO language (name) VALUES ('German');
 INSERT INTO language (name) VALUES ('Japanese');
+

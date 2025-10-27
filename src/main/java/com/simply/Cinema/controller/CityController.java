@@ -3,6 +3,7 @@ package com.simply.Cinema.controller;
 import com.simply.Cinema.core.location_and_venue.dto.CityDto;
 import com.simply.Cinema.exception.BusinessException;
 import com.simply.Cinema.exception.ResourceNotFoundException;
+import com.simply.Cinema.response.ApiResponse;
 import com.simply.Cinema.service.location_and_venue.CityService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,34 +26,34 @@ public class CityController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CityDto> createCity(@RequestBody CityDto cityDto) throws BusinessException {
+    public ResponseEntity<ApiResponse> createCity(@RequestBody CityDto cityDto) throws BusinessException {
         logger.info("Request to create city: {}", cityDto.getName());
         CityDto createdCity = cityService.createCity(cityDto);
         logger.info("City created successfully with ID: {}", createdCity.getId());
-        return ResponseEntity.ok(createdCity);
+        return ResponseEntity.ok(new ApiResponse("City created successfully", true));
     }
 
     @PutMapping("/update/{cityId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CityDto> updateCity(@PathVariable Long cityId, @RequestBody CityDto cityDto) throws BusinessException {
+    public ResponseEntity<ApiResponse> updateCity(@PathVariable Long cityId, @RequestBody CityDto cityDto) throws BusinessException {
         logger.info("Request to update city with ID: {}", cityId);
         CityDto updatedCity = cityService.updateCity(cityId, cityDto);
         logger.info("City updated successfully with ID: {}", updatedCity.getId());
-        return ResponseEntity.ok(updatedCity);
+        return ResponseEntity.ok(new ApiResponse("City updated successfully", true));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{cityId}")
-    public ResponseEntity<String> deleteCity(@PathVariable Long cityId) {
+    public ResponseEntity<ApiResponse> deleteCity(@PathVariable Long cityId) {
         logger.info("Request to delete city with ID: {}", cityId);
         try {
             cityService.deleteCity(cityId);
             logger.info("City with ID: {} deleted successfully (soft delete)", cityId);
-            return ResponseEntity.noContent().build(); // 204
+            return ResponseEntity.ok(new ApiResponse("City deleted successfully", true));
         } catch (BusinessException e) {
             logger.error("City not found with ID: {}", cityId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("City not found with ID: " + cityId);
+                    .body(new ApiResponse("City not found with ID: " + cityId, false));
         }
     }
 
@@ -97,16 +98,16 @@ public class CityController {
     }
 
     @GetMapping("/{cityId}/timezone")
-    public ResponseEntity<String> getCityTimezone(@PathVariable Long cityId) {
+    public ResponseEntity<ApiResponse> getCityTimezone(@PathVariable Long cityId) {
         logger.info("Fetching timezone for city ID: {}", cityId);
         try {
             String timezone = cityService.getCityTimezone(cityId);
             logger.info("Timezone for city ID {}: {}", cityId, timezone);
-            return ResponseEntity.ok(timezone);
+            return ResponseEntity.ok(new ApiResponse(timezone, true));
         } catch (ResourceNotFoundException e) {
             logger.error("City not found with ID: {}", cityId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("City not found with ID: " + cityId);
+                    .body(new ApiResponse("City not found with ID: " + cityId, false));
         }
     }
 
@@ -119,4 +120,3 @@ public class CityController {
     }
 
 }
-

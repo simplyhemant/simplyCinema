@@ -36,7 +36,7 @@ public class OtpServiceImpl implements OtpService {
 
             emailService.sendVerificationOtpEmail(contact, otp);
 
-            System.out.println("otp ------> "+ otp);
+            System.out.println("otp ------------------------> "+ otp);
 
         } else if (isPhone(contact)) {
 

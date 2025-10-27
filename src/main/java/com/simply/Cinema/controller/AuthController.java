@@ -9,6 +9,7 @@ import com.simply.Cinema.core.user.repository.UserRepo;
 import com.simply.Cinema.exception.UserException;
 import com.simply.Cinema.service.auth.AuthService;
 import com.simply.Cinema.response.AuthResponse;
+import com.simply.Cinema.response.ApiResponse;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -55,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/send-otp/email")
-    public ResponseEntity<String> sendOtpEmail(@RequestBody OtpDto req) throws UserException, MessagingException {
+    public ResponseEntity<ApiResponse> sendOtpEmail(@RequestBody OtpDto req) throws UserException, MessagingException {
         String email = req.getEmail();
         logger.info("Request to send OTP via email: {}", email);
 
@@ -67,11 +68,11 @@ public class AuthController {
         if (userRepo.existsByEmail(email)) {
             authService.sendEmailOtpForLogin(email);
             logger.info("OTP sent to email {} for login.", email);
-            return ResponseEntity.ok("OTP sent successfully to your email for login.");
+            return ResponseEntity.ok(new ApiResponse("OTP sent successfully to your email for login.", true));
         } else {
             authService.sendEmailOtpForSignup(email);
             logger.info("OTP sent to email {} for signup.", email);
-            return ResponseEntity.ok("OTP sent successfully to your email for signup.");
+            return ResponseEntity.ok(new ApiResponse("OTP sent successfully to your email for signup.", true));
         }
     }
 
@@ -128,7 +129,7 @@ public class AuthController {
     }
 
     @PostMapping("/send-otp/phone")
-    public ResponseEntity<String> sendOtpPhone(@RequestBody OtpDto req) throws UserException, MessagingException {
+    public ResponseEntity<ApiResponse> sendOtpPhone(@RequestBody OtpDto req) throws UserException, MessagingException {
         String phone = req.getPhone();
         logger.info("Request to send OTP via phone: {}", phone);
 
@@ -140,11 +141,11 @@ public class AuthController {
         if (userRepo.existsByPhone(phone)) {
             authService.sendPhoneOtpForLogin(phone);
             logger.info("OTP sent to phone {} for login.", phone);
-            return ResponseEntity.ok("OTP sent successfully to your Phone for login.");
+            return ResponseEntity.ok(new ApiResponse("OTP sent successfully to your Phone for login.", true));
         } else {
             authService.sendPhoneOtpForSignup(phone);
             logger.info("OTP sent to phone {} for signup.", phone);
-            return ResponseEntity.ok("OTP sent successfully to your Phone for signup.");
+            return ResponseEntity.ok(new ApiResponse("OTP sent successfully to your Phone for signup.", true));
         }
     }
 }

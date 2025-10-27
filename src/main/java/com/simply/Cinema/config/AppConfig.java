@@ -69,7 +69,7 @@ public class AppConfig {
                         // role-based
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/owner/**").hasRole("THEATRE_OWNER")
-                        .requestMatchers("/counter-staff/**").hasAnyRole("COUNTER_STAFF", "THEATRE_OWNER")
+                        .requestMatchers("/counter-staff/**").hasAnyRole("THEATRE_STAFF", "THEATRE_OWNER")
                         .requestMatchers("/customer/**").hasAnyRole("CUSTOMER")
 
                         //  Allow everything else (like static files, home page)
@@ -85,7 +85,7 @@ public class AppConfig {
     }
 
 
-    //in production
+    //after frontend
     //Replace * with allowed frontend URLs:
 
     //cfg.setAllowedOrigins(List.of("https://bookmyshow-clone.com"));

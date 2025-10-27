@@ -1,19 +1,19 @@
 package com.simply.Cinema.service.auth;
 
 import com.simply.Cinema.core.show_and_booking.dto.BookingDto;
+import com.simply.Cinema.core.show_and_booking.dto.BookingResponseDto;
+import com.simply.Cinema.core.show_and_booking.dto.CounterBookingDto;
 import com.simply.Cinema.core.user.dto.CounterStaffDto;
+import com.simply.Cinema.core.user.dto.CounterStaffResponseDto;
 import com.simply.Cinema.core.user.entity.CounterStaff;
-import com.simply.Cinema.exception.AuthorizationException;
-import com.simply.Cinema.exception.BusinessException;
-import com.simply.Cinema.exception.ResourceNotFoundException;
-import com.simply.Cinema.exception.ValidationException;
+import com.simply.Cinema.exception.*;
 
 import java.util.List;
 
 public interface CounterStaffService {
 
     // Common
-    CounterStaff registerCounterStaff(CounterStaffDto request)
+    CounterStaffResponseDto registerCounterStaff(CounterStaffDto request)
             throws AuthorizationException, ValidationException, BusinessException, ResourceNotFoundException;
 
     CounterStaff updateCounterStaffDetails(Long id, CounterStaffDto request)
@@ -30,7 +30,10 @@ public interface CounterStaffService {
 
 
     // Booking Staff
-//    BookingDto createBookingForWalkInCustomer(...);
+
+    public CounterBookingDto createCounterBooking(CounterBookingDto bookingDto)
+            throws BusinessException, BookingException ;
+
 //    void printOrSendTicket(Long bookingId);
 //    String generateTicketQRCode(Long bookingId);
 //    List<BookingDto> getBookingHistoryForStaff(Long staffId);

@@ -3,6 +3,7 @@ package com.simply.Cinema.controller;
 import com.simply.Cinema.core.user.dto.UserProfileDto;
 import com.simply.Cinema.exception.BusinessException;
 import com.simply.Cinema.exception.ResourceNotFoundException;
+import com.simply.Cinema.response.ApiResponse;
 import com.simply.Cinema.service.UserService.UserService;
 import com.simply.Cinema.service.auth.AdminService;
 import com.simply.Cinema.service.auth.RoleManagementService;
@@ -49,10 +50,9 @@ public class AdminController {
         logger.debug("User ID {} has roles: {}", userId, roles);
         return ResponseEntity.ok(roles);
     }
-
     // ------------Role management--------------
     @PostMapping("/assign")
-    public ResponseEntity<String> assignRole(
+    public ResponseEntity<ApiResponse> assignRole(
             @RequestParam Long userId,
             @RequestParam String roleName) throws BusinessException, ResourceNotFoundException {
 
@@ -60,20 +60,19 @@ public class AdminController {
         try {
             roleManagementService.assignRole(userId, roleName);
             logger.info("Successfully assigned role '{}' to user ID {}", roleName, userId);
-            return ResponseEntity.ok("Role '" + roleName + "' assigned to user " + userId);
+            return ResponseEntity.ok(new ApiResponse("Role '" + roleName + "' assigned to user " + userId, true));
         } catch (BusinessException | ResourceNotFoundException e) {
             logger.error("Failed to assign role '{}' to user ID {}: {}", roleName, userId, e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new ApiResponse(e.getMessage(), false));
         }
     }
 
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<String> deleteUserRole(@PathVariable Long roleId) {
+    public ResponseEntity<ApiResponse> deleteUserRole(@PathVariable Long roleId) {
         logger.info("Deleting (soft) role with ID: {}", roleId);
-        roleManagementService.deleteRole(roleId);  // soft delete
+        roleManagementService.deleteRole(roleId);
         logger.info("Role ID {} soft deleted successfully", roleId);
-        return ResponseEntity.ok("Role deactivated (soft deleted) successfully.");
+        return ResponseEntity.ok(new ApiResponse("Role deactivated (soft deleted) successfully.", true));
     }
 
 }
-

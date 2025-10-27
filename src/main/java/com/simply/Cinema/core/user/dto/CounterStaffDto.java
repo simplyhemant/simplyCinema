@@ -5,6 +5,7 @@ import com.simply.Cinema.core.user.Enum.UserRoleEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +31,10 @@ public class CounterStaffDto {
 
     private String lastName;
 
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
+    private String password;
+
     // Theatre & Role Info
     @NotNull(message = "Theatre ID is required")
     private Long theatreId;
@@ -37,7 +42,7 @@ public class CounterStaffDto {
     @NotNull(message = "Staff type is required")
     private CounterStaffRoleEnum staffType;
 
-    private UserRoleEnum UserRole = UserRoleEnum.ROLE_COUNTER_STAFF;
+    private UserRoleEnum UserRole = UserRoleEnum.ROLE_THEATRE_STAFF;
 
     // Role-Specific Details
     private String counterNumber;   // Booking Counter

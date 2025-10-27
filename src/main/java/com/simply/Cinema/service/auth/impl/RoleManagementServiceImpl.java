@@ -26,7 +26,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void assignRole(Long userId, String roleName) throws UserException {
-        // 🔐 Get current authenticated user's email
+        // Get current authenticated user's email
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String adminEmail = auth.getName();
 
