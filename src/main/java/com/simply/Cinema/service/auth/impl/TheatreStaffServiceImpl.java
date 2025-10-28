@@ -24,7 +24,7 @@ import com.simply.Cinema.core.user.repository.CounterStaffRepo;
 import com.simply.Cinema.core.user.repository.UserRepo;
 import com.simply.Cinema.core.user.repository.UserRoleRepo;
 import com.simply.Cinema.exception.*;
-import com.simply.Cinema.service.auth.CounterStaffService;
+import com.simply.Cinema.service.auth.TheatreStaffService;
 import com.simply.Cinema.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CounterStaffServiceImpl implements CounterStaffService {
+public class TheatreStaffServiceImpl implements TheatreStaffService {
 
     private final CounterStaffRepo counterStaffRepo;
     private final UserRepo userRepo;

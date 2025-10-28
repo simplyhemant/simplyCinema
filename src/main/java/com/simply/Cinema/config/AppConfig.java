@@ -94,7 +94,7 @@ public class AppConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
 
-        // ✅ Use patterns to allow wildcard with credentials (dev use)
+        // ✅Use patterns to allow wildcard with credentials (dev use)
         cfg.setAllowedOriginPatterns(Collections.singletonList("*"));
         cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("Authorization", "Content-Type"));

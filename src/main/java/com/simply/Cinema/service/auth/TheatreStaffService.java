@@ -1,7 +1,5 @@
 package com.simply.Cinema.service.auth;
 
-import com.simply.Cinema.core.show_and_booking.dto.BookingDto;
-import com.simply.Cinema.core.show_and_booking.dto.BookingResponseDto;
 import com.simply.Cinema.core.show_and_booking.dto.CounterBookingDto;
 import com.simply.Cinema.core.user.dto.CounterStaffDto;
 import com.simply.Cinema.core.user.dto.CounterStaffResponseDto;
@@ -10,7 +8,7 @@ import com.simply.Cinema.exception.*;
 
 import java.util.List;
 
-public interface CounterStaffService {
+public interface TheatreStaffService {
 
     // Common
     CounterStaffResponseDto registerCounterStaff(CounterStaffDto request)

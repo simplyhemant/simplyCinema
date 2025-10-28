@@ -4,6 +4,7 @@ import com.simply.Cinema.core.location_and_venue.dto.OperatingHoursDto;
 import com.simply.Cinema.core.location_and_venue.dto.TheatreRequestDto;
 import com.simply.Cinema.core.location_and_venue.dto.TheatreResponseDto;
 import com.simply.Cinema.core.location_and_venue.entity.Theatre;
+import com.simply.Cinema.core.location_and_venue.repository.CityRepo;
 import com.simply.Cinema.core.location_and_venue.repository.TheatreRepo;
 import com.simply.Cinema.core.systemConfig.Enums.AuditAction;
 import com.simply.Cinema.exception.AuthorizationException;
@@ -30,11 +31,17 @@ public class TheatreServiceImpl implements TheatreService {
 
     private final TheatreRepo theatreRepo;
     private final AuditLogService auditLogService;
+    private final CityRepo cityRepo;
 
     @Override
     public TheatreResponseDto createTheatre(TheatreRequestDto requestDto) throws BusinessException {
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+
+        boolean cityExists = cityRepo.existsById(requestDto.getCityId());
+        if (!cityExists) {
+            throw new ResourceNotFoundException("City not found with ID: " + requestDto.getCityId());
+        }
 
         boolean theatreExist = theatreRepo.existsByNameIgnoreCaseAndCityId(requestDto.getName(), requestDto.getCityId());
         if (theatreExist) {
@@ -346,10 +353,8 @@ public class TheatreServiceImpl implements TheatreService {
         Theatre theatre = theatreRepo.findById(theatreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Theatre with this id not found: " + theatreId));
 
-        // ✅ Get currently logged-in user ID
         Long currentUserId = SecurityUtil.getCurrentUserId();
 
-        // ✅ Only the owner who created it can update
         if (!theatre.getOwnerId().equals(currentUserId)) {
             throw new BusinessException("Access denied. You are not the owner of this theatre.");
         }

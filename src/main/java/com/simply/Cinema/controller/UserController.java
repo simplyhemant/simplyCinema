@@ -75,7 +75,7 @@ public class UserController {
         UserProfileDto user = userService.findUserBYJwtToken(jwt);
         userService.verifyAndChangeEmail(user.getId(), request);
         log.debug("Email changed successfully for userId: {}", user.getId());
-        return ResponseEntity.ok("✅ Email changed successfully. Please log in again.");
+        return ResponseEntity.ok("Email changed successfully. Please log in again.");
     }
 
     @PutMapping("/preferences/update")
@@ -86,7 +86,7 @@ public class UserController {
             UserProfileDto user = userService.findUserBYJwtToken(jwt);
             userService.updateUserPreferences(user.getId(), preferencesDto);
             log.debug("Preferences updated for userId: {}", user.getId());
-            return ResponseEntity.ok("✅ Preferences updated successfully.");
+            return ResponseEntity.ok("Preferences updated successfully.");
         } catch (UserException e) {
             log.warn("Failed to update preferences: {}", e.getMessage());
             return ResponseEntity.badRequest().body("❌ " + e.getMessage());

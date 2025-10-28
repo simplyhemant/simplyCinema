@@ -30,7 +30,6 @@ import com.simply.Cinema.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -46,8 +45,7 @@ public class ShowServiceImpl implements ShowService {
     private final TheatreRepo theatreRepo;
     private final SeatRepo seatRepo;
     private final ShowSeatRepo showSeatRepo;
-    private final SeatLockService seatLockService;
-    private final BookingSeatRepo bookingSeatRepo;
+
 
     @Override
     public ShowDto createShow(ShowDto showDto) throws AuthenticationException, AuthorizationException, ValidationException, BusinessException, ResourceNotFoundException {
@@ -136,6 +134,7 @@ public class ShowServiceImpl implements ShowService {
         responseDto.setStatus(show.getStatus());
         responseDto.setSeatPrices(manualSeatPrices);
         responseDto.setCreatedAt(show.getCreatedAt());
+//        responseDto.setAvailableSeats();
 //        responseDto.setBasePrice(show.getBasePrice());
 
         return responseDto;

@@ -1,13 +1,12 @@
 package com.simply.Cinema.controller;
 
-import com.simply.Cinema.core.show_and_booking.dto.BookingResponseDto;
 import com.simply.Cinema.core.show_and_booking.dto.CounterBookingDto;
 import com.simply.Cinema.core.user.dto.CounterStaffDto;
 import com.simply.Cinema.core.user.dto.CounterStaffResponseDto;
 import com.simply.Cinema.core.user.entity.CounterStaff;
 import com.simply.Cinema.exception.*;
 import com.simply.Cinema.response.ApiResponse;
-import com.simply.Cinema.service.auth.CounterStaffService;
+import com.simply.Cinema.service.auth.TheatreStaffService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,46 +23,17 @@ import java.util.Map;
 @RequestMapping("/api/v1/counter-staff")
 @RequiredArgsConstructor
 @Slf4j
-public class CounterStaffController {
+public class TheatreStaffController {
 
-    private final CounterStaffService counterStaffService;
+    private final TheatreStaffService counterStaffService;
 
     //@PreAuthorize("hasRole('THEATRE_OWNER')")
 
     // ------------------ COMMON ------------------
 
 //    @PostMapping("/register")
-////    @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN')")
-//    public ResponseEntity<CounterStaff> registerCounterStaff(@Valid @RequestBody CounterStaffDto request) {
-//
-//        try {
-//            CounterStaff counterStaff = counterStaffService.registerCounterStaff(request);
-//            return new ResponseEntity<CounterStaff>(counterStaff, HttpStatus.CREATED);
-//
-//        } catch (ValidationException e) {
-//            log.error("Validation error: " + e.getMessage());
-//            return new ResponseEntity<CounterStaff>(HttpStatus.BAD_REQUEST);
-//
-//        } catch (BusinessException e) {
-//            log.error("Business error: " + e.getMessage());
-//            return new ResponseEntity<CounterStaff>(HttpStatus.CONFLICT);
-//
-//        } catch (ResourceNotFoundException e) {
-//            log.error("Resource not found: " + e.getMessage());
-//            return new ResponseEntity<CounterStaff>(HttpStatus.NOT_FOUND);
-//
-//        } catch (AuthorizationException e) {
-//            log.error("Authorization error: " + e.getMessage());
-//            return new ResponseEntity<CounterStaff>(HttpStatus.FORBIDDEN);
-//
-//        } catch (Exception e) {
-//            log.error("Error registering counter staff: " + e.getMessage());
-//            return new ResponseEntity<CounterStaff>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
 @PostMapping("/register")
-//@PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_ADMIN')")
+@PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER')")
 public ResponseEntity<?> registerCounterStaff(@Valid @RequestBody CounterStaffDto request) {
 
     try {
