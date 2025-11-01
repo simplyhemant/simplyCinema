@@ -5,6 +5,9 @@ A **scalable movie ticket booking backend** built with **Spring Boot**, **Postgr
 
 ---
 
+Postman Documentation:
+Link : https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV
+
 ## 🔎 Overview  
 
 SimplyCinema is a **movie booking backend service** that handles:  
