@@ -14,12 +14,14 @@ import com.simply.Cinema.core.user.entity.User;
 import com.simply.Cinema.core.user.repository.UserRepo;
 import com.simply.Cinema.exception.*;
 import com.simply.Cinema.response.ApiResponse;
+import com.simply.Cinema.security.jwt.JwtProvider;
 import com.simply.Cinema.service.RedisService;
 import com.simply.Cinema.service.UserService.UserService;
 import com.simply.Cinema.service.show_and_booking.BookingService;
 import com.simply.Cinema.service.show_and_booking.PaymentService;
 import com.simply.Cinema.service.show_and_booking.SeatLockService;
 import com.simply.Cinema.util.SecurityUtil;
+import com.simply.Cinema.validation.EmailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingSeatRepo bookingSeatRepo;
     private final BookingPaymentRepo bookingPaymentRepo;
 
+    private final EmailService emailService;
 
     @Override
     public BookingResponseDto createBooking(BookingDto bookingDto, String jwt)
@@ -116,103 +119,115 @@ public class BookingServiceImpl implements BookingService {
         return response;
     }
 
-@Override
-@Transactional
-public BookingResponseDto confirmBooking(BookingDto bookingConfirmDto)
-        throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException, Exception {
+    @Override
+    @Transactional
+    public BookingResponseDto confirmBooking(BookingDto bookingConfirmDto, String jwt)
+            throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException, Exception {
 
-    Long currentUserId = SecurityUtil.getCurrentUserId();
+        Long currentUserId = SecurityUtil.getCurrentUserId();
 
-    User currentUser = userRepo.findById(currentUserId)
-            .orElseThrow(() -> new BookingException("User not found"));
+        if (jwt == null || jwt.isEmpty()) {
+            throw new AuthorizationException("User must sign up or log in before booking seats");
+        }
 
-    if (bookingConfirmDto.getShowId() == null) {
-        throw new BookingException("Show ID is required for booking confirmation");
+        UserProfileDto userDto = userService.findUserBYJwtToken(jwt);
+        Long userId = userDto.getId();
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new UserException("User not found with ID: " + userId));
+        String email = user.getEmail();
+
+        User currentUser = userRepo.findById(currentUserId)
+                .orElseThrow(() -> new BookingException("User not found"));
+
+        if (bookingConfirmDto.getShowId() == null) {
+            throw new BookingException("Show ID is required for booking confirmation");
+        }
+
+        String bookingKey = "temp_booking:" + currentUser.getEmail() + ":" + bookingConfirmDto.getShowId();
+
+        System.out.println("🔍 Looking for key--------------: " + bookingKey);
+
+        BookingResponseDto tempBooking = redisService.get(bookingKey, BookingResponseDto.class);
+        if (tempBooking == null) {
+            throw new BookingException("Temporary booking not found or expired");
+        }
+
+        if (!tempBooking.getEmail().equalsIgnoreCase(currentUser.getEmail())) {
+            throw new AuthorizationException("Payment was made by another user");
+        }
+
+        ApiResponse paymentStatus = paymentService.verifyPayment(
+                bookingConfirmDto.getPaymentToken(),
+                bookingConfirmDto.getPaymentLinkId()
+        );
+
+        if (!paymentStatus.isStatus()) {
+            throw new PaymentException("Payment not completed yet");
+        }
+
+        Show show = showRepo.findById(tempBooking.getShowId())
+                .orElseThrow(() -> new BookingException("Show not found"));
+
+        List<Long> seatIds = tempBooking.getSeatIds();
+        List<ShowSeat> showSeats = showSeatRepo.findByShowAndSeatIds(show, seatIds);
+
+        if (showSeats.size() != seatIds.size()) {
+            throw new BookingException("Some seats are no longer available");
+        }
+
+        for (ShowSeat seat : showSeats) {
+            seat.setLockedByUserId(currentUserId);
+            seat.setStatus(ShowSeatStatus.BOOKED);
+        }
+        showSeatRepo.saveAll(showSeats);
+
+        Booking booking = new Booking();
+        booking.setUser(currentUser);
+        booking.setEmail(currentUser.getEmail());
+        booking.setShow(show);
+        booking.setBookingReference("BKG-" + System.currentTimeMillis());
+        booking.setTotalAmount(tempBooking.getTotalAmount());
+        booking.setFinalAmount(tempBooking.getFinalAmount());
+        booking.setDiscountAmount(tempBooking.getDiscountAmount());
+        booking.setBookingStatus(BookingStatus.CONFIRMED);
+        booking.setPaymentStatus(PaymentStatus.SUCCESS);
+        booking.setCreatedAt(LocalDateTime.now());
+        booking.setUpdatedAt(LocalDateTime.now());
+        bookingRepo.save(booking);
+
+        for (ShowSeat seat : showSeats) {
+            BookingSeat bookingSeat = new BookingSeat();
+            bookingSeat.setBooking(booking);
+            bookingSeat.setShowSeat(seat);
+            bookingSeat.setPricePaid(seat.getPrice());
+            bookingSeatRepo.save(bookingSeat);
+        }
+
+        BookingPayment payment = new BookingPayment();
+        payment.setBooking(booking);
+        payment.setAmount(tempBooking.getFinalAmount());
+        payment.setPaymentMethod(
+                bookingConfirmDto.getPaymentMethod() != null ? bookingConfirmDto.getPaymentMethod() : PaymentMethod.RAZORPAY
+        );
+        payment.setTransactionId(bookingConfirmDto.getPaymentToken());
+        payment.setStatus(PaymentStatus.SUCCESS);
+        payment.setGatewayResponse(paymentStatus.getMessage());
+        payment.setCreatedAt(LocalDateTime.now());
+        bookingPaymentRepo.save(payment);
+
+        redisService.delete(bookingKey);
+        redisService.delete("payment_link:" + bookingConfirmDto.getPaymentLinkId());
+
+        tempBooking.setBookingId(booking.getId());
+        tempBooking.setBookingStatus(BookingStatus.CONFIRMED);
+        tempBooking.setPaymentStatus(PaymentStatus.SUCCESS);
+
+        System.out.println("------------------------------helooooooo--------------------------");
+
+        emailService.sendTicketEmail(email);
+
+        return tempBooking;
     }
-
-    String bookingKey = "temp_booking:" + currentUser.getEmail() + ":" + bookingConfirmDto.getShowId();
-
-    System.out.println("🔍 Looking for key--------------: " + bookingKey);
-
-    BookingResponseDto tempBooking = redisService.get(bookingKey, BookingResponseDto.class);
-    if (tempBooking == null) {
-        throw new BookingException("Temporary booking not found or expired");
-    }
-
-    if (!tempBooking.getEmail().equalsIgnoreCase(currentUser.getEmail())) {
-        throw new AuthorizationException("Payment was made by another user");
-    }
-
-    ApiResponse paymentStatus = paymentService.verifyPayment(
-            bookingConfirmDto.getPaymentToken(),
-            bookingConfirmDto.getPaymentLinkId()
-    );
-
-    if (!paymentStatus.isStatus()) {
-        throw new PaymentException("Payment not completed yet");
-    }
-
-    Show show = showRepo.findById(tempBooking.getShowId())
-            .orElseThrow(() -> new BookingException("Show not found"));
-
-    List<Long> seatIds = tempBooking.getSeatIds();
-    List<ShowSeat> showSeats = showSeatRepo.findByShowAndSeatIds(show, seatIds);
-
-    if (showSeats.size() != seatIds.size()) {
-        throw new BookingException("Some seats are no longer available");
-    }
-
-    for (ShowSeat seat : showSeats) {
-        seat.setLockedByUserId(currentUserId);
-        seat.setStatus(ShowSeatStatus.BOOKED);
-    }
-    showSeatRepo.saveAll(showSeats);
-
-    Booking booking = new Booking();
-    booking.setUser(currentUser);
-    booking.setEmail(currentUser.getEmail());
-    booking.setShow(show);
-    booking.setBookingReference("BKG-" + System.currentTimeMillis());
-    booking.setTotalAmount(tempBooking.getTotalAmount());
-    booking.setFinalAmount(tempBooking.getFinalAmount());
-    booking.setDiscountAmount(tempBooking.getDiscountAmount());
-    booking.setBookingStatus(BookingStatus.CONFIRMED);
-    booking.setPaymentStatus(PaymentStatus.SUCCESS);
-    booking.setCreatedAt(LocalDateTime.now());
-    booking.setUpdatedAt(LocalDateTime.now());
-    bookingRepo.save(booking);
-
-    for (ShowSeat seat : showSeats) {
-        BookingSeat bookingSeat = new BookingSeat();
-        bookingSeat.setBooking(booking);
-        bookingSeat.setShowSeat(seat);
-        bookingSeat.setPricePaid(seat.getPrice());
-        bookingSeatRepo.save(bookingSeat);
-    }
-
-    BookingPayment payment = new BookingPayment();
-    payment.setBooking(booking);
-    payment.setAmount(tempBooking.getFinalAmount());
-    payment.setPaymentMethod(
-            bookingConfirmDto.getPaymentMethod() != null ? bookingConfirmDto.getPaymentMethod() : PaymentMethod.RAZORPAY
-    );
-    payment.setTransactionId(bookingConfirmDto.getPaymentToken());
-    payment.setStatus(PaymentStatus.SUCCESS);
-    payment.setGatewayResponse(paymentStatus.getMessage());
-    payment.setCreatedAt(LocalDateTime.now());
-    bookingPaymentRepo.save(payment);
-
-    redisService.delete(bookingKey);
-    redisService.delete("payment_link:" + bookingConfirmDto.getPaymentLinkId());
-
-    tempBooking.setBookingId(booking.getId());
-    tempBooking.setBookingStatus(BookingStatus.CONFIRMED);
-    tempBooking.setPaymentStatus(PaymentStatus.SUCCESS);
-
-    System.out.println("------------------------------helooooooo--------------------------");
-
-    return tempBooking;
-}
 
 
 

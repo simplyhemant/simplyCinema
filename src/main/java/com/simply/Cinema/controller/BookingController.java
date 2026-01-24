@@ -4,7 +4,9 @@ import com.simply.Cinema.core.show_and_booking.dto.BookingDto;
 import com.simply.Cinema.core.show_and_booking.dto.BookingResponseDto;
 import com.simply.Cinema.exception.*;
 import com.simply.Cinema.response.ApiResponse;
+import com.simply.Cinema.security.jwt.JwtProvider;
 import com.simply.Cinema.service.show_and_booking.BookingService;
+import com.simply.Cinema.validation.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -38,13 +40,18 @@ public class BookingController {
     }
 
     @PostMapping("/confirm")
-    public ResponseEntity<?> confirmBooking(@RequestBody BookingDto bookingConfirmDto) {
+    public ResponseEntity<?> confirmBooking(
+            @RequestBody BookingDto bookingConfirmDto,
+            @RequestHeader("Authorization")String jwt
+    ) {
         logger.info("🎟️ [CONFIRM BOOKING] Request received to confirm booking.");
         logger.debug("📦 Booking Confirmation Data: {}", bookingConfirmDto);
 
         try {
-            BookingResponseDto response = bookingService.confirmBooking(bookingConfirmDto);
+            BookingResponseDto response = bookingService.confirmBooking(bookingConfirmDto, jwt);
+
             logger.info("✅ [CONFIRM BOOKING] Booking confirmed successfully. Booking ID: {}", response.getBookingId());
+
             return ResponseEntity.ok(response);
 
         } catch (AuthorizationException e) {

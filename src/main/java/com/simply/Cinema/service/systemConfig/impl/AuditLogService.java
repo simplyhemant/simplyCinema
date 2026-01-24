@@ -19,7 +19,7 @@ public class AuditLogService {
                 .tableName(tableName)
                 .action(action)
                 .entityId(entityId)
-                .userId(userId) // ✅ Use the passed userId directly
+                .userId(userId) //  Use the passed userId directly
                 .createdAt(LocalDateTime.now())
                 .build();
 
