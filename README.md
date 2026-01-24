@@ -5,8 +5,17 @@ A **scalable movie ticket booking backend** built with **Spring Boot**, **Postgr
 
 ---
 
-Postman Documentation:
-Link : https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV
+## 🚀 Live Deployment (AWS EC2)
+
+🌐 **Live API Base URL:** http://13.201.58.222:8080/  
+📌 **Swagger UI:** http://13.201.58.222:8080/swagger-ui/index.html  
+
+---
+
+## 📄 Postman Documentation
+Link : https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV  
+
+---
 
 ## 🔎 Overview  
 
@@ -22,12 +31,20 @@ This backend will eventually power a **full-featured cinema booking system** wit
 ## 🛠 Tech Stack  
 
 - **Framework**: Spring Boot  
-- **Database**: PostgreSQL  
+- **Database**: PostgreSQL (**AWS RDS**)  
 - **Cache & Real-Time Locking**: Redis  
 - **Authentication**: JWT & OAuth2  
 - **API Style**: REST APIs  
 - **Realtime Updates**: WebSocket  
 - **Planned**: Kafka for event-driven communication  
+
+---
+
+## ☁️ Hosting / Deployment  
+
+- Hosted on **AWS EC2**  
+- Database hosted on **AWS RDS (PostgreSQL)**  
+- APIs accessible publicly via **Swagger + Postman Docs**  
 
 ---
 
@@ -56,5 +73,3 @@ This backend will eventually power a **full-featured cinema booking system** wit
 - **Caching Layer** → Redis (seat locks, temporary states)  
 - **Communication Layer** → REST APIs & WebSockets  
 - **Planned** → Kafka for async events (notifications, analytics)  
-
----
