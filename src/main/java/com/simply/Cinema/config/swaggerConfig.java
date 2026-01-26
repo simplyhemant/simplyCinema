@@ -12,17 +12,14 @@ import java.util.Arrays;
 public class swaggerConfig {
 
     @Bean
-    public OpenAPI myCustomConfig(){
+    public OpenAPI myCustomConfig() {
         return new OpenAPI()
-                .info(
-                        new Info().title("SimplyCinema APIs")
-                                .description("By Hemant")
-                )
-                // link : http://localhost:8080/swagger-ui/index.html#/   (local)
+                .info(new Info()
+                        .title("SimplyCinema APIs")
+                        .description("By Hemant"))
                 .servers(Arrays.asList(
-                        new Server().url("http://localhost:8080").description("local"),
-                        new Server().url("http://localhost:8082").description("live")
+                        new Server().url("http://13.201.58.222:8080").description("Live (EC2)"),
+                        new Server().url("http://localhost:8080").description("Local")
                 ));
     }
-
 }

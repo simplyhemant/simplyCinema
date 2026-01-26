@@ -11,7 +11,6 @@ com/simply/Cinema/core/user/dto/UserPreferencesDto.class
 com/simply/Cinema/validation/otp/OtpVerificationCode.class
 com/simply/Cinema/core/movieManagement/entity/Language.class
 com/simply/Cinema/core/show_and_booking/repository/ShowRepo.class
-com/simply/Cinema/core/user/entity/UserSession.class
 com/simply/Cinema/service/show_and_booking/ShowService.class
 com/simply/Cinema/service/auth/RoleManagementService.class
 com/simply/Cinema/exception/SeatLockException.class
@@ -70,7 +69,6 @@ com/simply/Cinema/service/movieManagement/impl/MovieServiceImpl.class
 com/simply/Cinema/core/user/entity/User.class
 com/simply/Cinema/core/movieManagement/repository/MovieLanguageRepo.class
 com/simply/Cinema/core/user/dto/UserRegistrationDto.class
-com/simply/Cinema/core/user/entity/GuestUser.class
 com/simply/Cinema/controller/SeatLockController.class
 com/simply/Cinema/config/swaggerConfig.class
 com/simply/Cinema/core/show_and_booking/dto/ShowAvailabilityDto.class
@@ -123,7 +121,6 @@ com/simply/Cinema/exception/ErrorResponse.class
 com/simply/Cinema/core/location_and_venue/entity/City.class
 com/simply/Cinema/validation/otp/OtpService.class
 com/simply/Cinema/core/show_and_booking/Enum/ShowSeatStatus.class
-com/simply/Cinema/core/user/repository/GuestUserRepo.class
 com/simply/Cinema/core/user/repository/UserRoleRepo.class
 com/simply/Cinema/service/RedisService.class
 com/simply/Cinema/controller/AuthController.class
