@@ -12,14 +12,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
+@Tag(name = "User API", description = "Operations related to user profile, preferences, and account management")
 public class UserController {
 
     private final UserService userService;
 
+    @Operation(
+            summary = "Get User Profile",
+            description = "Fetch logged-in user's profile using JWT",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDto> getUserProfile(
             @RequestHeader("Authorization") String jwt) throws UserException {
@@ -30,6 +40,11 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @Operation(
+            summary = "Update User Profile",
+            description = "Update logged-in user's profile details",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PutMapping("/profile/update")
     public ResponseEntity<UserProfileDto> updateUserProfile(
             @RequestBody UserProfileDto dto,
@@ -57,19 +72,31 @@ public class UserController {
         return ResponseEntity.ok(updatedDto);
     }
 
+    @Operation(
+            summary = "Request Email Change OTP",
+            description = "Send OTP to new email address for verification",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PostMapping("/change-email/request")
-    public ResponseEntity<String> requestEmailChangeOtp(@RequestBody ChangeEmailOrPhoneDto request,
-                                                        @RequestHeader("Authorization") String jwt) throws MessagingException {
+    public ResponseEntity<String> requestEmailChangeOtp(
+            @RequestBody ChangeEmailOrPhoneDto request,
+            @RequestHeader("Authorization") String jwt) throws MessagingException {
 
         log.info("Requesting email change OTP for new email: {}", request.getNewEmail());
-        UserProfileDto user = userService.findUserBYJwtToken(jwt);
+        userService.findUserBYJwtToken(jwt);
         userService.sendEmailChangeOtp(request.getNewEmail());
         return ResponseEntity.ok("📨 OTP sent to new email.");
     }
 
+    @Operation(
+            summary = "Confirm Email Change",
+            description = "Verify OTP and change user's email",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PostMapping("/change-email/confirm")
-    public ResponseEntity<String> confirmEmailChange(@RequestBody ChangeEmailOrPhoneDto request,
-                                                     @RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<String> confirmEmailChange(
+            @RequestBody ChangeEmailOrPhoneDto request,
+            @RequestHeader("Authorization") String jwt) {
 
         log.info("Confirming email change");
         UserProfileDto user = userService.findUserBYJwtToken(jwt);
@@ -78,9 +105,16 @@ public class UserController {
         return ResponseEntity.ok("Email changed successfully. Please log in again.");
     }
 
+    @Operation(
+            summary = "Update User Preferences",
+            description = "Update logged-in user's preferences",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PutMapping("/preferences/update")
-    public ResponseEntity<String> updateUserPreferences(@RequestBody UserPreferencesDto preferencesDto,
-                                                        @RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<String> updateUserPreferences(
+            @RequestBody UserPreferencesDto preferencesDto,
+            @RequestHeader("Authorization") String jwt) {
+
         try {
             log.info("Updating user preferences");
             UserProfileDto user = userService.findUserBYJwtToken(jwt);
@@ -93,6 +127,11 @@ public class UserController {
         }
     }
 
+    @Operation(
+            summary = "Get User Preferences",
+            description = "Fetch logged-in user's saved preferences",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @GetMapping("/preferences")
     public ResponseEntity<UserPreferencesDto> getUserPreferences(
             @RequestHeader("Authorization") String jwt) {
@@ -104,8 +143,14 @@ public class UserController {
         return ResponseEntity.ok(preferences);
     }
 
+    @Operation(
+            summary = "Delete Own Account",
+            description = "Delete currently logged-in user's account",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @DeleteMapping("/me/delete")
-    public ResponseEntity<String> deleteOwnAccount(@RequestHeader("Authorization") String jwt) throws UserException {
+    public ResponseEntity<String> deleteOwnAccount(
+            @RequestHeader("Authorization") String jwt) throws UserException {
 
         log.info("Deleting user account");
         UserProfileDto user = userService.findUserBYJwtToken(jwt);
@@ -113,5 +158,4 @@ public class UserController {
         log.debug("User account deleted: userId={}", user.getId());
         return ResponseEntity.ok("Your account has been deleted successfully.");
     }
-
 }

@@ -16,14 +16,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/api/screens")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Screen API", description = "Operations related to theatre screens management")
 public class ScreenController {
 
     private final ScreenService screenService;
 
+    @Operation(
+            summary = "Create Screen",
+            description = "Creates a new screen for a theatre (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PostMapping("/create")
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     public ResponseEntity<ScreenDto> createScreen(@RequestBody ScreenDto screenDto)
@@ -34,6 +44,11 @@ public class ScreenController {
         return ResponseEntity.ok(created);
     }
 
+    @Operation(
+            summary = "Update Screen",
+            description = "Updates an existing screen (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PutMapping("/update/{screenId}")
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     public ResponseEntity<ScreenDto> updateScreen(@PathVariable Long screenId,
@@ -45,6 +60,11 @@ public class ScreenController {
         return ResponseEntity.ok(updated);
     }
 
+    @Operation(
+            summary = "Delete Screen",
+            description = "Deletes a screen by ID (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @DeleteMapping("/{screenId}")
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     public ResponseEntity<Void> deleteScreen(@PathVariable Long screenId)
@@ -55,6 +75,11 @@ public class ScreenController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Get All Screens",
+            description = "Fetch all screens (ADMIN only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ScreenDto>> getAllScreens() {
@@ -63,6 +88,11 @@ public class ScreenController {
         return ResponseEntity.ok(screens);
     }
 
+    @Operation(
+            summary = "Get Screens By Theatre",
+            description = "Fetch all screens for a specific theatre (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @GetMapping("/theatre/{theatreId}")
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     public ResponseEntity<List<ScreenDto>> getScreensByTheatre(@PathVariable Long theatreId)
@@ -72,6 +102,11 @@ public class ScreenController {
         return ResponseEntity.ok(screens);
     }
 
+    @Operation(
+            summary = "Get Screen Summary",
+            description = "Fetch summary details of a screen (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @GetMapping("/{screenId}/summary")
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     public ResponseEntity<ScreenSummaryDto> getScreenSummary(@PathVariable Long screenId)
@@ -81,6 +116,10 @@ public class ScreenController {
         return ResponseEntity.ok(summary);
     }
 
+    @Operation(
+            summary = "Get Screen By ID",
+            description = "Fetch screen details by screen ID"
+    )
     @GetMapping("/{screenId}")
     public ResponseEntity<ScreenDto> getScreenById(@PathVariable Long screenId)
             throws ResourceNotFoundException {
@@ -89,6 +128,11 @@ public class ScreenController {
         return ResponseEntity.ok(screen);
     }
 
+    @Operation(
+            summary = "Deactivate Screen",
+            description = "Deactivate a screen (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PatchMapping("/owner/{screenId}/deactivate")
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     public ResponseEntity<Void> deactivateScreen(@PathVariable Long screenId)
@@ -99,6 +143,11 @@ public class ScreenController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(
+            summary = "Activate Screen",
+            description = "Activate a screen (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PatchMapping("/owner/{screenId}/activate")
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     public ResponseEntity<Void> activateScreen(@PathVariable Long screenId)
@@ -109,4 +158,3 @@ public class ScreenController {
         return ResponseEntity.ok().build();
     }
 }
-

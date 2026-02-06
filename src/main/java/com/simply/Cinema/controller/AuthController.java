@@ -10,6 +10,8 @@ import com.simply.Cinema.exception.UserException;
 import com.simply.Cinema.service.auth.AuthService;
 import com.simply.Cinema.response.AuthResponse;
 import com.simply.Cinema.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
+@Tag(name = "Authentication APIs", description = "APIs for user registration, login, and OTP authentication")
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -30,6 +33,8 @@ public class AuthController {
     private final AuthService authService;
     private final UserRepo userRepo;
 
+    @Operation(summary = "Register User with Password",
+            description = "Creates a new user using email/password and returns JWT token")
     @PostMapping("/signup/pass")
     public ResponseEntity<AuthResponse> registerUser(@RequestBody UserRegistrationDto req) throws UserException {
         logger.info("Registering new user with email: {}", req.getEmail());
@@ -47,6 +52,8 @@ public class AuthController {
         return ResponseEntity.ok(res);
     }
 
+    @Operation(summary = "Login with Email & Password",
+            description = "Authenticates user using email/password and returns JWT token")
     @PostMapping("/login/pass")
     public ResponseEntity<AuthResponse> loginUser(@RequestBody UserLoginDto req) throws UserException {
         logger.info("Attempting login for user: {}", req.getEmail());
@@ -55,6 +62,8 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
+    @Operation(summary = "Send OTP to Email",
+            description = "Sends OTP to email for login or signup based on user existence")
     @PostMapping("/send-otp/email")
     public ResponseEntity<ApiResponse> sendOtpEmail(@RequestBody OtpDto req) throws UserException, MessagingException {
         String email = req.getEmail();
@@ -76,6 +85,8 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Verify OTP and Register User",
+            description = "Verifies email/phone OTP and completes user registration")
     @PostMapping("/signup/verify-otp-register")
     public ResponseEntity<AuthResponse> verifyOtpAndRegister(@RequestBody UserRegistrationDto req) throws UserException {
         logger.info("Verifying OTP for registration with email: {} and phone: {}", req.getEmail(), req.getPhone());
@@ -104,6 +115,8 @@ public class AuthController {
         return ResponseEntity.ok(res);
     }
 
+    @Operation(summary = "Login with OTP",
+            description = "Login using Email OTP or Phone OTP")
     @PostMapping("/login/email-otp")
     public ResponseEntity<AuthResponse> loginWithEmailOtp(@RequestBody OtpDto req) throws UserException {
         logger.info("Attempting login via OTP with email: {} or phone: {}", req.getEmail(), req.getPhone());
@@ -128,6 +141,8 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
+    @Operation(summary = "Send OTP to Phone",
+            description = "Sends OTP to phone number for login or signup based on user existence")
     @PostMapping("/send-otp/phone")
     public ResponseEntity<ApiResponse> sendOtpPhone(@RequestBody OtpDto req) throws UserException, MessagingException {
         String phone = req.getPhone();

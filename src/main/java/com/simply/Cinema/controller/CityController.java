@@ -15,15 +15,25 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/api/cities")
 @RequiredArgsConstructor
+@Tag(name = "City API", description = "Operations related to city management")
 public class CityController {
 
     private static final Logger logger = LoggerFactory.getLogger(CityController.class);
 
     private final CityService cityService;
 
+    @Operation(
+            summary = "Create City",
+            description = "Creates a new city (Admin only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> createCity(@RequestBody CityDto cityDto) throws BusinessException {
@@ -33,6 +43,11 @@ public class CityController {
         return ResponseEntity.ok(new ApiResponse("City created successfully", true));
     }
 
+    @Operation(
+            summary = "Update City",
+            description = "Updates an existing city (Admin only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PutMapping("/update/{cityId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> updateCity(@PathVariable Long cityId, @RequestBody CityDto cityDto) throws BusinessException {
@@ -42,6 +57,11 @@ public class CityController {
         return ResponseEntity.ok(new ApiResponse("City updated successfully", true));
     }
 
+    @Operation(
+            summary = "Delete City",
+            description = "Soft deletes a city by ID (Admin only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{cityId}")
     public ResponseEntity<ApiResponse> deleteCity(@PathVariable Long cityId) {
@@ -57,6 +77,7 @@ public class CityController {
         }
     }
 
+    @Operation(summary = "Get City By ID", description = "Fetch city details using city ID")
     @GetMapping("/city/{cityId}")
     public ResponseEntity<CityDto> getCityById(@PathVariable Long cityId) {
         logger.info("Fetching city with ID: {}", cityId);
@@ -65,6 +86,7 @@ public class CityController {
         return ResponseEntity.ok(city);
     }
 
+    @Operation(summary = "Get All Cities", description = "Fetch all cities (including inactive)")
     @GetMapping("/all")
     public ResponseEntity<List<CityDto>> getAllCities() {
         logger.info("Fetching all cities");
@@ -73,6 +95,7 @@ public class CityController {
         return ResponseEntity.ok(cities);
     }
 
+    @Operation(summary = "Get Active Cities", description = "Fetch all active cities")
     @GetMapping("/active")
     public ResponseEntity<List<CityDto>> getActiveCities() {
         logger.info("Fetching all active cities");
@@ -81,6 +104,7 @@ public class CityController {
         return ResponseEntity.ok(cities);
     }
 
+    @Operation(summary = "Find Cities By State", description = "Fetch cities filtered by state name")
     @GetMapping("/state")
     public ResponseEntity<List<CityDto>> findCitiesByState(@RequestParam String state) {
         logger.info("Fetching cities for state: {}", state);
@@ -89,6 +113,7 @@ public class CityController {
         return ResponseEntity.ok(cities);
     }
 
+    @Operation(summary = "Find Cities By Country", description = "Fetch cities filtered by country name")
     @GetMapping("/country")
     public ResponseEntity<List<CityDto>> findCitiesByCountry(@RequestParam String country) {
         logger.info("Fetching cities for country: {}", country);
@@ -97,6 +122,7 @@ public class CityController {
         return ResponseEntity.ok(cities);
     }
 
+    @Operation(summary = "Get City Timezone", description = "Fetch timezone of a specific city by ID")
     @GetMapping("/{cityId}/timezone")
     public ResponseEntity<ApiResponse> getCityTimezone(@PathVariable Long cityId) {
         logger.info("Fetching timezone for city ID: {}", cityId);
@@ -111,6 +137,7 @@ public class CityController {
         }
     }
 
+    @Operation(summary = "Search Cities", description = "Search cities using a keyword")
     @GetMapping("/search")
     public ResponseEntity<List<CityDto>> searchCities(@RequestParam String keyword) {
         logger.info("Searching cities with keyword: {}", keyword);
@@ -118,5 +145,4 @@ public class CityController {
         logger.info("Found {} cities for keyword: {}", cityList.size(), keyword);
         return ResponseEntity.ok(cityList);
     }
-
 }

@@ -8,14 +8,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/seats")
 @RequiredArgsConstructor
+@Tag(name = "Seat Lock API", description = "Operations for locking and releasing seats during booking")
 public class SeatLockController {
 
     private final SeatLockService seatLockService;
 
+    @Operation(
+            summary = "Lock Seats",
+            description = "Locks selected seats for a specific show and user"
+    )
     @PostMapping("/lock")
     public ResponseEntity<String> lockSeats(@RequestParam Long showId,
                                             @RequestParam Long userId,
@@ -26,6 +34,10 @@ public class SeatLockController {
         return ResponseEntity.ok("Seats locked successfully");
     }
 
+    @Operation(
+            summary = "Release Locked Seats",
+            description = "Releases previously locked seats for a specific show and user"
+    )
     @PostMapping("/release")
     public ResponseEntity<String> releaseSeats(@RequestParam Long showId,
                                                @RequestParam Long userId,
@@ -36,6 +48,10 @@ public class SeatLockController {
         return ResponseEntity.ok("Seats released successfully");
     }
 
+    @Operation(
+            summary = "Check Seat Lock Status",
+            description = "Checks whether a specific seat is currently locked for a show"
+    )
     @GetMapping("/isLocked")
     public ResponseEntity<Boolean> isSeatLocked(@RequestParam Long showId,
                                                 @RequestParam Long seatNumber) throws Exception {
@@ -45,6 +61,10 @@ public class SeatLockController {
         return ResponseEntity.ok(isLocked);
     }
 
+    @Operation(
+            summary = "Get All Locked Seats",
+            description = "Fetches all currently locked seats for a specific show"
+    )
     @GetMapping("/locked")
     public ResponseEntity<List<String>> getLockedSeats(@RequestParam Long showId) {
         log.debug("Fetching all locked seats for showId={}", showId);
@@ -52,5 +72,4 @@ public class SeatLockController {
         log.debug("Locked seats for showId={}: {}", showId, lockedSeats);
         return ResponseEntity.ok(lockedSeats);
     }
-
 }

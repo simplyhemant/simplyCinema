@@ -17,14 +17,24 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/theatre")
+@Tag(name = "Theatre API", description = "Operations related to theatre management and search")
 public class TheatreController {
 
     private final TheatreService theatreService;
 
+    @Operation(
+            summary = "Create Theatre",
+            description = "Create a new theatre (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     @PostMapping("/owner/create")
     public ResponseEntity<TheatreResponseDto> createTheatre(
@@ -36,11 +46,17 @@ public class TheatreController {
         return ResponseEntity.ok(created);
     }
 
+    @Operation(
+            summary = "Update Theatre",
+            description = "Update theatre details by ID (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     @PutMapping("/owner/update/{theatreId}")
     public ResponseEntity<TheatreResponseDto> updateTheatre(
             @PathVariable Long theatreId,
-            @RequestBody TheatreRequestDto requestDto) throws ResourceNotFoundException, BusinessException {
+            @RequestBody TheatreRequestDto requestDto)
+            throws ResourceNotFoundException, BusinessException {
 
         log.info("Updating theatre with ID: {}", theatreId);
         TheatreResponseDto updateTheatre = theatreService.updateTheatre(theatreId, requestDto);
@@ -48,6 +64,11 @@ public class TheatreController {
         return ResponseEntity.ok(updateTheatre);
     }
 
+    @Operation(
+            summary = "Delete Theatre",
+            description = "Delete a theatre by ID (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     @DeleteMapping("/owner/delete/{theatreId}")
     public ResponseEntity<Void> deleteTheatre(
@@ -56,9 +77,13 @@ public class TheatreController {
         log.info("Deleting theatre with ID: {}", theatreId);
         theatreService.deleteTheatre(theatreId);
         log.info("Theatre deleted successfully: {}", theatreId);
-        return ResponseEntity.noContent().build(); //204
+        return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Get Theatre By ID",
+            description = "Fetch theatre details using theatre ID"
+    )
     @GetMapping("/{theatreId}")
     public ResponseEntity<TheatreResponseDto> getTheatreById(
             @PathVariable Long theatreId) throws ResourceNotFoundException {
@@ -69,6 +94,10 @@ public class TheatreController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(
+            summary = "Get Theatres By City",
+            description = "Fetch all theatres within a specific city"
+    )
     @GetMapping("/city/{cityId}")
     public ResponseEntity<List<TheatreResponseDto>> getTheatreByCityId(
             @PathVariable Long cityId) throws ResourceNotFoundException {
@@ -79,6 +108,10 @@ public class TheatreController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(
+            summary = "Get All Theatres (Paginated)",
+            description = "Fetch paginated list of all theatres"
+    )
     @GetMapping("/list")
     public ResponseEntity<Page<TheatreResponseDto>> getAllTheatre(
             @RequestParam(defaultValue = "0") int pageNo,
@@ -90,6 +123,11 @@ public class TheatreController {
         return ResponseEntity.ok(theatrePage);
     }
 
+    @Operation(
+            summary = "Get Theatres By Owner",
+            description = "Fetch theatres belonging to a specific owner (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     @GetMapping("/owner/list/{ownerId}")
     public ResponseEntity<List<TheatreResponseDto>> getTheatresByOwner(
@@ -104,28 +142,41 @@ public class TheatreController {
         return ResponseEntity.ok(theatres);
     }
 
+    @Operation(
+            summary = "Get Theatres By Amenities",
+            description = "Fetch theatres filtered by amenities"
+    )
     @GetMapping("/amenities")
     public ResponseEntity<List<TheatreResponseDto>> getTheatreByAmenities(
-            @RequestParam List<String> amenities
-    ) {
+            @RequestParam List<String> amenities) {
+
         log.info("Fetching theatres by amenities: {}", amenities);
         List<TheatreResponseDto> result = theatreService.getTheatreByAmenities(amenities);
         log.debug("Theatres fetched: {}", result);
         return ResponseEntity.ok(result);
     }
 
+    @Operation(
+            summary = "Update Theatre Operating Hours",
+            description = "Update operating hours of a theatre (THEATRE_OWNER only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PreAuthorize("hasRole('THEATRE_OWNER')")
     @PutMapping("/owner/changeTime/{theatreId}")
     public ResponseEntity<TheatreResponseDto> updateTheatreOperatingHours(
             @PathVariable Long theatreId,
-            @RequestBody OperatingHoursDto hoursDto
-    ) {
+            @RequestBody OperatingHoursDto hoursDto) {
+
         log.info("Updating operating hours for theatreId: {}, hours: {}", theatreId, hoursDto);
         TheatreResponseDto updatedTime = theatreService.updateTheatreOperatingHours(theatreId, hoursDto);
         log.debug("Updated operating hours: {}", updatedTime);
         return ResponseEntity.ok(updatedTime);
     }
 
+    @Operation(
+            summary = "Search Theatres",
+            description = "Search theatres using keyword with pagination"
+    )
     @GetMapping("/search")
     public ResponseEntity<Page<TheatreResponseDto>> searchTheatre(
             @RequestParam String keyword,
@@ -137,5 +188,4 @@ public class TheatreController {
         log.debug("Theatres found: {}", theatrePage.getContent());
         return ResponseEntity.ok(theatrePage);
     }
-
 }

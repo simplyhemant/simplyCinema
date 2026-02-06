@@ -13,14 +13,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/reviews")
 @Slf4j
+@Tag(name = "Review API", description = "Operations related to movie reviews and ratings")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @Operation(
+            summary = "Submit Review",
+            description = "Submit a new review for a specific movie"
+    )
     @PostMapping("/movies/{movieId}")
     public ResponseEntity<MovieReviewDto> submitReview(@PathVariable Long movieId,
                                                        @RequestBody MovieReviewDto reviewDto)
@@ -32,6 +41,10 @@ public class ReviewController {
         return ResponseEntity.ok(created);
     }
 
+    @Operation(
+            summary = "Update Review",
+            description = "Update an existing review (Only review owner allowed)"
+    )
     @PutMapping("/{id}")
     public ResponseEntity<MovieReviewDto> updateReview(@PathVariable Long id,
                                                        @RequestBody MovieReviewDto reviewDto)
@@ -42,6 +55,10 @@ public class ReviewController {
         return ResponseEntity.ok(updated);
     }
 
+    @Operation(
+            summary = "Delete Review",
+            description = "Delete a review (Only review owner allowed)"
+    )
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id)
             throws ResourceNotFoundException, AuthorizationException {
@@ -51,6 +68,10 @@ public class ReviewController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Get Reviews By Movie",
+            description = "Fetch all reviews for a specific movie"
+    )
     @GetMapping("/{movieId}")
     public ResponseEntity<List<MovieReviewDto>> getReviews(@PathVariable Long movieId)
             throws ResourceNotFoundException {
@@ -59,6 +80,11 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
+    @Operation(
+            summary = "Moderate Review",
+            description = "Approve or moderate a review (Admin only)",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/moderate")
     public ResponseEntity<MovieReviewDto> moderateReview(@PathVariable Long id)
@@ -69,6 +95,10 @@ public class ReviewController {
         return ResponseEntity.ok(moderated);
     }
 
+    @Operation(
+            summary = "Get Average Rating",
+            description = "Calculate and return the average rating of a movie"
+    )
     @GetMapping("/{movieId}/average-rating")
     public ResponseEntity<Double> getAverageRating(@PathVariable Long movieId) {
         log.debug("Calculating average rating for movieId={}", movieId);
@@ -77,4 +107,3 @@ public class ReviewController {
         return ResponseEntity.ok(averageRating);
     }
 }
-

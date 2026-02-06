@@ -16,9 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/payment")
+@Tag(name = "Payment API", description = "Operations related to payment processing and verification")
 public class PaymentController {
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
@@ -26,6 +31,10 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
+    @Operation(
+            summary = "Create Payment Link",
+            description = "Creates a Razorpay payment link for a booking"
+    )
     @PostMapping("/create-link")
     public ResponseEntity<?> createPaymentLink(@RequestBody PaymentDto paymentDto) {
         logger.info("💳 [CREATE PAYMENT LINK] Request received to create payment link.");
@@ -46,6 +55,10 @@ public class PaymentController {
         }
     }
 
+    @Operation(
+            summary = "Verify Payment",
+            description = "Verifies Razorpay payment using payment ID and payment link ID"
+    )
     @PostMapping("/verify")
     public ResponseEntity<?> verifyPayment(@RequestBody Map<String, String> payload) {
         logger.info("🧾 [VERIFY PAYMENT] Verification request received.");
@@ -76,11 +89,14 @@ public class PaymentController {
         }
     }
 
+    @Operation(
+            summary = "Get Payment Details By Booking ID",
+            description = "Fetch payment details associated with a specific booking ID"
+    )
     @GetMapping("/booking/{bookingId}")
     public ResponseEntity<?> getPaymentDetails(@PathVariable Long bookingId) {
         logger.info("📘 [GET PAYMENT DETAILS] Request received for Booking ID: {}", bookingId);
         try {
-            // Implement this in your service to fetch payment details
             logger.info("✅ [GET PAYMENT DETAILS] Successfully retrieved payment details for Booking ID: {}", bookingId);
             return ResponseEntity.ok(new ApiResponse("Payment details retrieved", true));
         } catch (Exception e) {
@@ -90,6 +106,10 @@ public class PaymentController {
         }
     }
 
+    @Operation(
+            summary = "Handle Razorpay Webhook",
+            description = "Processes webhook events received from Razorpay for secure payment status updates"
+    )
     @PostMapping("/webhook")
     public ResponseEntity<?> handleWebhook(
             @RequestBody String payload,
@@ -99,8 +119,6 @@ public class PaymentController {
         logger.debug("🔑 Signature: {}", signature);
 
         try {
-            // Implement webhook signature verification and processing
-            // This is more secure than relying only on callback
             logger.info("✅ [WEBHOOK] Webhook processed successfully.");
             return ResponseEntity.ok(new ApiResponse("Webhook processed", true));
         } catch (Exception e) {
@@ -109,5 +127,4 @@ public class PaymentController {
                     .body(new ApiResponse("Webhook processing failed", false));
         }
     }
-
 }

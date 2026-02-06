@@ -7,6 +7,8 @@ import com.simply.Cinema.response.ApiResponse;
 import com.simply.Cinema.security.jwt.JwtProvider;
 import com.simply.Cinema.service.show_and_booking.BookingService;
 import com.simply.Cinema.validation.EmailService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -14,16 +16,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/api/bookings")
 @RequiredArgsConstructor
+@Tag(name = "Booking API", description = "Operations related to movie ticket bookings")
 public class BookingController {
 
     private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
 
     private final BookingService bookingService;
 
+    @Operation(
+            summary = "Create Booking",
+            description = "Creates a new booking for a movie show. JWT token is optional."
+    )
     @PostMapping("/create")
     public ResponseEntity<BookingResponseDto> createBooking(
             @RequestHeader(value = "Authorization", required = false) String jwt,
@@ -39,10 +45,14 @@ public class BookingController {
         return ResponseEntity.ok(bookingResponse);
     }
 
+    @Operation(
+            summary = "Confirm Booking",
+            description = "Confirms an existing booking and processes payment. Requires JWT token."
+    )
     @PostMapping("/confirm")
     public ResponseEntity<?> confirmBooking(
             @RequestBody BookingDto bookingConfirmDto,
-            @RequestHeader("Authorization")String jwt
+            @RequestHeader("Authorization") String jwt
     ) {
         logger.info("🎟️ [CONFIRM BOOKING] Request received to confirm booking.");
         logger.debug("📦 Booking Confirmation Data: {}", bookingConfirmDto);
@@ -70,5 +80,4 @@ public class BookingController {
                     .body(new ApiResponse("An error occurred: " + e.getMessage(), false));
         }
     }
-
 }

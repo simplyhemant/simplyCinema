@@ -13,15 +13,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/show-seats")
+@Tag(name = "Show Seat API", description = "Operations related to show seat availability and statistics")
 public class ShowSeatController {
 
     private static final Logger logger = LoggerFactory.getLogger(ShowSeatController.class);
 
     private final ShowSeatService showSeatService;
 
+    @Operation(
+            summary = "Get All Seats By Show",
+            description = "Fetch all seats associated with a specific show"
+    )
     @GetMapping("/{showId}")
     public ResponseEntity<?> getSeatsByShow(@PathVariable Long showId) {
         logger.info("🎟️ [GET SEATS BY SHOW] Request received for Show ID: {}", showId);
@@ -36,6 +44,10 @@ public class ShowSeatController {
         }
     }
 
+    @Operation(
+            summary = "Get Available Seats By Show",
+            description = "Fetch only available seats for a specific show"
+    )
     @GetMapping("/{showId}/available")
     public ResponseEntity<?> getAvailableSeats(@PathVariable Long showId) {
         logger.info("💺 [GET AVAILABLE SEATS] Request received for Show ID: {}", showId);
@@ -50,6 +62,10 @@ public class ShowSeatController {
         }
     }
 
+    @Operation(
+            summary = "Get Booked Seats By Show",
+            description = "Fetch only booked seats for a specific show"
+    )
     @GetMapping("/{showId}/booked")
     public ResponseEntity<?> getBookedSeats(@PathVariable Long showId) {
         logger.info("🎫 [GET BOOKED SEATS] Request received for Show ID: {}", showId);
@@ -64,6 +80,10 @@ public class ShowSeatController {
         }
     }
 
+    @Operation(
+            summary = "Count Total Seats",
+            description = "Returns total number of seats for a specific show"
+    )
     @GetMapping("/{showId}/count/total")
     public ResponseEntity<?> countTotalSeats(@PathVariable Long showId) {
         logger.info("🔢 [COUNT TOTAL SEATS] Request received for Show ID: {}", showId);
@@ -78,6 +98,10 @@ public class ShowSeatController {
         }
     }
 
+    @Operation(
+            summary = "Count Available Seats",
+            description = "Returns number of available seats for a specific show"
+    )
     @GetMapping("/{showId}/count/available")
     public ResponseEntity<?> countAvailableSeats(@PathVariable Long showId) {
         logger.info("🔢 [COUNT AVAILABLE SEATS] Request received for Show ID: {}", showId);
@@ -92,6 +116,10 @@ public class ShowSeatController {
         }
     }
 
+    @Operation(
+            summary = "Count Booked Seats",
+            description = "Returns number of booked seats for a specific show"
+    )
     @GetMapping("/{showId}/count/booked")
     public ResponseEntity<?> countBookedSeats(@PathVariable Long showId) {
         logger.info("🔢 [COUNT BOOKED SEATS] Request received for Show ID: {}", showId);
@@ -105,5 +133,4 @@ public class ShowSeatController {
                     .body(Map.of("error", e.getMessage()));
         }
     }
-
 }
