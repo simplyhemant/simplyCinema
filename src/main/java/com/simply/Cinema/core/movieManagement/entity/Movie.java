@@ -40,6 +40,7 @@ public class Movie {
     private String bannerUrl;
 
     private boolean isActive = true;
+    private String leadActor;
 
     @ElementCollection
     @CollectionTable(name = "movie_cast", joinColumns = @JoinColumn(name = "movie_id"))

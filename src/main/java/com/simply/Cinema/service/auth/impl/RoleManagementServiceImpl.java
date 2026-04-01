@@ -1,7 +1,7 @@
 package com.simply.Cinema.service.auth.impl;
 
 import com.simply.Cinema.core.user.Enum.UserRoleEnum;
-import com.simply.Cinema.core.user.dto.UserProfileDto;
+import com.simply.Cinema.core.user.dto.UserRoleDto;
 import com.simply.Cinema.core.user.entity.User;
 import com.simply.Cinema.core.user.entity.UserRole;
 import com.simply.Cinema.core.user.repository.UserRepo;
@@ -13,9 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -75,19 +74,19 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
 
     @Override
-    public Set<String> getRolesByUser(Long userId) {
+    public List<UserRoleDto> getRolesByUser(Long userId) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UserException("User not found with id " + userId));
 
-        Set<String> roleNames = new HashSet<>();
-        List<UserRole> userRoles = user.getRoles();  // Assuming mapped properly
+        List<UserRoleDto> roleDtos = new ArrayList<>();
+        List<UserRole> userRoles = user.getRoles();
 
         for (UserRole userRole : userRoles) {
             if (Boolean.TRUE.equals(userRole.getIsActive())) {
-                roleNames.add(userRole.getRole().name());
+                roleDtos.add(new UserRoleDto(userRole.getId(), userRole.getRole().name()));
             }
         }
-        return roleNames;
+        return roleDtos;
     }
 
 

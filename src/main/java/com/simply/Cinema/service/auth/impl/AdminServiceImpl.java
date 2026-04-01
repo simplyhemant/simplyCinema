@@ -20,7 +20,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public UserProfileDto manageUser(Long userId) throws ResourceNotFoundException {
-
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
 
@@ -30,6 +32,7 @@ public class AdminServiceImpl implements AdminService {
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());
+        dto.setIsActive(user.getIsActive());
 
         // 🔑 Get user roles as strings
        dto.setRoles(getUserRoleNames(user));
@@ -39,35 +42,37 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<UserProfileDto> getAllUsers() {
-
         List<User> users = userRepo.findAll();
-
         List<UserProfileDto> userDtos = new ArrayList<>();
-
 
         for(User user : users){
             UserProfileDto dto = new UserProfileDto();
-
             dto.setId(user.getId());
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
             dto.setEmail(user.getEmail());
             dto.setPhone(user.getPhone());
-            dto.setRoles(getUserRoleNames(user)); // or extract role names if needed
-            // set other fields as needed
+            dto.setIsActive(user.getIsActive());
+            dto.setRoles(getUserRoleNames(user));
             userDtos.add(dto);
         }
-
         return userDtos;
-
     }
 
+    @Override
+    public void toggleUserStatus(Long userId, Boolean isActive) throws ResourceNotFoundException {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
+        user.setIsActive(isActive);
+        userRepo.save(user);
+    }
 
     public List<String> getUserRoleNames(User user) {
         List<String> roleNames = new ArrayList<>();
-
         for (UserRole role : user.getRoles()) {
-            roleNames.add(role.getRole().name());
+            if (Boolean.TRUE.equals(role.getIsActive())) {
+                roleNames.add(role.getRole().name());
+            }
         }
         return roleNames;
     }

@@ -17,6 +17,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import com.simply.Cinema.service.RedisService;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
@@ -28,10 +29,12 @@ public class JwtTokenValidator extends OncePerRequestFilter {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
 
         String path = request.getRequestURI();
         if (path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs")) {
@@ -43,6 +46,11 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
         if (jwt != null && jwt.startsWith("Bearer ")) {
             jwt = jwt.substring(7); // Remove "Bearer "
+
+            if (redisService.hasKey("JWT_BLACKLIST_" + jwt)) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token has been blacklisted.");
+                return;
+            }
 
             try {
                 SecretKey key = Keys.hmacShaKeyFor(JwtConstants.SECRET_KEY.getBytes());

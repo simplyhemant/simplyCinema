@@ -13,7 +13,6 @@ import com.simply.Cinema.exception.AuthorizationException;
 import com.simply.Cinema.exception.BusinessException;
 import com.simply.Cinema.exception.ResourceNotFoundException;
 import com.simply.Cinema.exception.ValidationException;
-import com.simply.Cinema.service.location_and_venue.ScreenService;
 import com.simply.Cinema.service.location_and_venue.SeatService;
 import com.simply.Cinema.service.systemConfig.impl.AuditLogService;
 import com.simply.Cinema.util.SecurityUtil;
@@ -42,8 +41,8 @@ public class SeatServiceImpl implements SeatService {
         Screen screen = screenRepo.findById(screenId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + screenId));
 
-        //  Authorization check
-        if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
+        // Authorization check - Admin can bypass or must be the owner
+        if (!SecurityUtil.isCurrentUserAdmin() && !screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied.");
         }
 
@@ -108,8 +107,8 @@ public class SeatServiceImpl implements SeatService {
         Screen screen = screenRepo.findById(screenId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + screenId));
 
-        // 2. Authorization check
-        if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
+        // 2. Authorization check - Admin can bypass or must be the owner
+        if (!SecurityUtil.isCurrentUserAdmin() && !screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied.");
         }
 
@@ -183,8 +182,8 @@ public class SeatServiceImpl implements SeatService {
         Screen screen = screenRepo.findById(layoutId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + layoutId));
 
-        //  Authorization check
-        if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
+        //  Authorization check - Admin can bypass or must be the owner
+        if (!SecurityUtil.isCurrentUserAdmin() && !screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied. you are not the owner of this screen.");
         }
 
@@ -307,8 +306,8 @@ public class SeatServiceImpl implements SeatService {
         Screen screen = screenRepo.findById(layoutId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + layoutId));
 
-        // Authorization check
-        if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
+        // Authorization check - Admin can bypass or must be the owner
+        if (!SecurityUtil.isCurrentUserAdmin() && !screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied.");
         }
 
@@ -466,8 +465,8 @@ public class SeatServiceImpl implements SeatService {
             throw new AuthorizationException("Seat does not belong to the specified screen.");
         }
 
-        // Authorization check — only the theatre owner can delete
-        if (!seat.getScreen().getTheatre().getOwnerId().equals(currentUserId)) {
+        // Authorization check - Admin can bypass or must be the owner
+        if (!SecurityUtil.isCurrentUserAdmin() && !seat.getScreen().getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied. You are not the owner of this seat's theatre.");
         }
 
@@ -507,6 +506,43 @@ public class SeatServiceImpl implements SeatService {
 
     }
 
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void generateDefaultLayout(Long screenId, Integer totalSeats) throws ResourceNotFoundException, ValidationException, BusinessException {
+        if (totalSeats == null || totalSeats <= 0) return;
+
+        Screen screen = screenRepo.findById(screenId)
+                .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + screenId));
+
+        // Delete existing seats
+        List<Seat> existingSeats = seatRepo.findByScreenId(screenId);
+        if (!existingSeats.isEmpty()) {
+            seatRepo.deleteAll(existingSeats);
+        }
+
+        // Default distribution: 10% VIP, 20% PREMIUM, 70% REGULAR
+        int vipCount = (int) Math.ceil(totalSeats * 0.10);
+        int premiumCount = (int) Math.ceil(totalSeats * 0.20);
+        int regularCount = totalSeats - vipCount - premiumCount;
+
+        SeatLayoutDto layoutDto = new SeatLayoutDto();
+        layoutDto.setScreenId(screenId);
+        layoutDto.setSeatsPerRow(15); // Default 15 seats per row
+        layoutDto.setVipSeatCount(vipCount);
+        layoutDto.setPremiumSeatCount(premiumCount);
+        layoutDto.setRegularSeatCount(regularCount);
+        layoutDto.setAutoGenerateSeats(true);
+
+        List<Seat> newSeats = generateSeatsFromLayout(layoutDto, screen);
+        seatRepo.saveAll(newSeats);
+
+        // Update screen total seats
+        screen.setTotalSeats(totalSeats);
+        screenRepo.save(screen);
+
+        auditLogService.logEvent("seat_layout", AuditAction.UPDATE, screenId, SecurityUtil.getCurrentUserId());
+    }
 
     private List<Seat> generateSeatsFromLayout(SeatLayoutDto layoutDto, Screen screen) throws ValidationException {
 

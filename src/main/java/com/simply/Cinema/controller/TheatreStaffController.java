@@ -80,7 +80,7 @@ public class TheatreStaffController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER', 'THEATRE_STAFF')")
     public ResponseEntity<CounterStaff> updateCounterStaff(
-            @PathVariable Long id,
+            @PathVariable(name = "id") Long id,
             @Valid @RequestBody CounterStaffDto request) {
 
         try {
@@ -112,7 +112,7 @@ public class TheatreStaffController {
     )
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER', 'THEATRE_STAFF')")
-    public ResponseEntity<CounterStaff> getCounterStaffById(@PathVariable Long id) {
+    public ResponseEntity<CounterStaff> getCounterStaffById(@PathVariable(name = "id") Long id) {
 
         try {
             CounterStaff counterStaff = counterStaffService.getCounterStaffById(id);
@@ -135,7 +135,7 @@ public class TheatreStaffController {
     )
     @GetMapping("/theatre/{theatreId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER')")
-    public ResponseEntity<List<CounterStaff>> getAllCounterStaff(@PathVariable Long theatreId) {
+    public ResponseEntity<List<CounterStaff>> getAllCounterStaff(@PathVariable(name = "theatreId") Long theatreId) {
 
         try {
             List<CounterStaff> counterStaffList = counterStaffService.getAllCounterStaff(theatreId);
@@ -162,7 +162,7 @@ public class TheatreStaffController {
     )
     @DeleteMapping("/{id}/deactivate")
     @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER')")
-    public ResponseEntity<String> deactivateCounterStaff(@PathVariable Long id) {
+    public ResponseEntity<String> deactivateCounterStaff(@PathVariable(name = "id") Long id) {
 
         try {
             counterStaffService.deactivateCounterStaff(id);
@@ -190,8 +190,8 @@ public class TheatreStaffController {
     @PatchMapping("/{id}/duty-status")
     @PreAuthorize("hasAnyRole('ADMIN', 'THEATRE_OWNER', 'THEATRE_STAFF')")
     public ResponseEntity<CounterStaff> updateDutyStatus(
-            @PathVariable Long id,
-            @RequestParam Boolean isOnDuty) {
+            @PathVariable(name = "id") Long id,
+            @RequestParam(name = "isOnDuty") Boolean isOnDuty) {
 
         try {
             CounterStaffDto updateDto = new CounterStaffDto();

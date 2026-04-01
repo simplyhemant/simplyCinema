@@ -28,7 +28,7 @@ public class CityController {
     private static final Logger logger = LoggerFactory.getLogger(CityController.class);
 
     private final CityService cityService;
-
+ 
     @Operation(
             summary = "Create City",
             description = "Creates a new city (Admin only)",
@@ -50,7 +50,7 @@ public class CityController {
     )
     @PutMapping("/update/{cityId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse> updateCity(@PathVariable Long cityId, @RequestBody CityDto cityDto) throws BusinessException {
+    public ResponseEntity<ApiResponse> updateCity(@PathVariable(name = "cityId") Long cityId, @RequestBody CityDto cityDto) throws BusinessException {
         logger.info("Request to update city with ID: {}", cityId);
         CityDto updatedCity = cityService.updateCity(cityId, cityDto);
         logger.info("City updated successfully with ID: {}", updatedCity.getId());
@@ -64,7 +64,7 @@ public class CityController {
     )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{cityId}")
-    public ResponseEntity<ApiResponse> deleteCity(@PathVariable Long cityId) {
+    public ResponseEntity<ApiResponse> deleteCity(@PathVariable(name = "cityId") Long cityId) {
         logger.info("Request to delete city with ID: {}", cityId);
         try {
             cityService.deleteCity(cityId);
@@ -79,7 +79,7 @@ public class CityController {
 
     @Operation(summary = "Get City By ID", description = "Fetch city details using city ID")
     @GetMapping("/city/{cityId}")
-    public ResponseEntity<CityDto> getCityById(@PathVariable Long cityId) {
+    public ResponseEntity<CityDto> getCityById(@PathVariable(name = "cityId") Long cityId) {
         logger.info("Fetching city with ID: {}", cityId);
         CityDto city = cityService.getCityById(cityId);
         logger.info("City fetched successfully with ID: {}", cityId);
@@ -106,7 +106,7 @@ public class CityController {
 
     @Operation(summary = "Find Cities By State", description = "Fetch cities filtered by state name")
     @GetMapping("/state")
-    public ResponseEntity<List<CityDto>> findCitiesByState(@RequestParam String state) {
+    public ResponseEntity<List<CityDto>> findCitiesByState(@RequestParam(name = "state") String state) {
         logger.info("Fetching cities for state: {}", state);
         List<CityDto> cities = cityService.findCitiesByState(state);
         logger.info("Fetched {} cities for state: {}", cities.size(), state);
@@ -115,7 +115,7 @@ public class CityController {
 
     @Operation(summary = "Find Cities By Country", description = "Fetch cities filtered by country name")
     @GetMapping("/country")
-    public ResponseEntity<List<CityDto>> findCitiesByCountry(@RequestParam String country) {
+    public ResponseEntity<List<CityDto>> findCitiesByCountry(@RequestParam(name = "country") String country) {
         logger.info("Fetching cities for country: {}", country);
         List<CityDto> cities = cityService.findCitiesByCountry(country);
         logger.info("Fetched {} cities for country: {}", cities.size(), country);
@@ -124,7 +124,7 @@ public class CityController {
 
     @Operation(summary = "Get City Timezone", description = "Fetch timezone of a specific city by ID")
     @GetMapping("/{cityId}/timezone")
-    public ResponseEntity<ApiResponse> getCityTimezone(@PathVariable Long cityId) {
+    public ResponseEntity<ApiResponse> getCityTimezone(@PathVariable(name = "cityId") Long cityId) {
         logger.info("Fetching timezone for city ID: {}", cityId);
         try {
             String timezone = cityService.getCityTimezone(cityId);
@@ -139,7 +139,7 @@ public class CityController {
 
     @Operation(summary = "Search Cities", description = "Search cities using a keyword")
     @GetMapping("/search")
-    public ResponseEntity<List<CityDto>> searchCities(@RequestParam String keyword) {
+    public ResponseEntity<List<CityDto>> searchCities(@RequestParam(name = "keyword") String keyword) {
         logger.info("Searching cities with keyword: {}", keyword);
         List<CityDto> cityList = cityService.searchCities(keyword);
         logger.info("Found {} cities for keyword: {}", cityList.size(), keyword);

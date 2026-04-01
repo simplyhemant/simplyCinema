@@ -35,7 +35,7 @@ public class ScreenController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PostMapping("/create")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     public ResponseEntity<ScreenDto> createScreen(@RequestBody ScreenDto screenDto)
             throws BusinessException, ValidationException, ResourceNotFoundException {
         log.info("Creating new screen for theatreId={}", screenDto.getTheatreId());
@@ -50,8 +50,8 @@ public class ScreenController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PutMapping("/update/{screenId}")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
-    public ResponseEntity<ScreenDto> updateScreen(@PathVariable Long screenId,
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+    public ResponseEntity<ScreenDto> updateScreen(@PathVariable(name = "screenId") Long screenId,
                                                   @RequestBody ScreenDto screenDto)
             throws ResourceNotFoundException, ValidationException, AuthorizationException, JsonProcessingException {
         log.info("Updating screen with ID={}", screenId);
@@ -66,8 +66,8 @@ public class ScreenController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @DeleteMapping("/{screenId}")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
-    public ResponseEntity<Void> deleteScreen(@PathVariable Long screenId)
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+    public ResponseEntity<Void> deleteScreen(@PathVariable(name = "screenId") Long screenId)
             throws ResourceNotFoundException, AuthorizationException {
         log.warn("Deleting screen with ID={}", screenId);
         screenService.deleteScreen(screenId);
@@ -94,8 +94,8 @@ public class ScreenController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @GetMapping("/theatre/{theatreId}")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
-    public ResponseEntity<List<ScreenDto>> getScreensByTheatre(@PathVariable Long theatreId)
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+    public ResponseEntity<List<ScreenDto>> getScreensByTheatre(@PathVariable(name = "theatreId") Long theatreId)
             throws ResourceNotFoundException, AuthorizationException {
         log.debug("Fetching screens for theatreId={}", theatreId);
         List<ScreenDto> screens = screenService.getScreenByTheatre(theatreId);
@@ -108,8 +108,8 @@ public class ScreenController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @GetMapping("/{screenId}/summary")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
-    public ResponseEntity<ScreenSummaryDto> getScreenSummary(@PathVariable Long screenId)
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+    public ResponseEntity<ScreenSummaryDto> getScreenSummary(@PathVariable(name = "screenId") Long screenId)
             throws ResourceNotFoundException {
         log.debug("Fetching summary for screenId={}", screenId);
         ScreenSummaryDto summary = screenService.getScreenSummary(screenId);
@@ -121,7 +121,7 @@ public class ScreenController {
             description = "Fetch screen details by screen ID"
     )
     @GetMapping("/{screenId}")
-    public ResponseEntity<ScreenDto> getScreenById(@PathVariable Long screenId)
+    public ResponseEntity<ScreenDto> getScreenById(@PathVariable(name = "screenId") Long screenId)
             throws ResourceNotFoundException {
         log.debug("Fetching screen details for screenId={}", screenId);
         ScreenDto screen = screenService.getScreenById(screenId);
@@ -134,8 +134,8 @@ public class ScreenController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PatchMapping("/owner/{screenId}/deactivate")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
-    public ResponseEntity<Void> deactivateScreen(@PathVariable Long screenId)
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+    public ResponseEntity<Void> deactivateScreen(@PathVariable(name = "screenId") Long screenId)
             throws ResourceNotFoundException, AuthorizationException {
         log.warn("Deactivating screen with ID={}", screenId);
         screenService.deactivateScreen(screenId);
@@ -149,8 +149,8 @@ public class ScreenController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PatchMapping("/owner/{screenId}/activate")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
-    public ResponseEntity<Void> activateScreen(@PathVariable Long screenId)
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+    public ResponseEntity<Void> activateScreen(@PathVariable(name = "screenId") Long screenId)
             throws ResourceNotFoundException, AuthorizationException {
         log.warn("Activating screen with ID={}", screenId);
         screenService.activateScreen(screenId);

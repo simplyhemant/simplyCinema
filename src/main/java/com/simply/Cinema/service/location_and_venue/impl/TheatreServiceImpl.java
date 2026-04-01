@@ -100,8 +100,9 @@ public class TheatreServiceImpl implements TheatreService {
                 .orElseThrow(() -> new ResourceNotFoundException("Theatre not found with id: " + theatreId));
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
 
-        if (!theatre.getOwnerId().equals(currentUserId)) {
+        if (!isAdmin && !theatre.getOwnerId().equals(currentUserId)) {
             throw new BusinessException("Access denied. You are not the owner of this theatre.");
         }
 
@@ -163,8 +164,9 @@ public class TheatreServiceImpl implements TheatreService {
                 .orElseThrow(() -> new ResourceNotFoundException("Theatre not found with id: " + theatreId));
 
         Long currentUserId = SecurityUtil.getCurrentUserId();// Extract from JWT
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
 
-        if (!theatre.getOwnerId().equals(currentUserId)) {
+        if (!isAdmin && !theatre.getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("You are not Authorized to delete this theatre.");
         }
 
@@ -354,8 +356,9 @@ public class TheatreServiceImpl implements TheatreService {
                 .orElseThrow(() -> new ResourceNotFoundException("Theatre with this id not found: " + theatreId));
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
 
-        if (!theatre.getOwnerId().equals(currentUserId)) {
+        if (!isAdmin && !theatre.getOwnerId().equals(currentUserId)) {
             throw new BusinessException("Access denied. You are not the owner of this theatre.");
         }
 

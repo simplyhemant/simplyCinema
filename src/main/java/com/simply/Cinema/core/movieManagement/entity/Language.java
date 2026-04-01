@@ -29,6 +29,7 @@ public class Language {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @OneToMany(mappedBy = "language", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieLanguage> movies;
 

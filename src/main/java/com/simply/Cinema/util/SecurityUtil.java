@@ -23,9 +23,10 @@ public class SecurityUtil {
     public static boolean hasRole(String roleName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
+            String targetRole = roleName.startsWith("ROLE_") ? roleName : "ROLE_" + roleName;
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority authority : authorities) {
-                if (authority.getAuthority().equals("ROLE_" + roleName)) {
+                if (authority.getAuthority().equals(targetRole)) {
                     return true;
                 }
             }
@@ -33,5 +34,7 @@ public class SecurityUtil {
         return false;
     }
 
-
+    public static boolean isCurrentUserAdmin() {
+        return hasRole("ROLE_ADMIN");
+    }
 }

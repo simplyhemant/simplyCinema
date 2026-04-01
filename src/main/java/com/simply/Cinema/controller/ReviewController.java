@@ -31,7 +31,7 @@ public class ReviewController {
             description = "Submit a new review for a specific movie"
     )
     @PostMapping("/movies/{movieId}")
-    public ResponseEntity<MovieReviewDto> submitReview(@PathVariable Long movieId,
+    public ResponseEntity<MovieReviewDto> submitReview(@PathVariable(name = "movieId") Long movieId,
                                                        @RequestBody MovieReviewDto reviewDto)
             throws ValidationException, ResourceNotFoundException {
         log.info("Submitting new review for movieId={}", movieId);
@@ -46,7 +46,7 @@ public class ReviewController {
             description = "Update an existing review (Only review owner allowed)"
     )
     @PutMapping("/{id}")
-    public ResponseEntity<MovieReviewDto> updateReview(@PathVariable Long id,
+    public ResponseEntity<MovieReviewDto> updateReview(@PathVariable(name = "id") Long id,
                                                        @RequestBody MovieReviewDto reviewDto)
             throws ResourceNotFoundException, AuthorizationException {
         log.info("Updating review with ID={}", id);
@@ -60,7 +60,7 @@ public class ReviewController {
             description = "Delete a review (Only review owner allowed)"
     )
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long id)
+    public ResponseEntity<Void> deleteReview(@PathVariable(name = "id") Long id)
             throws ResourceNotFoundException, AuthorizationException {
         log.warn("Deleting review with ID={}", id);
         reviewService.deleteReview(id);
@@ -73,7 +73,7 @@ public class ReviewController {
             description = "Fetch all reviews for a specific movie"
     )
     @GetMapping("/{movieId}")
-    public ResponseEntity<List<MovieReviewDto>> getReviews(@PathVariable Long movieId)
+    public ResponseEntity<List<MovieReviewDto>> getReviews(@PathVariable(name = "movieId") Long movieId)
             throws ResourceNotFoundException {
         log.debug("Fetching reviews for movieId={}", movieId);
         List<MovieReviewDto> reviews = reviewService.getReviewsByMovie(movieId);
@@ -87,7 +87,7 @@ public class ReviewController {
     )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/moderate")
-    public ResponseEntity<MovieReviewDto> moderateReview(@PathVariable Long id)
+    public ResponseEntity<MovieReviewDto> moderateReview(@PathVariable(name = "id") Long id)
             throws ResourceNotFoundException {
         log.warn("Moderating review with ID={}", id);
         MovieReviewDto moderated = reviewService.moderateReview(id);
@@ -100,7 +100,7 @@ public class ReviewController {
             description = "Calculate and return the average rating of a movie"
     )
     @GetMapping("/{movieId}/average-rating")
-    public ResponseEntity<Double> getAverageRating(@PathVariable Long movieId) {
+    public ResponseEntity<Double> getAverageRating(@PathVariable(name = "movieId") Long movieId) {
         log.debug("Calculating average rating for movieId={}", movieId);
         Double averageRating = reviewService.calculateAverageRating(movieId);
         log.info("Average rating for movieId={} is {}", movieId, averageRating);

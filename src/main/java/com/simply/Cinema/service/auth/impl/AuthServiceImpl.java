@@ -17,14 +17,11 @@ import com.simply.Cinema.service.systemConfig.impl.AuditLogService;
 import com.simply.Cinema.validation.otp.OtpService;
 import com.simply.Cinema.validation.otp.OtpVerificationCode;
 import com.simply.Cinema.validation.otp.OtpVerificationRepo;
+import com.simply.Cinema.service.RedisService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
     private final OtpVerificationRepo otpVerificationRepo;
     private final OtpService otpService;
     private final AuditLogService auditLogService;
+    private final RedisService redisService;
 
     @Override
     public String createUser(UserRegistrationDto req) throws UserException {
@@ -79,17 +77,24 @@ public class AuthServiceImpl implements AuthService {
 
 //        System.out.println("User ID from AuditContext: " + AuditContext.getUserId());
 
-        UserRole customerRole = new UserRole();
+        UserRole userRole = new UserRole();
+        
+        // Security Guard: Only allow Customer and Theatre Owner roles via public signup
+        UserRoleEnum roleToAssign = UserRoleEnum.ROLE_CUSTOMER;
+        if (req.getRole() == UserRoleEnum.ROLE_THEATRE_OWNER) {
+            roleToAssign = UserRoleEnum.ROLE_THEATRE_OWNER;
+        }
 
-        customerRole.setRole(UserRoleEnum.ROLE_CUSTOMER);
-        customerRole.setAssignedAt(LocalDateTime.now());
-        customerRole.setIsActive(true);
-        customerRole.setUser(savedUser);
+        userRole.setRole(roleToAssign);
+        userRole.setAssignedAt(LocalDateTime.now());
+        userRole.setIsActive(true); // Automatically approve Theatre Owner and Customer
+        userRole.setUser(savedUser);
 
-        userRoleRepo.save(customerRole);
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(UserRoleEnum.ROLE_CUSTOMER.toString()));
+        userRoleRepo.save(userRole);
+        
+        if (roleToAssign == UserRoleEnum.ROLE_THEATRE_OWNER) {
+            System.out.println("ALERT: New Theatre Owner Registered and Auto-Approved: " + savedUser.getEmail());
+        }
 
         String token = jwtProvider.generateToken(savedUser);
 
@@ -100,7 +105,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse loginUser(UserLoginDto req) throws UserException {
 
         try {
-            Authentication authentication = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
             );
 
@@ -178,7 +183,8 @@ public class AuthServiceImpl implements AuthService {
         User savedUser = userRepo.save(createdUser);
 
         UserRole userRole = new UserRole();
-        userRole.setRole(UserRoleEnum.ROLE_CUSTOMER);
+        UserRoleEnum roleToAssign = req.getRole() != null ? req.getRole() : UserRoleEnum.ROLE_CUSTOMER;
+        userRole.setRole(roleToAssign);
         userRole.setAssignedAt(LocalDateTime.now());
         userRole.setIsActive(true);
 
@@ -190,7 +196,7 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtProvider.generateTokenDirect(
                 savedUser.getEmail(),
-                List.of(UserRoleEnum.ROLE_CUSTOMER)
+                List.of(roleToAssign)
         );
 
         return token;
@@ -243,7 +249,8 @@ public class AuthServiceImpl implements AuthService {
         User savedUser = userRepo.save(createdUser);
 
         UserRole userRole = new UserRole();
-        userRole.setRole(UserRoleEnum.ROLE_CUSTOMER);
+        UserRoleEnum roleToAssign = req.getRole() != null ? req.getRole() : UserRoleEnum.ROLE_CUSTOMER;
+        userRole.setRole(roleToAssign);
         userRole.setAssignedAt(LocalDateTime.now());
         userRole.setIsActive(true);
 
@@ -254,8 +261,8 @@ public class AuthServiceImpl implements AuthService {
         otpVerificationRepo.delete(otpVerificationcode);
 
         String token = jwtProvider.generateTokenDirect(
-                savedUser.getEmail(),
-                List.of(UserRoleEnum.ROLE_CUSTOMER)
+                savedUser.getPhone(),
+                List.of(roleToAssign)
         );
         return token;
 
@@ -404,7 +411,107 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        redisService.set("JWT_BLACKLIST_" + token, true, 86400); 
+    }
 
+    @Override
+    public void registerUserInitiate(UserRegistrationDto req) throws UserException, MessagingException {
+        if (userRepo.existsByEmail(req.getEmail())) throw new UserException("Email is already registered.");
+        if (req.getPhone() != null && userRepo.existsByPhone(req.getPhone())) {
+            throw new UserException("Phone number is already registered.");
+        }
+        redisService.set("REGISTER_PENDING_" + req.getEmail(), req, 600);
+        otpService.sendOtp(req.getEmail());
+    }
+
+    @Override
+    public String verifyOtpFinalize(String email, String otp) throws UserException {
+        OtpVerificationCode otpVerificationcode = otpVerificationRepo.findByEmail(email);
+        if (otpVerificationcode == null) throw new UserException("No Otp found.");
+        if (otpVerificationcode.getExpiryTime().isBefore(LocalDateTime.now())) {
+            otpVerificationRepo.delete(otpVerificationcode);
+            throw new UserException("OTP has expired.");
+        }
+        if (otpVerificationcode.getAttempts() >= 5) {
+            otpVerificationRepo.delete(otpVerificationcode);
+            throw new UserException("Maximum OTP attempts exceeded.");
+        }
+        if (!otpVerificationcode.getOtp().equals(otp)) {
+            otpVerificationcode.setAttempts(otpVerificationcode.getAttempts() + 1);
+            otpVerificationRepo.save(otpVerificationcode);
+            throw new UserException("Invalid OTP.");
+        }
+
+        UserRegistrationDto req;
+        try {
+            req = redisService.get("REGISTER_PENDING_" + email, UserRegistrationDto.class);
+        } catch (Exception e) {
+            throw new UserException("Registration data expired. Try again.");
+        }
+        if (req == null) throw new UserException("Registration data expired. Try again.");
+
+        User createdUser = new User();
+        createdUser.setFirstName(req.getFirstName());
+        createdUser.setLastName(req.getLastName());
+        createdUser.setEmail(req.getEmail());
+        createdUser.setPhone(req.getPhone());
+        createdUser.setPasswordHash(passwordEncoder.encode(req.getPassword()));
+
+        User savedUser = userRepo.save(createdUser);
+
+        UserRole userRole = new UserRole();
+        
+        // Security Guard: Only allow Customer and Theatre Owner roles via public signup
+        UserRoleEnum roleToAssign = UserRoleEnum.ROLE_CUSTOMER;
+        if (req.getRole() == UserRoleEnum.ROLE_THEATRE_OWNER) {
+            roleToAssign = UserRoleEnum.ROLE_THEATRE_OWNER;
+        }
+        
+        userRole.setRole(roleToAssign);
+        userRole.setAssignedAt(LocalDateTime.now());
+        userRole.setIsActive(true); // Automatically approve Theatre Owner and Customer
+        userRole.setUser(savedUser);
+        userRoleRepo.save(userRole);
+        
+        if (roleToAssign == UserRoleEnum.ROLE_THEATRE_OWNER) {
+            System.out.println("ALERT: New Theatre Owner Registered via OTP and Auto-Approved: " + savedUser.getEmail());
+        }
+
+        otpVerificationRepo.delete(otpVerificationcode);
+        redisService.delete("REGISTER_PENDING_" + email);
+
+        return jwtProvider.generateTokenDirect(savedUser.getEmail(), List.of(roleToAssign));
+    }
+
+    @Override
+    public void resendOtp(String email) throws UserException, MessagingException {
+        otpService.sendOtp(email);
+    }
+
+    @Override
+    public void forgotPassword(String email) throws UserException, MessagingException {
+        if (!userRepo.existsByEmail(email)) throw new UserException("Email not registered.");
+        String token = UUID.randomUUID().toString();
+        redisService.set("RESET_PW_" + token, email, 900); 
+        System.out.println("DEBUG: For email " + email + ", Password Reset Token is: " + token);
+    }
+
+    @Override
+    public void resetPassword(String token, String newPassword) throws UserException {
+        String email = "";
+        try {
+            email = redisService.get("RESET_PW_" + token, String.class);
+        } catch(Exception e) {}
+        if (email == null || email.isBlank()) throw new UserException("Invalid or expired reset token.");
+        
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new UserException("User not found"));
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        userRepo.save(user);
+        
+        redisService.delete("RESET_PW_" + token);
     }
 
 //    private List<String> extractRoleNamesFromDB(String email) {

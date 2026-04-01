@@ -32,7 +32,7 @@ public class UserController {
     )
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDto> getUserProfile(
-            @RequestHeader("Authorization") String jwt) throws UserException {
+            @RequestHeader(name = "Authorization") String jwt) throws UserException {
 
         log.info("Fetching user profile from JWT token");
         UserProfileDto user = userService.findUserBYJwtToken(jwt);
@@ -48,7 +48,7 @@ public class UserController {
     @PutMapping("/profile/update")
     public ResponseEntity<UserProfileDto> updateUserProfile(
             @RequestBody UserProfileDto dto,
-            @RequestHeader("Authorization") String jwt) {
+            @RequestHeader(name = "Authorization") String jwt) {
 
         log.info("Updating user profile");
         UserProfileDto loggedInUser = userService.findUserBYJwtToken(jwt);
@@ -80,7 +80,7 @@ public class UserController {
     @PostMapping("/change-email/request")
     public ResponseEntity<String> requestEmailChangeOtp(
             @RequestBody ChangeEmailOrPhoneDto request,
-            @RequestHeader("Authorization") String jwt) throws MessagingException {
+            @RequestHeader(name = "Authorization") String jwt) throws MessagingException {
 
         log.info("Requesting email change OTP for new email: {}", request.getNewEmail());
         userService.findUserBYJwtToken(jwt);
@@ -96,7 +96,7 @@ public class UserController {
     @PostMapping("/change-email/confirm")
     public ResponseEntity<String> confirmEmailChange(
             @RequestBody ChangeEmailOrPhoneDto request,
-            @RequestHeader("Authorization") String jwt) {
+            @RequestHeader(name = "Authorization") String jwt) {
 
         log.info("Confirming email change");
         UserProfileDto user = userService.findUserBYJwtToken(jwt);
@@ -113,7 +113,7 @@ public class UserController {
     @PutMapping("/preferences/update")
     public ResponseEntity<String> updateUserPreferences(
             @RequestBody UserPreferencesDto preferencesDto,
-            @RequestHeader("Authorization") String jwt) {
+            @RequestHeader(name = "Authorization") String jwt) {
 
         try {
             log.info("Updating user preferences");
@@ -134,7 +134,7 @@ public class UserController {
     )
     @GetMapping("/preferences")
     public ResponseEntity<UserPreferencesDto> getUserPreferences(
-            @RequestHeader("Authorization") String jwt) {
+            @RequestHeader(name = "Authorization") String jwt) {
 
         log.info("Fetching user preferences");
         UserProfileDto user = userService.findUserBYJwtToken(jwt);
@@ -150,7 +150,7 @@ public class UserController {
     )
     @DeleteMapping("/me/delete")
     public ResponseEntity<String> deleteOwnAccount(
-            @RequestHeader("Authorization") String jwt) throws UserException {
+            @RequestHeader(name = "Authorization") String jwt) throws UserException {
 
         log.info("Deleting user account");
         UserProfileDto user = userService.findUserBYJwtToken(jwt);

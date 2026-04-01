@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -29,6 +31,15 @@ public class BookingResponseDto {
     private BookingStatus bookingStatus;
     private String qrCode;
     private String email;
+
+    // Descriptive Fields
+    private String movieTitle;
+    private String theatreName;
+    private String cityName;
+    private String screenName;
+    private LocalDate showDate;
+    private LocalTime showTime;
+    private List<String> seatNumbers;
 
 
     public void setGuestUserId(Long id) {

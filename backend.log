@@ -1,0 +1,344 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.simply:simplyCinema:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar -> duplicate declaration of version (?) @ line 150, column 15
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ----------------------< com.simply:simplyCinema >-----------------------
+[INFO] Building simplyCinema 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.3.0:run (default-cli) > test-compile @ simplyCinema >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ simplyCinema ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ simplyCinema ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 183 source files with javac [debug parameters release 17] to target/classes
+[WARNING] /home/hemant/Desktop/simplyCinema/src/main/java/com/simply/Cinema/core/user/dto/CounterStaffDto.java:[45,26] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /home/hemant/Desktop/simplyCinema/src/main/java/com/simply/Cinema/core/user/dto/CounterStaffDto.java:[49,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /home/hemant/Desktop/simplyCinema/src/main/java/com/simply/Cinema/core/user/dto/CounterStaffDto.java:[57,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /home/hemant/Desktop/simplyCinema/src/main/java/com/simply/Cinema/core/user/dto/CounterStaffDto.java:[58,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] /home/hemant/Desktop/simplyCinema/src/main/java/com/simply/Cinema/security/jwt/JwtTokenValidator.java: /home/hemant/Desktop/simplyCinema/src/main/java/com/simply/Cinema/security/jwt/JwtTokenValidator.java uses unchecked or unsafe operations.
+[INFO] /home/hemant/Desktop/simplyCinema/src/main/java/com/simply/Cinema/security/jwt/JwtTokenValidator.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ simplyCinema ---
+[INFO] skip non existing resourceDirectory /home/hemant/Desktop/simplyCinema/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ simplyCinema ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 17] to target/test-classes
+[INFO] 
+[INFO] <<< spring-boot:3.3.0:run (default-cli) < test-compile @ simplyCinema <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.3.0:run (default-cli) @ simplyCinema ---
+[INFO] Attaching agents: []
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.0)
+
+2026-03-29T01:42:54.009+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] c.simply.Cinema.SimplyCinemaApplication  : Starting SimplyCinemaApplication using Java 21.0.10 with PID 82692 (/home/hemant/Desktop/simplyCinema/target/classes started by hemant in /home/hemant/Desktop/simplyCinema)
+2026-03-29T01:42:54.011+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] c.simply.Cinema.SimplyCinemaApplication  : No active profile set, falling back to 1 default profile: "default"
+2026-03-29T01:42:54.040+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-29T01:42:54.040+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-29T01:42:54.767+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-29T01:42:54.768+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-29T01:42:54.884+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 112 ms. Found 21 JPA repository interfaces.
+2026-03-29T01:42:54.898+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-03-29T01:42:54.899+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-03-29T01:42:54.910+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.location_and_venue.repository.CityRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.911+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.location_and_venue.repository.ScreenRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.911+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.location_and_venue.repository.SeatRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.911+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.location_and_venue.repository.TheatreRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.911+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.movieManagement.repository.GenreRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.911+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.movieManagement.repository.LanguageRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.911+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.movieManagement.repository.MovieGenreRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.movieManagement.repository.MovieLanguageRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.movieManagement.repository.MovieRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.movieManagement.repository.MovieReviewRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.show_and_booking.repository.BookingPaymentRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.show_and_booking.repository.BookingRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.show_and_booking.repository.BookingSeatRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.show_and_booking.repository.OfflineBookingRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.show_and_booking.repository.ShowRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.912+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.show_and_booking.repository.ShowSeatRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.913+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.systemConfig.repository.AuditLogRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.913+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.user.repository.CounterStaffRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.913+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.user.repository.UserRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.913+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.core.user.repository.UserRoleRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.913+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.simply.Cinema.validation.otp.OtpVerificationRepo; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-03-29T01:42:54.913+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2026-03-29T01:42:55.380+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-03-29T01:42:55.396+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-29T01:42:55.396+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2026-03-29T01:42:55.436+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-29T01:42:55.437+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1396 ms
+2026-03-29T01:42:55.511+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-29T01:42:55.777+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7acf0dd6
+2026-03-29T01:42:55.778+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-29T01:42:55.834+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-29T01:42:55.877+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-03-29T01:42:55.909+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-29T01:42:56.151+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-29T01:42:56.191+05:30  WARN 82692 --- [SimplyCinema] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-29T01:42:57.638+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-29T01:42:57.857+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-29T01:42:58.391+05:30  WARN 82692 --- [SimplyCinema] [  restartedMain] o.s.aop.framework.CglibAopProxy          : Unable to proxy interface-implementing method [public final void org.springframework.web.filter.OncePerRequestFilter.doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain) throws jakarta.servlet.ServletException,java.io.IOException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-03-29T01:42:58.391+05:30  WARN 82692 --- [SimplyCinema] [  restartedMain] o.s.aop.framework.CglibAopProxy          : Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-03-29T01:42:58.533+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-03-29T01:42:58.606+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-29T01:42:59.589+05:30  WARN 82692 --- [SimplyCinema] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-29T01:42:59.963+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2222f6c5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@20f89f57, org.springframework.security.web.context.SecurityContextHolderFilter@79194fcd, org.springframework.security.web.header.HeaderWriterFilter@60312897, org.springframework.web.filter.CorsFilter@62bbcf, org.springframework.security.web.authentication.logout.LogoutFilter@856833, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@205d9191, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@3b372de3, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@41771f3, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@1844c7cd, com.simply.Cinema.security.jwt.JwtTokenValidator@704a1d43, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@514b7dc5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1702d67c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4983ae12, org.springframework.security.web.session.SessionManagementFilter@713446b1, org.springframework.security.web.access.ExceptionTranslationFilter@4fd97a2e, org.springframework.security.web.access.intercept.AuthorizationFilter@74ade443]
+2026-03-29T01:43:00.317+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-03-29T01:43:00.344+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-03-29T01:43:00.352+05:30  INFO 82692 --- [SimplyCinema] [  restartedMain] c.simply.Cinema.SimplyCinemaApplication  : Started SimplyCinemaApplication in 6.574 seconds (process running for 6.882)
+✅ Admin already exists. Skipping seeding.
+2026-03-29T01:44:17.594+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-29T01:44:17.594+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-29T01:44:17.596+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-03-29T01:44:17.604+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /
+2026-03-29T01:44:17.609+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:17.610+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /
+2026-03-29T01:44:24.395+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/index.html
+2026-03-29T01:44:24.396+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.397+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.397+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/index.html
+2026-03-29T01:44:24.455+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-ui.css
+2026-03-29T01:44:24.455+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.456+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.456+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-ui.css
+2026-03-29T01:44:24.457+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/index.css
+2026-03-29T01:44:24.458+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.458+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.458+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/index.css
+2026-03-29T01:44:24.460+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-ui-bundle.js
+2026-03-29T01:44:24.461+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.461+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.461+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-ui-bundle.js
+2026-03-29T01:44:24.462+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-initializer.js
+2026-03-29T01:44:24.463+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.463+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.463+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-initializer.js
+2026-03-29T01:44:24.466+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-ui-standalone-preset.js
+2026-03-29T01:44:24.467+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.467+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.468+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-ui-standalone-preset.js
+2026-03-29T01:44:24.484+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-ui-bundle.js
+2026-03-29T01:44:24.484+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-ui-standalone-preset.js
+2026-03-29T01:44:24.485+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.485+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.485+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.485+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-9] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.486+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-ui-standalone-preset.js
+2026-03-29T01:44:24.486+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-ui-bundle.js
+2026-03-29T01:44:24.829+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /v3/api-docs/swagger-config
+2026-03-29T01:44:24.830+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.830+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.830+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /v3/api-docs/swagger-config
+2026-03-29T01:44:24.863+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /v3/api-docs
+2026-03-29T01:44:24.864+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:24.864+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:24.864+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /v3/api-docs
+2026-03-29T01:44:25.001+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-initializer.js
+2026-03-29T01:44:25.001+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:25.001+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 742ABDC4C2CE84820D49A454E1CCCF82
+2026-03-29T01:44:25.001+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-initializer.js
+2026-03-29T01:44:25.849+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-2] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 970 ms
+2026-03-29T01:44:33.770+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:44:33.776+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/movies/all?pageNo=null&pageSize=100
+Subject:---------------------------------------------------------- hs2312hemant@gmail.com
+2026-03-29T01:44:34.097+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:44:34.104+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "null"]
+2026-03-29T01:44:36.600+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /oauth2/authorization/google
+2026-03-29T01:44:36.609+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.s.web.DefaultRedirectStrategy        : Redirecting to https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=1055162456870-b86pl7d93kb43ej0us7okbbk3iecssjk.apps.googleusercontent.com&scope=profile%20email&state=EEr8wI5kcRRTdXk7gD3NFkZknxPA5TnHmEOteRXrpcs%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google
+2026-03-29T01:44:40.628+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /login/oauth2/code/google?state=EEr8wI5kcRRTdXk7gD3NFkZknxPA5TnHmEOteRXrpcs%3D&iss=https%3A%2F%2Faccounts.google.com&code=4%2F0Aci98E86cMZsrzhwV_BO4tT52kz4W1IGfc0fcErMJ52o1ksz2LPJnm4gSERyAC3DqkR3Fw&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none
+2026-03-29T01:44:41.250+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from FDA501E5CDEFECF701B03EE6C9297A9D
+2026-03-29T01:44:41.251+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] .s.o.c.w.OAuth2LoginAuthenticationFilter : Set SecurityContextHolder to OAuth2AuthenticationToken [Principal=Name: [114348591370956192535], Granted Authorities: [[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]], User Attributes: [{sub=114348591370956192535, name=Hemant Singh, given_name=Hemant, family_name=Singh, picture=https://lh3.googleusercontent.com/a/ACg8ocL7G6LSNQeLoBem8KWCbaC-kOOGYatPtHQ4gFFiBPZsgIrAjkHb=s96-c, email=hs2312hemant@gmail.com, email_verified=true}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=FDA501E5CDEFECF701B03EE6C9297A9D], Granted Authorities=[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]]
+2026-03-29T01:44:41.257+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-6] c.s.C.s.o.OAuth2LoginSuccessHandler      : OAuth2 login success for email: hs2312hemant@gmail.com
+2026-03-29T01:44:41.262+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-6] c.s.C.s.o.OAuth2LoginSuccessHandler      : Existing user logged in via OAuth2: hs2312hemant@gmail.com
+2026-03-29T01:44:41.270+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-6] c.s.C.s.o.OAuth2LoginSuccessHandler      : JWT Token generated successfully for OAuth2 user.
+2026-03-29T01:44:41.271+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.s.web.DefaultRedirectStrategy        : Redirecting to http://localhost:3000/index.html?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoczIzMTJoZW1hbnRAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9DVVNUT01FUiJdLCJ1c2VySWQiOjksImlhdCI6MTc3NDcyODg4MSwiZXhwIjoxNzc1MjI5NTM1fQ.OEMqtNUELVAYxuZswCU207Eb6uSDmPDIqSiqyblgqLo
+2026-03-29T01:44:41.479+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/movies/all?pageNo=null&pageSize=100
+Subject:---------------------------------------------------------- hs2312hemant@gmail.com
+2026-03-29T01:44:41.486+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:44:41.489+05:30  WARN 82692 --- [SimplyCinema] [io-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "null"]
+2026-03-29T01:44:44.993+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login
+2026-03-29T01:44:44.994+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:44.995+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login
+2026-03-29T01:44:44.999+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-4] c.s.Cinema.controller.AuthController     : Attempting login for user: aman@gmail.com
+2026-03-29T01:44:45.142+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2026-03-29T01:44:45.145+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-4] c.s.Cinema.controller.AuthController     : Login successful for user: aman@gmail.com
+2026-03-29T01:44:45.152+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/user/profile
+2026-03-29T01:44:45.155+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/profile
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:44:45.162+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/profile
+2026-03-29T01:44:45.163+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-1] c.s.Cinema.controller.UserController     : Fetching user profile from JWT token
+2026-03-29T01:44:45.287+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/movies/all?pageNo=null&pageSize=100
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:44:45.296+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:44:45.298+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "null"]
+2026-03-29T01:44:51.847+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login
+2026-03-29T01:44:51.848+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:44:51.848+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login
+2026-03-29T01:44:51.849+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-2] c.s.Cinema.controller.AuthController     : Attempting login for user: aman@gmail.com
+2026-03-29T01:44:51.923+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2026-03-29T01:44:51.925+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-2] c.s.Cinema.controller.AuthController     : Login successful for user: aman@gmail.com
+2026-03-29T01:44:51.934+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/profile
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:44:51.940+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/profile
+2026-03-29T01:44:51.941+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-5] c.s.Cinema.controller.UserController     : Fetching user profile from JWT token
+2026-03-29T01:44:52.031+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/movies/all?pageNo=null&pageSize=100
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:44:52.039+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:44:52.042+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "null"]
+2026-03-29T01:45:39.829+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/auth/send-otp/email
+2026-03-29T01:45:39.836+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/send-otp/email
+2026-03-29T01:45:39.837+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:45:39.837+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/send-otp/email
+2026-03-29T01:45:39.839+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-8] c.s.Cinema.controller.AuthController     : Request to send OTP via email: hrshxp@gmail.com
+otp ------------------------> 725667
+2026-03-29T01:45:44.414+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-8] c.s.Cinema.controller.AuthController     : OTP sent to email hrshxp@gmail.com for signup.
+2026-03-29T01:45:52.764+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/send-otp/email
+2026-03-29T01:45:52.765+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:45:52.765+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/send-otp/email
+2026-03-29T01:45:52.767+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-6] c.s.Cinema.controller.AuthController     : Request to send OTP via email: hrshxp@gmail.com
+otp ------------------------> 647106
+2026-03-29T01:45:57.419+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-6] c.s.Cinema.controller.AuthController     : OTP sent to email hrshxp@gmail.com for signup.
+2026-03-29T01:46:52.353+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/send-otp/email
+2026-03-29T01:46:52.354+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:46:52.354+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/send-otp/email
+2026-03-29T01:46:52.354+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-7] c.s.Cinema.controller.AuthController     : Request to send OTP via email: hrshxp@gmail.com
+otp ------------------------> 471313
+2026-03-29T01:46:57.475+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-7] c.s.Cinema.controller.AuthController     : OTP sent to email hrshxp@gmail.com for signup.
+2026-03-29T01:47:09.513+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/auth/login/email-otp
+2026-03-29T01:47:09.516+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:09.517+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:09.517+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:09.519+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-1] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:09.533+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: User not found.]
+2026-03-29T01:47:10.344+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:10.345+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:10.345+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:10.346+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-3] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:10.349+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:47:10.528+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:10.529+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:10.529+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:10.530+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-4] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:10.532+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:47:10.688+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:10.688+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:10.689+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:10.689+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-2] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:10.691+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:47:10.848+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:10.849+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:10.849+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:10.850+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-5] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:10.852+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:47:11.568+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:11.568+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:11.568+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:11.569+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-8] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:11.572+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:47:12.016+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:12.017+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:12.017+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:12.018+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-6] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:12.020+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:47:12.432+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:12.432+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:12.433+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:12.433+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-9] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:12.436+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:47:23.304+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:23.304+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:23.304+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:23.305+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-7] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:47:23.307+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:47:56.351+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:47:56.352+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:47:56.352+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:47:56.352+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-1] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxpn@gmail.com or phone: null
+2026-03-29T01:47:56.355+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: No otp found.]
+2026-03-29T01:48:26.346+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/movies/all?pageNo=null&pageSize=100
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:48:26.352+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:48:26.354+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "null"]
+2026-03-29T01:48:28.230+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/movies/all?pageNo=null&pageSize=100
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:48:28.238+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:48:28.240+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "null"]
+2026-03-29T01:48:35.478+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/movies/all?pageNo=null&pageSize=100
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:48:35.484+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:48:35.486+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "null"]
+2026-03-29T01:52:50.191+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login
+2026-03-29T01:52:50.192+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:52:50.192+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login
+2026-03-29T01:52:50.192+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-5] c.s.Cinema.controller.AuthController     : Attempting login for user: aman@gmail.com
+2026-03-29T01:52:50.267+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-5] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2026-03-29T01:52:50.270+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-5] c.s.Cinema.controller.AuthController     : Login successful for user: aman@gmail.com
+2026-03-29T01:52:50.275+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/profile
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:52:50.280+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/profile
+2026-03-29T01:52:50.281+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-8] c.s.Cinema.controller.UserController     : Fetching user profile from JWT token
+2026-03-29T01:52:50.486+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/movies/all?pageNo=null&pageSize=100
+Subject:---------------------------------------------------------- aman@gmail.com
+2026-03-29T01:52:50.493+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/movies/all?pageNo=null&pageSize=100
+2026-03-29T01:52:50.494+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "null"]
+2026-03-29T01:53:13.806+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/pass
+2026-03-29T01:53:13.807+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:53:13.807+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/pass
+2026-03-29T01:53:13.807+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-7] c.s.Cinema.controller.AuthController     : Attempting login for user: hemant23dev@gmail.com
+2026-03-29T01:53:13.881+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-7] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2026-03-29T01:53:13.883+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-7] c.s.Cinema.controller.AuthController     : Login successful for user: hemant23dev@gmail.com
+2026-03-29T01:53:28.823+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/send-otp/email
+2026-03-29T01:53:28.824+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:53:28.824+05:30 DEBUG 82692 --- [SimplyCinema] [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/send-otp/email
+2026-03-29T01:53:28.824+05:30  INFO 82692 --- [SimplyCinema] [io-8080-exec-10] c.s.Cinema.controller.AuthController     : Request to send OTP via email: hrshxpn@gmail.com
+otp ------------------------> 125423
+2026-03-29T01:53:33.747+05:30  INFO 82692 --- [SimplyCinema] [io-8080-exec-10] c.s.Cinema.controller.AuthController     : OTP sent to email hrshxpn@gmail.com for signup.
+2026-03-29T01:54:12.168+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/send-otp/email
+2026-03-29T01:54:12.168+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:54:12.168+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/send-otp/email
+2026-03-29T01:54:12.169+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-1] c.s.Cinema.controller.AuthController     : Request to send OTP via email: hrshxp@gmail.com
+otp ------------------------> 066369
+2026-03-29T01:54:16.325+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-1] c.s.Cinema.controller.AuthController     : OTP sent to email hrshxp@gmail.com for signup.
+2026-03-29T01:55:13.181+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login/email-otp
+2026-03-29T01:55:13.181+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:55:13.181+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login/email-otp
+2026-03-29T01:55:13.182+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-4] c.s.Cinema.controller.AuthController     : Attempting login via OTP with email: hrshxp@gmail.com or phone: null
+2026-03-29T01:55:13.188+05:30  WARN 82692 --- [SimplyCinema] [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.simply.Cinema.exception.UserException: User not found.]
+2026-03-29T01:56:11.186+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/send-otp/email
+2026-03-29T01:56:11.186+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T01:56:11.186+05:30 DEBUG 82692 --- [SimplyCinema] [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/send-otp/email
+2026-03-29T01:56:11.187+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-8] c.s.Cinema.controller.AuthController     : Request to send OTP via email: hemant2312intern@gmail.com
+otp ------------------------> 205390
+2026-03-29T01:56:15.902+05:30  INFO 82692 --- [SimplyCinema] [nio-8080-exec-8] c.s.Cinema.controller.AuthController     : OTP sent to email hemant2312intern@gmail.com for login.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  14:41 min
+[INFO] Finished at: 2026-03-29T01:57:29+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.3.0:run (default-cli) on project simplyCinema: Process terminated with exit code: 137 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

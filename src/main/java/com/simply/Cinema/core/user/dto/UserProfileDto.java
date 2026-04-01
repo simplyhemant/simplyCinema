@@ -21,6 +21,7 @@ public class UserProfileDto {
     private Long preferredCityId;
     private Integer loyaltyPoints;
     private String moodPreferences;
+    private Boolean isActive;
     private List<String> roles;
 
 }

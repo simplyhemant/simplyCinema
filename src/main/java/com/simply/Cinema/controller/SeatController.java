@@ -35,10 +35,10 @@ public class SeatController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PostMapping("/{screenId}/create")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     public ResponseEntity<SeatLayoutDto> createSeatLayout(
             @RequestBody SeatLayoutDto seatLayoutDto,
-            @PathVariable Long screenId)
+            @PathVariable(name = "screenId") Long screenId)
             throws ResourceNotFoundException, ValidationException, BusinessException {
 
         log.info("Request to create seat layout for screenId: {}", screenId);
@@ -53,10 +53,10 @@ public class SeatController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PostMapping("/{screenId}/update")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     public ResponseEntity<SeatLayoutDto> updateSeatLayout(
             @RequestBody SeatLayoutDto seatLayoutDto,
-            @PathVariable Long screenId)
+            @PathVariable(name = "screenId") Long screenId)
             throws ResourceNotFoundException, ValidationException, BusinessException {
 
         log.info("Request to update seat layout for screenId: {}", screenId);
@@ -71,9 +71,9 @@ public class SeatController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PutMapping("/{layoutId}/update")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     public ResponseEntity<SeatLayoutDto> updateSeat(
-            @PathVariable Long layoutId,
+            @PathVariable(name = "layoutId") Long layoutId,
             @RequestBody SeatLayoutDto seatLayoutDto)
             throws ResourceNotFoundException, ValidationException {
 
@@ -88,7 +88,7 @@ public class SeatController {
             description = "Fetch seat layout for a given screen ID"
     )
     @GetMapping("/screen/{screenId}")
-    public ResponseEntity<SeatLayoutDto> getSeatLayoutByScreen(@PathVariable Long screenId) {
+    public ResponseEntity<SeatLayoutDto> getSeatLayoutByScreen(@PathVariable(name = "screenId") Long screenId) {
         log.info("Fetching seat layout for screenId: {}", screenId);
         SeatLayoutDto seatLayoutDto = seatService.getSeatLayoutByScreen(screenId);
         return ResponseEntity.ok(seatLayoutDto);
@@ -100,8 +100,8 @@ public class SeatController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @DeleteMapping("/layout/{layoutId}")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
-    public ResponseEntity<Void> deleteSeatLayout(@PathVariable Long layoutId)
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+    public ResponseEntity<Void> deleteSeatLayout(@PathVariable(name = "layoutId") Long layoutId)
             throws ResourceNotFoundException {
 
         log.info("Deleting seat layout with layoutId: {}", layoutId);
@@ -115,7 +115,7 @@ public class SeatController {
             description = "Check if a specific seat is available"
     )
     @GetMapping("/{seatId}/availability")
-    public ResponseEntity<Boolean> isSeatAvailable(@PathVariable Long seatId)
+    public ResponseEntity<Boolean> isSeatAvailable(@PathVariable(name = "seatId") Long seatId)
             throws ResourceNotFoundException {
 
         log.info("Checking availability for seatId: {}", seatId);
@@ -140,7 +140,7 @@ public class SeatController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PostMapping("/types")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     public ResponseEntity<SeatTypeDto> addSeatType(
             @RequestBody @Validated SeatTypeDto seatTypeDto)
             throws ValidationException {
@@ -157,9 +157,9 @@ public class SeatController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     @PutMapping("/types/{id}")
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     public ResponseEntity<SeatTypeDto> updateSeatType(
-            @PathVariable Long id,
+            @PathVariable(name = "id") Long id,
             @RequestBody @Validated SeatTypeDto seatTypeDto)
             throws ResourceNotFoundException, ValidationException {
 
@@ -174,7 +174,7 @@ public class SeatController {
             description = "Returns total seat capacity for a given screen"
     )
     @GetMapping("/capacity/{screenId}")
-    public ResponseEntity<Integer> getSeatCapacityByScreen(@PathVariable Long screenId)
+    public ResponseEntity<Integer> getSeatCapacityByScreen(@PathVariable(name = "screenId") Long screenId)
             throws ResourceNotFoundException {
 
         log.info("Fetching seat capacity for screenId: {}", screenId);

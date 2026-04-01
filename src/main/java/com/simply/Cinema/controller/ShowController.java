@@ -32,7 +32,7 @@ public class ShowController {
             description = "Fetch show details using show ID"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ShowDto> getShowById(@PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<ShowDto> getShowById(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
         log.info("Fetching show with ID: {}", id);
         ShowDto show = showService.getShowById(id);
         log.debug("Fetched show: {}", show);
@@ -44,7 +44,7 @@ public class ShowController {
             description = "Create a new show (THEATRE_OWNER only)",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ShowDto> createShow(@RequestBody @Valid ShowDto dto) {
         log.info("Creating new show: {}", dto);
@@ -58,9 +58,9 @@ public class ShowController {
             description = "Update an existing show by ID (THEATRE_OWNER only)",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<ShowDto> updateShow(@PathVariable Long id,
+    public ResponseEntity<ShowDto> updateShow(@PathVariable(name = "id") Long id,
                                               @RequestBody @Valid ShowDto dto)
             throws ResourceNotFoundException {
         log.info("Updating show with ID: {}", id);
@@ -74,9 +74,9 @@ public class ShowController {
             description = "Delete a show by ID (THEATRE_OWNER only)",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("hasRole('THEATRE_OWNER')")
+    @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteShow(@PathVariable Long id)
+    public ResponseEntity<String> deleteShow(@PathVariable(name = "id") Long id)
             throws ResourceNotFoundException {
         log.info("Deleting show with ID: {}", id);
         showService.deleteShow(id);
@@ -89,7 +89,7 @@ public class ShowController {
             description = "Fetch all shows for a specific movie"
     )
     @GetMapping("/movies/{movieId}")
-    public ResponseEntity<?> getShowsByMovie(@PathVariable Long movieId) {
+    public ResponseEntity<?> getShowsByMovie(@PathVariable(name = "movieId") Long movieId) {
         log.info("Fetching shows for movieId: {}", movieId);
         List<ShowDto> shows = showService.getShowsByMovie(movieId);
 
@@ -108,7 +108,7 @@ public class ShowController {
             description = "Fetch all shows for a specific theatre"
     )
     @GetMapping("/theatres/{theatreId}")
-    public ResponseEntity<List<ShowDto>> getShowsByTheatre(@PathVariable Long theatreId) {
+    public ResponseEntity<List<ShowDto>> getShowsByTheatre(@PathVariable(name = "theatreId") Long theatreId) {
         log.info("Fetching shows for theatreId: {}", theatreId);
         List<ShowDto> shows = showService.getShowsByTheatre(theatreId);
         log.debug("Shows fetched: {}", shows);

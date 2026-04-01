@@ -242,8 +242,8 @@ public class ShowServiceImpl implements ShowService {
         Show show = showRepo.findById(showId)
                 .orElseThrow(() -> new ResourceNotFoundException("Show not found with id: " + showId));
 
-        // Authorization: Only the creator (theatre owner) can cancel the show
-        if (!show.getCreatedBy().equals(currentUserId)) {
+        // Authorization: Only the creator (theatre owner) or Admin can cancel the show
+        if (!SecurityUtil.isCurrentUserAdmin() && !show.getCreatedBy().equals(currentUserId)) {
             throw new AuthorizationException("You are not authorized to cancel this show.");
         }
 
@@ -323,7 +323,8 @@ public class ShowServiceImpl implements ShowService {
         Show show = showRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Show not found"));
 
-        if (!show.getCreatedBy().equals(currentUserId)) {
+        // Authorization: Only the creator or Admin can delete the show
+        if (!SecurityUtil.isCurrentUserAdmin() && !show.getCreatedBy().equals(currentUserId)) {
             throw new AuthorizationException("You are not authorized to delete this show");
         }
 

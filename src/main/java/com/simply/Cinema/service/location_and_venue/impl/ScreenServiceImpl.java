@@ -11,14 +11,15 @@ import com.simply.Cinema.core.location_and_venue.repository.TheatreRepo;
 import com.simply.Cinema.core.systemConfig.Enums.AuditAction;
 import com.simply.Cinema.exception.*;
 import com.simply.Cinema.service.location_and_venue.ScreenService;
+import com.simply.Cinema.service.location_and_venue.SeatService;
 import com.simply.Cinema.service.systemConfig.impl.AuditLogService;
 import com.simply.Cinema.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@RestController
+@Service
 @RequiredArgsConstructor
 public class ScreenServiceImpl implements ScreenService {
 
@@ -26,27 +27,20 @@ public class ScreenServiceImpl implements ScreenService {
     private final TheatreRepo theatreRepo;
     private final AuditLogService auditLogService;
     private final SeatRepo seatRepo;
+    private final SeatService seatService;
 
     @Override
     public ScreenDto createScreen(ScreenDto screenDto) throws BusinessException, ValidationException, ResourceNotFoundException {
 
-        Long currentUserId = SecurityUtil.getCurrentUserId();
-
-        //Validate input
-        if (screenDto.getName() == null || screenDto.getName().trim().isEmpty()) {
-            throw new ValidationException("Screen name cannot be empty.");
-        }
-
-        if (screenDto.getTheatreId() == null) {
-            throw new ValidationException("Theatre ID is required.");
-        }
-
-        //Find theatre
+        // Find theatre
         Theatre theatre = theatreRepo.findById(screenDto.getTheatreId())
                 .orElseThrow(() -> new ResourceNotFoundException("Theatre not found with ID: " + screenDto.getTheatreId()));
 
-        // ✅ Check if the current user is the owner of the theatre
-        if (!theatre.getOwnerId().equals(currentUserId)) {
+        Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
+
+        // ✅ Check if the current user is the owner of the theatre OR is an Admin
+        if (!isAdmin && !theatre.getOwnerId().equals(currentUserId)) {
             throw new ValidationException("Access denied: You are not the owner of this theatre.");
         }
 
@@ -58,12 +52,21 @@ public class ScreenServiceImpl implements ScreenService {
         Screen screen = new Screen();
         screen.setName(screenDto.getName());
         screen.setScreenType(screenDto.getScreenType());
-        screen.setTotalSeats(0);
+        screen.setTotalSeats(screenDto.getTotalSeats() != null ? screenDto.getTotalSeats() : 0);
         // screen.setLayoutConfig(layoutConfigJson); // store as JSON string (if used)
         screen.setIsActive(true);
         screen.setTheatre(theatre);
 
         Screen saved = screenRepo.save(screen);
+
+        // Generate default seats if totalSeats > 0
+        if (saved.getTotalSeats() > 0) {
+            try {
+                seatService.generateDefaultLayout(saved.getId(), saved.getTotalSeats());
+            } catch (BusinessException e) {
+                // Log error or rethrow as per requirement
+            }
+        }
 
 
         ScreenDto responseDto = new ScreenDto();
@@ -86,20 +89,31 @@ public class ScreenServiceImpl implements ScreenService {
     public ScreenDto updateScreen(Long screenId, ScreenDto screenDto) throws ResourceNotFoundException, ValidationException, AuthorizationException {
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
 
         Screen screen = screenRepo.findById(screenId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: "+ screenId));
 
-        if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
+        if (!isAdmin && !screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new ValidationException("Access denied. You are not the owner of this theatre.");
         }
 
+        Integer oldTotalSeats = screen.getTotalSeats();
         if (screenDto.getName() != null) screen.setName(screenDto.getName());
         if (screenDto.getScreenType() != null) screen.setScreenType(screenDto.getScreenType());
-        //if (screenDto.getTotalSeats() != null) screen.setTotalSeats(screenDto.getTotalSeats());
+        if (screenDto.getTotalSeats() != null) screen.setTotalSeats(screenDto.getTotalSeats());
         if (screenDto.getIsActive() != null) screen.setIsActive(screenDto.getIsActive());
 
         Screen updatedScreen = screenRepo.save(screen);
+
+        // Regenerate seats if count changed
+        if (screenDto.getTotalSeats() != null && !screenDto.getTotalSeats().equals(oldTotalSeats)) {
+            try {
+                seatService.generateDefaultLayout(screenId, screenDto.getTotalSeats());
+            } catch (BusinessException e) {
+                // Log error
+            }
+        }
 
         ScreenDto responseDto = new ScreenDto();
         responseDto.setId(updatedScreen.getId());
@@ -120,11 +134,12 @@ public class ScreenServiceImpl implements ScreenService {
     public void deleteScreen(Long screenId) throws ResourceNotFoundException, AuthorizationException {
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
 
         Screen screen = screenRepo.findById(screenId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: "+ screenId));
 
-        if(!screen.getTheatre().getOwnerId().equals(currentUserId)){
+        if(!isAdmin && !screen.getTheatre().getOwnerId().equals(currentUserId)){
             throw new ValidationException("Access denied. You are not the owner of this theatre.");
         }
 
@@ -183,8 +198,9 @@ public class ScreenServiceImpl implements ScreenService {
                 .orElseThrow(() -> new ResourceNotFoundException("Theatre not found with id: " + theatreId));
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
 
-        if (!theatre.getOwnerId().equals(currentUserId)) {
+        if (!isAdmin && !theatre.getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied. You are not the owner of this theatre.");
         }
 
@@ -256,11 +272,12 @@ public class ScreenServiceImpl implements ScreenService {
     public void deactivateScreen(Long screenId) throws ResourceNotFoundException, AuthorizationException {
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
 
         Screen screen = screenRepo.findById(screenId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + screenId));
 
-        if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
+        if (!isAdmin && !screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied! You are not the owner of this theatre");
         }
 
@@ -273,11 +290,12 @@ public class ScreenServiceImpl implements ScreenService {
     public void activateScreen(Long screenId) throws ResourceNotFoundException, AuthorizationException {
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isAdmin = SecurityUtil.hasRole("ADMIN");
 
         Screen screen = screenRepo.findById(screenId)
                 .orElseThrow(() -> new ResourceNotFoundException("Screen not found with id: " + screenId));
 
-        if (!screen.getTheatre().getOwnerId().equals(currentUserId)) {
+        if (!isAdmin && !screen.getTheatre().getOwnerId().equals(currentUserId)) {
             throw new AuthorizationException("Access denied! You are not the owner of this theatre");
         }
 

@@ -1,6 +1,5 @@
 package com.simply.Cinema.controller;
 
-
 import com.simply.Cinema.core.user.dto.OtpDto;
 import com.simply.Cinema.core.user.dto.UserLoginDto;
 import com.simply.Cinema.core.user.dto.UserRegistrationDto;
@@ -33,8 +32,7 @@ public class AuthController {
     private final AuthService authService;
     private final UserRepo userRepo;
 
-    @Operation(summary = "Register User with Password",
-            description = "Creates a new user using email/password and returns JWT token")
+    @Operation(summary = "Register User with Password", description = "Creates a new user using email/password and returns JWT token")
     @PostMapping("/signup/pass")
     public ResponseEntity<AuthResponse> registerUser(@RequestBody UserRegistrationDto req) throws UserException {
         logger.info("Registering new user with email: {}", req.getEmail());
@@ -52,8 +50,7 @@ public class AuthController {
         return ResponseEntity.ok(res);
     }
 
-    @Operation(summary = "Login with Email & Password",
-            description = "Authenticates user using email/password and returns JWT token")
+    @Operation(summary = "Login with Email & Password", description = "Authenticates user using email/password and returns JWT token")
     @PostMapping("/login/pass")
     public ResponseEntity<AuthResponse> loginUser(@RequestBody UserLoginDto req) throws UserException {
         logger.info("Attempting login for user: {}", req.getEmail());
@@ -62,8 +59,7 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
-    @Operation(summary = "Send OTP to Email",
-            description = "Sends OTP to email for login or signup based on user existence")
+    @Operation(summary = "Send OTP to Email", description = "Sends OTP to email for login or signup based on user existence")
     @PostMapping("/send-otp/email")
     public ResponseEntity<ApiResponse> sendOtpEmail(@RequestBody OtpDto req) throws UserException, MessagingException {
         String email = req.getEmail();
@@ -85,13 +81,14 @@ public class AuthController {
         }
     }
 
-    @Operation(summary = "Verify OTP and Register User",
-            description = "Verifies email/phone OTP and completes user registration")
+    @Operation(summary = "Verify OTP and Register User", description = "Verifies email/phone OTP and completes user registration")
     @PostMapping("/signup/verify-otp-register")
-    public ResponseEntity<AuthResponse> verifyOtpAndRegister(@RequestBody UserRegistrationDto req) throws UserException {
+    public ResponseEntity<AuthResponse> verifyOtpAndRegister(@RequestBody UserRegistrationDto req)
+            throws UserException {
         logger.info("Verifying OTP for registration with email: {} and phone: {}", req.getEmail(), req.getPhone());
 
-        if ((req.getEmail() == null || req.getEmail().isBlank()) && (req.getPhone() == null || req.getPhone().isBlank())) {
+        if ((req.getEmail() == null || req.getEmail().isBlank())
+                && (req.getPhone() == null || req.getPhone().isBlank())) {
             logger.error("Email or Phone is required for OTP verification.");
             throw new UserException("Email or Phone is required.");
         }
@@ -115,13 +112,13 @@ public class AuthController {
         return ResponseEntity.ok(res);
     }
 
-    @Operation(summary = "Login with OTP",
-            description = "Login using Email OTP or Phone OTP")
+    @Operation(summary = "Login with OTP", description = "Login using Email OTP or Phone OTP")
     @PostMapping("/login/email-otp")
     public ResponseEntity<AuthResponse> loginWithEmailOtp(@RequestBody OtpDto req) throws UserException {
         logger.info("Attempting login via OTP with email: {} or phone: {}", req.getEmail(), req.getPhone());
 
-        if ((req.getEmail() == null || req.getEmail().isBlank()) && (req.getPhone() == null || req.getPhone().isBlank())) {
+        if ((req.getEmail() == null || req.getEmail().isBlank())
+                && (req.getPhone() == null || req.getPhone().isBlank())) {
             logger.error("Email or Phone is required for OTP login.");
             throw new UserException("Email or Phone is required.");
         }
@@ -141,8 +138,7 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
-    @Operation(summary = "Send OTP to Phone",
-            description = "Sends OTP to phone number for login or signup based on user existence")
+    @Operation(summary = "Send OTP to Phone", description = "Sends OTP to phone number for login or signup based on user existence")
     @PostMapping("/send-otp/phone")
     public ResponseEntity<ApiResponse> sendOtpPhone(@RequestBody OtpDto req) throws UserException, MessagingException {
         String phone = req.getPhone();
@@ -162,5 +158,60 @@ public class AuthController {
             logger.info("OTP sent to phone {} for signup.", phone);
             return ResponseEntity.ok(new ApiResponse("OTP sent successfully to your Phone for signup.", true));
         }
+    }
+
+    // --- Phase 1 Specific Endpoints ---
+    @Operation(summary = "Step 1: Register User (Sends OTP)")
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse> register(@RequestBody UserRegistrationDto req)
+            throws UserException, MessagingException {
+        authService.registerUserInitiate(req);
+        return ResponseEntity.ok(new ApiResponse("OTP sent to email. Please verify.", true));
+    }
+
+    @Operation(summary = "Step 2: Verify OTP and Complete Registration")
+    @PostMapping("/verify-otp")
+    public ResponseEntity<AuthResponse> verifyOtp(@RequestBody OtpDto req) throws UserException {
+        String token = authService.verifyOtpFinalize(req.getEmail(), req.getOtp());
+        AuthResponse res = new AuthResponse();
+        res.setJwt(token);
+        res.setMessage("register success");
+        res.setRoles(List.of(UserRoleEnum.ROLE_CUSTOMER));
+        return ResponseEntity.ok(res);
+    }
+
+    @Operation(summary = "Resend OTP for Registration")
+    @PostMapping("/resend-otp")
+    public ResponseEntity<ApiResponse> resendOtp(@RequestBody OtpDto req) throws UserException, MessagingException {
+        authService.resendOtp(req.getEmail());
+        return ResponseEntity.ok(new ApiResponse("OTP resent.", true));
+    }
+
+    @Operation(summary = "Login Endpoint Alias")
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody UserLoginDto req) throws UserException {
+        return loginUser(req);
+    }
+
+    @Operation(summary = "Forgot Password (Send Reset Token)")
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiResponse> forgotPassword(@RequestBody OtpDto req)
+            throws UserException, MessagingException {
+        authService.forgotPassword(req.getEmail());
+        return ResponseEntity.ok(new ApiResponse("Password reset link generated and sent.", true));
+    }
+
+    @Operation(summary = "Reset Password Using Token")
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse> resetPassword(@RequestParam(name = "token") String token, @RequestParam(name = "newPassword") String newPassword) throws UserException {
+        authService.resetPassword(token, newPassword);
+        return ResponseEntity.ok(new ApiResponse("Password reset successfully.", true));
+    }
+
+    @Operation(summary = "Logout (Blacklist JWT)")
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse> logout(@RequestHeader(name = "Authorization") String token) {
+        authService.logout(token);
+        return ResponseEntity.ok(new ApiResponse("Logged out successfully.", true));
     }
 }

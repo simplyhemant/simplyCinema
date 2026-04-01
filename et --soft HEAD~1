@@ -1,0 +1,64 @@
+[33me79e170[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/backend-updates[m[33m)[m Backend updates
+[33m684423e[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m added api names in swagger ui
+[33m4627f5c[m added docker file and bulidspec yml file
+[33mc5c7825[m Update README.md
+[33m9fa1627[m added send ticket service
+[33m604e128[m pushed my code in original github
+[33m2763c8b[m Update README.md
+[33mcc3721d[m added some logs
+[33m4c0b5f3[m complpeted the simplyCinema
+[33m6c2f442[m added some api resoponse
+[33m2706d67[m added staff service/controller - create,upadate,deactivate,getby..
+[33m5b49dcf[m added showSeat service and controller (get booked/available seats)
+[33m5d9dd0d[m added new email dev waali
+[33mbc401ee[m created payment gateway,
+[33m04c3dc4[m changed create booking(temp seats lock)
+[33mb76207d[m added confirm booking interface
+[33m175955a[m added create booking service/contreoller
+[33mdd28574[m added booking dtos
+[33macb03a7[m added logs in the controller
+[33me3b82fe[m updated show service
+[33m8aab2f5[m updated seat service
+[33m5054114[m change in generateSeatLayout method
+[33m06d1c7b[m Remove hardcoded secrets and use environment variables
+[33m2254a37[m Update README.md
+[33m49b9897[m Create README.md
+[33m35562be[m changes
+[33m24719bf[m change auth servie
+[33m7b011b6[m commit after hacked
+[33md75671e[m after hacked, 1st pushed
+[33mf73785c[m adsad
+[33m91cb5a7[m added swagger for docs
+[33m8c288e8[m added redis service for seat lock.
+[33mba5687a[m added redis service for seat lock.
+[33mb8d5d0e[m added redis service
+[33m68e5cde[m Hide .env file from Git tracking
+[33m8e43715[m show service complete
+[33m35e11f1[m new.
+[33m277c1b0[m new
+[33mb5145d4[m new
+[33m714468e[m new
+[33m9e3318c[m screen service,controller done
+[33m4fcb71b[m screen service,controller done
+[33m0dfb4c1[m added review services.
+[33maae75d2[m screen service,controller done
+[33m681edcd[m created screen,seat repo,controller and all services ...  added audit
+[33mc79a0c2[m created theatre repo,controller and all services ...  added audit
+[33m7def900[m created city and city repo,controller and all services ...  added audit
+[33m48154da[m created city and city repo,controller and all services ...
+[33m829cca0[m User services, completed...
+[33m284f78e[m added signup and login with email+otp
+[33mdc33df1[m add and change services.(customuserdetails)
+[33m34980fd[m added jwt authentication.
+[33m089b77a[m removed hibernate-envers and added custom auditing.
+[33m04145f0[m removed hibernate-envers and added custom auditing.
+[33m6b12090[m removed hibernate-envers and added custom auditing.
+[33mdfdb900[m Merge remote-tracking branch 'origin/main'
+[33m801526b[m added Auditing . Hehe
+[33m1db182f[m added Auditing . Hehe
+[33m75667a0[m Merge branch 'main' of https://github.com/simply-hemant/simplyCinema
+[33m1f34e35[m Merge remote-tracking branch 'origin/main'
+[33m8d17764[m Merge branch 'main' of https://github.com/simply-hemant/simplyCinema
+[33m7bb9693[m Merge branch 'main' of https://github.com/simply-hemant/simplyCinema
+[33mf274180[m started simplyCinema
+[33m89e7b43[m started simplyCinema

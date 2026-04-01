@@ -40,4 +40,6 @@ public interface SeatService {
     Integer getSeatCapacityByScreen(Long screenId) throws ResourceNotFoundException;
 
     boolean isSeatAvailable(Long seatId) throws ResourceNotFoundException;
+
+    void generateDefaultLayout(Long screenId, Integer totalSeats) throws ResourceNotFoundException, ValidationException, BusinessException;
 }

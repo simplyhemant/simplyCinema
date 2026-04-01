@@ -94,7 +94,7 @@ public class PaymentController {
             description = "Fetch payment details associated with a specific booking ID"
     )
     @GetMapping("/booking/{bookingId}")
-    public ResponseEntity<?> getPaymentDetails(@PathVariable Long bookingId) {
+    public ResponseEntity<?> getPaymentDetails(@PathVariable(name = "bookingId") Long bookingId) {
         logger.info("📘 [GET PAYMENT DETAILS] Request received for Booking ID: {}", bookingId);
         try {
             logger.info("✅ [GET PAYMENT DETAILS] Successfully retrieved payment details for Booking ID: {}", bookingId);
@@ -113,7 +113,7 @@ public class PaymentController {
     @PostMapping("/webhook")
     public ResponseEntity<?> handleWebhook(
             @RequestBody String payload,
-            @RequestHeader("X-Razorpay-Signature") String signature) {
+            @RequestHeader(name = "X-Razorpay-Signature") String signature) {
         logger.info("📩 [WEBHOOK] Webhook event received from Razorpay.");
         logger.debug("📦 Payload: {}", payload);
         logger.debug("🔑 Signature: {}", signature);

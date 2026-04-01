@@ -1,0 +1,5 @@
+simplyCinema-frontend/
+target/
+*.log
+.env
+application.properties

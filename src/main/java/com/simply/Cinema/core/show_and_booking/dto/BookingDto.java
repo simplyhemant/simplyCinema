@@ -20,7 +20,7 @@ public class BookingDto {
     private PaymentMethod paymentMethod;
     private String couponCode;
 
-    private String Email;
+    private String email;
 
     private String paymentLinkId;        // Razorpay payment link ID
     private String paymentToken;         // Razorpay payment/transaction ID

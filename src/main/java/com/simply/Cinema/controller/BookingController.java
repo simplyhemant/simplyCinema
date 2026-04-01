@@ -4,18 +4,18 @@ import com.simply.Cinema.core.show_and_booking.dto.BookingDto;
 import com.simply.Cinema.core.show_and_booking.dto.BookingResponseDto;
 import com.simply.Cinema.exception.*;
 import com.simply.Cinema.response.ApiResponse;
-import com.simply.Cinema.security.jwt.JwtProvider;
 import com.simply.Cinema.service.show_and_booking.BookingService;
-import com.simply.Cinema.validation.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 @RestController
 @RequestMapping("/api/bookings")
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class BookingController {
     )
     @PostMapping("/create")
     public ResponseEntity<BookingResponseDto> createBooking(
-            @RequestHeader(value = "Authorization", required = false) String jwt,
+            @RequestHeader(name = "Authorization", required = false) String jwt,
             @RequestBody BookingDto bookingDto
     ) throws AuthorizationException, BookingException, BusinessException, CouponException, PaymentException {
 
@@ -46,13 +46,30 @@ public class BookingController {
     }
 
     @Operation(
+            summary = "Get Payment Details By Booking ID",
+            description = "Fetch payment details associated with a specific booking ID"
+    )
+    @GetMapping("/booking/{bookingId}")
+    public ResponseEntity<?> getPaymentDetails(@PathVariable(name = "bookingId") Long bookingId) {
+        logger.info("📘 [GET PAYMENT DETAILS] Request received for Booking ID: {}", bookingId);
+        try {
+            logger.info("✅ [GET PAYMENT DETAILS] Successfully retrieved payment details for Booking ID: {}", bookingId);
+            return ResponseEntity.ok(new ApiResponse("Payment details retrieved", true));
+        } catch (Exception e) {
+            logger.error("❌ [GET PAYMENT DETAILS] Failed to retrieve payment details for Booking ID: {}. Error: {}", bookingId, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                     .body(new ApiResponse(e.getMessage(), false));
+        }
+    }
+
+    @Operation(
             summary = "Confirm Booking",
             description = "Confirms an existing booking and processes payment. Requires JWT token."
     )
     @PostMapping("/confirm")
     public ResponseEntity<?> confirmBooking(
             @RequestBody BookingDto bookingConfirmDto,
-            @RequestHeader("Authorization") String jwt
+            @RequestHeader(name = "Authorization") String jwt
     ) {
         logger.info("🎟️ [CONFIRM BOOKING] Request received to confirm booking.");
         logger.debug("📦 Booking Confirmation Data: {}", bookingConfirmDto);
@@ -79,5 +96,29 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse("An error occurred: " + e.getMessage(), false));
         }
+    }
+
+    @Operation(
+            summary = "Get Booking History",
+            description = "Retrieves a list of all non-pending bookings for the specified user ID"
+    )
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<BookingResponseDto>> getBookingHistory(@PathVariable Long userId) throws AuthorizationException, BookingException {
+        logger.info("📋 [GET BOOKING HISTORY] Request received for User ID: {}", userId);
+        List<BookingResponseDto> history = bookingService.getBookingHistory(userId);
+        return ResponseEntity.ok(history);
+    }
+
+    @Operation(
+            summary = "Get Booking Details",
+            description = "Retrieves detailed information about a specific booking by ID"
+    )
+    @GetMapping("/{bookingId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<BookingResponseDto> getBookingDetails(@PathVariable Long bookingId) throws AuthorizationException, BookingException {
+        logger.info("📄 [GET BOOKING DETAILS] Request received for Booking ID: {}", bookingId);
+        BookingResponseDto details = bookingService.getBookingDetails(bookingId);
+        return ResponseEntity.ok(details);
     }
 }

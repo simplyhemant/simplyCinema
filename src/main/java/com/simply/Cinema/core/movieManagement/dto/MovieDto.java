@@ -37,6 +37,8 @@ public class MovieDto {
     private String bannerUrl;
 
     private Boolean isActive = true;
+    private String leadActor;
+    private Double averageRating;
 
     private List<Long> genreIds;
 

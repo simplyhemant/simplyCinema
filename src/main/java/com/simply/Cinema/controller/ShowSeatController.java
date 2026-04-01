@@ -31,7 +31,7 @@ public class ShowSeatController {
             description = "Fetch all seats associated with a specific show"
     )
     @GetMapping("/{showId}")
-    public ResponseEntity<?> getSeatsByShow(@PathVariable Long showId) {
+    public ResponseEntity<?> getSeatsByShow(@PathVariable(name = "showId") Long showId) {
         logger.info("🎟️ [GET SEATS BY SHOW] Request received for Show ID: {}", showId);
         try {
             List<ShowSeatResponseDto> seats = showSeatService.getSeatsByShow(showId);
@@ -49,7 +49,7 @@ public class ShowSeatController {
             description = "Fetch only available seats for a specific show"
     )
     @GetMapping("/{showId}/available")
-    public ResponseEntity<?> getAvailableSeats(@PathVariable Long showId) {
+    public ResponseEntity<?> getAvailableSeats(@PathVariable(name = "showId") Long showId) {
         logger.info("💺 [GET AVAILABLE SEATS] Request received for Show ID: {}", showId);
         try {
             List<ShowSeatResponseDto> seats = showSeatService.getAvailableSeats(showId);
@@ -67,7 +67,7 @@ public class ShowSeatController {
             description = "Fetch only booked seats for a specific show"
     )
     @GetMapping("/{showId}/booked")
-    public ResponseEntity<?> getBookedSeats(@PathVariable Long showId) {
+    public ResponseEntity<?> getBookedSeats(@PathVariable(name = "showId") Long showId) {
         logger.info("🎫 [GET BOOKED SEATS] Request received for Show ID: {}", showId);
         try {
             List<ShowSeatResponseDto> seats = showSeatService.getBookedSeats(showId);
@@ -85,7 +85,7 @@ public class ShowSeatController {
             description = "Returns total number of seats for a specific show"
     )
     @GetMapping("/{showId}/count/total")
-    public ResponseEntity<?> countTotalSeats(@PathVariable Long showId) {
+    public ResponseEntity<?> countTotalSeats(@PathVariable(name = "showId") Long showId) {
         logger.info("🔢 [COUNT TOTAL SEATS] Request received for Show ID: {}", showId);
         try {
             int count = showSeatService.countTotalSeats(showId);
@@ -103,7 +103,7 @@ public class ShowSeatController {
             description = "Returns number of available seats for a specific show"
     )
     @GetMapping("/{showId}/count/available")
-    public ResponseEntity<?> countAvailableSeats(@PathVariable Long showId) {
+    public ResponseEntity<?> countAvailableSeats(@PathVariable(name = "showId") Long showId) {
         logger.info("🔢 [COUNT AVAILABLE SEATS] Request received for Show ID: {}", showId);
         try {
             int count = showSeatService.countAvailableSeats(showId);
@@ -121,7 +121,7 @@ public class ShowSeatController {
             description = "Returns number of booked seats for a specific show"
     )
     @GetMapping("/{showId}/count/booked")
-    public ResponseEntity<?> countBookedSeats(@PathVariable Long showId) {
+    public ResponseEntity<?> countBookedSeats(@PathVariable(name = "showId") Long showId) {
         logger.info("🔢 [COUNT BOOKED SEATS] Request received for Show ID: {}", showId);
         try {
             int count = showSeatService.countBookedSeats(showId);

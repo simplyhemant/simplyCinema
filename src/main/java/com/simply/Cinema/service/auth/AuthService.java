@@ -37,5 +37,9 @@ public interface AuthService {
     //reset pass
 
     //forget password
-
+    void registerUserInitiate(UserRegistrationDto req) throws UserException, MessagingException;
+    String verifyOtpFinalize(String email, String otp) throws UserException;
+    void resendOtp(String email) throws UserException, MessagingException;
+    void forgotPassword(String email) throws UserException, MessagingException;
+    void resetPassword(String token, String newPassword) throws UserException;
 }

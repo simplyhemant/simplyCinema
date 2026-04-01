@@ -1,0 +1,16 @@
+127.0.0.1 - - [29/Mar/2026 01:44:33] "GET /assets/js/api.js HTTP/1.1" 304 -
+127.0.0.1 - - [29/Mar/2026 01:44:33] "GET /assets/js/auth.js HTTP/1.1" 304 -
+127.0.0.1 - - [29/Mar/2026 01:44:35] "GET /pages/auth/login.html HTTP/1.1" 304 -
+127.0.0.1 - - [29/Mar/2026 01:44:41] "GET /index.html?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoczIzMTJoZW1hbnRAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9DVVNUT01FUiJdLCJ1c2VySWQiOjksImlhdCI6MTc3NDcyODg4MSwiZXhwIjoxNzc1MjI5NTM1fQ.OEMqtNUELVAYxuZswCU207Eb6uSDmPDIqSiqyblgqLo HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 01:44:55] "GET /pages/auth/register.html HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 01:52:44] code 404, message File not found
+127.0.0.1 - - [29/Mar/2026 01:52:44] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+127.0.0.1 - - [29/Mar/2026 01:52:47] "GET /pages/auth/login.html HTTP/1.1" 304 -
+127.0.0.1 - - [29/Mar/2026 01:52:47] code 404, message File not found
+127.0.0.1 - - [29/Mar/2026 01:52:47] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+127.0.0.1 - - [29/Mar/2026 01:52:47] "GET /assets/js/auth.js HTTP/1.1" 304 -
+127.0.0.1 - - [29/Mar/2026 01:52:47] "GET /assets/js/api.js HTTP/1.1" 304 -
+127.0.0.1 - - [29/Mar/2026 01:52:50] code 404, message File not found
+127.0.0.1 - - [29/Mar/2026 01:52:50] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+127.0.0.1 - - [29/Mar/2026 01:52:55] code 404, message File not found
+127.0.0.1 - - [29/Mar/2026 01:52:55] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -

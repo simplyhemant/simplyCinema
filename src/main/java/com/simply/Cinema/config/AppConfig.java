@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import com.simply.Cinema.security.oauth2.OAuth2LoginSuccessHandler;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -33,9 +34,11 @@ import java.util.List;
 public class AppConfig {
 
     private final JwtTokenValidator jwtTokenValidator;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
-    public AppConfig(@Lazy JwtTokenValidator jwtTokenValidator) {
+    public AppConfig(@Lazy JwtTokenValidator jwtTokenValidator, @Lazy OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
         this.jwtTokenValidator = jwtTokenValidator;
+        this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
     }
 
     @Bean
@@ -53,13 +56,14 @@ public class AppConfig {
                                 "/api/movies/**",                // movie listing & details
                                 "/api/theatre/**",              // theatre listing & details
                                 "/api/cities/**",                // cities and location
-                                "/api/shows/**",                 // show availability
+                                "/api/show/**",                  // show availability
+                                "/api/show-seats/**",            // show seat availability
                                 "/api/search/**",                // search movies, theatres
                                 "/api/content/**",               // recommendations, trending
                                 "/api/reviews/**",               // read reviews
                                 "/api/bookings/guest",           // optional: guest booking
                                 "/api/seats/**",
-                                "/api/screens/",
+                                "/api/screens/**",
                                 "/api/screens/{screenId}/summary",
 
                                 "/swagger-ui/**",
@@ -79,7 +83,8 @@ public class AppConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable) // Disable default form login
-                .httpBasic(AbstractHttpConfigurer::disable); // Disable HTTP Basic Auth
+                .httpBasic(AbstractHttpConfigurer::disable) // Disable HTTP Basic Auth
+                .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler)); // Use custom success handler
 
         return http.build();
     }
@@ -96,7 +101,7 @@ public class AppConfig {
 
         // ✅Use patterns to allow wildcard with credentials (dev use)
         cfg.setAllowedOriginPatterns(Collections.singletonList("*"));
-        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         cfg.setAllowCredentials(true);
         cfg.setExposedHeaders(List.of("Authorization"));

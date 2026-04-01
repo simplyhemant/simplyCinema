@@ -1,5 +1,7 @@
 package com.simply.Cinema.service.show_and_booking.Impl;
 
+import com.simply.Cinema.core.location_and_venue.entity.City;
+import com.simply.Cinema.core.location_and_venue.repository.*;
 import com.simply.Cinema.core.show_and_booking.Enum.BookingStatus;
 import com.simply.Cinema.core.show_and_booking.Enum.PaymentMethod;
 import com.simply.Cinema.core.show_and_booking.Enum.PaymentStatus;
@@ -44,6 +46,7 @@ public class BookingServiceImpl implements BookingService {
     private final PaymentService paymentService;
     private final BookingSeatRepo bookingSeatRepo;
     private final BookingPaymentRepo bookingPaymentRepo;
+    private final CityRepo cityRepo;
 
     private final EmailService emailService;
 
@@ -106,8 +109,18 @@ public class BookingServiceImpl implements BookingService {
         response.setBookingStatus(BookingStatus.PENDING);
         response.setEmail(email);
         response.setUserId(userId);
-        response.setPaymentStatus(null);
         response.setQrCode(null);
+
+        // Fetch descriptive data for confirmation
+        City city = cityRepo.findById(show.getScreen().getTheatre().getCityId()).orElse(null);
+
+        response.setMovieTitle(show.getMovie().getTitle());
+        response.setTheatreName(show.getScreen().getTheatre().getName());
+        response.setCityName(city != null ? city.getName() : "Unknown");
+        response.setScreenName(show.getScreen().getName());
+        response.setShowDate(show.getShowDate());
+        response.setShowTime(show.getShowTime());
+        response.setSeatNumbers(showSeats.stream().map(ss -> ss.getSeat().getSeatNumber()).toList());
 
         // Store temp booking in Redis
         String bookingKey = "temp_booking:" + email + ":" + show.getId();
@@ -238,12 +251,50 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingResponseDto> getBookingHistory(Long userId) throws AuthorizationException, BookingException {
-        return List.of();
+        List<Booking> bookings = bookingRepo.findByUser_Id(userId);
+        List<BookingResponseDto> responseList = new ArrayList<>();
+        for (Booking booking : bookings) {
+            responseList.add(convertToResponseDto(booking));
+        }
+        return responseList;
     }
 
     @Override
     public BookingResponseDto getBookingDetails(Long bookingId) throws AuthorizationException, BookingException {
-        return null;
+        Booking booking = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new BookingException("Booking not found with ID: " + bookingId));
+        return convertToResponseDto(booking);
+    }
+
+    private BookingResponseDto convertToResponseDto(Booking booking) {
+        BookingResponseDto dto = new BookingResponseDto();
+        dto.setBookingId(booking.getId());
+        dto.setBookingReference(booking.getBookingReference());
+        dto.setUserId(booking.getUser().getId());
+        dto.setShowId(booking.getShow().getId());
+        dto.setTotalAmount(booking.getTotalAmount());
+        dto.setDiscountAmount(booking.getDiscountAmount());
+        dto.setFinalAmount(booking.getFinalAmount());
+        dto.setPaymentStatus(booking.getPaymentStatus());
+        dto.setBookingStatus(booking.getBookingStatus());
+        dto.setQrCode(booking.getQrCode());
+        dto.setEmail(booking.getEmail());
+
+        Show show = booking.getShow();
+        City city = cityRepo.findById(show.getScreen().getTheatre().getCityId()).orElse(null);
+
+        dto.setMovieTitle(show.getMovie().getTitle());
+        dto.setTheatreName(show.getScreen().getTheatre().getName());
+        dto.setCityName(city != null ? city.getName() : "Unknown");
+        dto.setScreenName(show.getScreen().getName());
+        dto.setShowDate(show.getShowDate());
+        dto.setShowTime(show.getShowTime());
+
+        List<BookingSeat> bookingSeats = bookingSeatRepo.findByBooking_Id(booking.getId());
+        dto.setSeatIds(bookingSeats.stream().map(bs -> bs.getShowSeat().getSeat().getId()).toList());
+        dto.setSeatNumbers(bookingSeats.stream().map(bs -> bs.getShowSeat().getSeat().getSeatNumber()).toList());
+
+        return dto;
     }
 
     @Override

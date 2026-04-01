@@ -43,6 +43,12 @@ public class MovieServiceImpl implements MovieService {
         if (movieDto.getTitle() == null || movieDto.getTitle().isBlank()) {
             throw new ValidationException("Movie title is required.");
         }
+        if (movieDto.getDurationMinutes() <= 0) {
+            throw new ValidationException("Movie duration must be greater than zero.");
+        }
+        if (movieDto.getReleaseDate() != null && movieDto.getReleaseDate().isAfter(java.time.LocalDate.now().plusYears(10))) {
+            throw new ValidationException("Release date cannot be more than 10 years in the future.");
+        }
 
         if (movieRepo.findByTitle(movieDto.getTitle()) != null) {
             throw new BusinessException("Movie with title '" + movieDto.getTitle() + "' already exists.");
@@ -59,6 +65,7 @@ public class MovieServiceImpl implements MovieService {
         movie.setBannerUrl(movieDto.getBannerUrl());
         movie.setCast(movieDto.getCast());
         movie.setCrew(movieDto.getCrew());
+        movie.setLeadActor(movieDto.getLeadActor());
         movie.setCreatedBy(currentUserId);
         movie.setCreatedAt(LocalDateTime.now());
         movie.setGenres(new ArrayList<>());
@@ -107,8 +114,8 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieRepo.findById(movieId)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie not found with id."));
 
-        if(!movie.getCreatedBy().equals(currentUserId)) {
-            throw new AuthorizationException("Access denied. You did not added this movie.");
+        if (!SecurityUtil.isCurrentUserAdmin() && !movie.getCreatedBy().equals(currentUserId)) {
+            throw new AuthorizationException("Access denied. You did not add this movie and are not an admin.");
         }
 
         // Basic field updates
@@ -122,6 +129,7 @@ public class MovieServiceImpl implements MovieService {
         if (movieDto.getBannerUrl() != null) movie.setBannerUrl(movieDto.getBannerUrl());
         if (movieDto.getCast() != null) movie.setCast(movieDto.getCast());
         if (movieDto.getCrew() != null) movie.setCrew(movieDto.getCrew());
+        if (movieDto.getLeadActor() != null) movie.setLeadActor(movieDto.getLeadActor());
 
 
         // === GENRE UPDATE ===
@@ -167,8 +175,8 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieRepo.findById(movieId)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie not found with id."));
 
-        if(!movie.getCreatedBy().equals(currentUserId)) {
-            throw new AuthorizationException("Access denied. You did not added this movie.");
+        if (!SecurityUtil.isCurrentUserAdmin() && !movie.getCreatedBy().equals(currentUserId)) {
+            throw new AuthorizationException("Access denied. You did not add this movie and are not an admin.");
         }
 
         movieRepo.deleteById(movieId);
@@ -306,8 +314,24 @@ public class MovieServiceImpl implements MovieService {
         dto.setIsActive(movie.isActive());
         dto.setCast(movie.getCast());
         dto.setCrew(movie.getCrew());
+        dto.setLeadActor(movie.getLeadActor());
         dto.setCreatedAt(movie.getCreatedAt());
         dto.setUpdatedAt(movie.getUpdatedAt());
+
+        // Calculate Average Rating
+        if (movie.getReviews() != null && !movie.getReviews().isEmpty()) {
+            double sum = 0;
+            int count = 0;
+            for (MovieReview review : movie.getReviews()) {
+                if (review.isApproved()) {
+                    sum += review.getRating();
+                    count++;
+                }
+            }
+            dto.setAverageRating(count > 0 ? sum / count : 0.0);
+        } else {
+            dto.setAverageRating(0.0);
+        }
 
         // Genre IDs
         List<Long> genreIds = new ArrayList<>();

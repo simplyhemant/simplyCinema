@@ -20,6 +20,7 @@ public class Genre {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieGenre> movies;
 }
