@@ -110,12 +110,12 @@ public class MovieServiceImpl implements MovieService {
     public MovieDto updateMovie(Long movieId, MovieDto movieDto) throws ResourceNotFoundException, AuthorizationException {
 
         Long currentUserId = SecurityUtil.getCurrentUserId();
-
+ 
         Movie movie = movieRepo.findById(movieId)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie not found with id."));
 
-        if (!SecurityUtil.isCurrentUserAdmin() && !movie.getCreatedBy().equals(currentUserId)) {
-            throw new AuthorizationException("Access denied. You did not add this movie and are not an admin.");
+        if (!SecurityUtil.isCurrentUserAdmin()) {
+            throw new AuthorizationException("Access denied. Global movie management is restricted to administrators.");
         }
 
         // Basic field updates
@@ -170,13 +170,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void deleteMovie(Long movieId) throws ResourceNotFoundException, BusinessException {
-        Long currentUserId = SecurityUtil.getCurrentUserId();
-
-        Movie movie = movieRepo.findById(movieId)
+        movieRepo.findById(movieId)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie not found with id."));
 
-        if (!SecurityUtil.isCurrentUserAdmin() && !movie.getCreatedBy().equals(currentUserId)) {
-            throw new AuthorizationException("Access denied. You did not add this movie and are not an admin.");
+        if (!SecurityUtil.isCurrentUserAdmin()) {
+            throw new AuthorizationException("Access denied. Global movie management is restricted to administrators.");
         }
 
         movieRepo.deleteById(movieId);
@@ -298,6 +296,29 @@ public class MovieServiceImpl implements MovieService {
 //            return dto;
 //        });
 //    }
+
+    @Override
+    public Page<MovieDto> getNowShowingMovies(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        java.time.LocalDate today = java.time.LocalDate.now();
+        Page<Movie> moviePage = movieRepo.findByReleaseDateBeforeAndIsActive(today, true, pageable);
+        return moviePage.map(this::mapToDto);
+    }
+
+    @Override
+    public Page<MovieDto> getUpcomingMovies(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        java.time.LocalDate today = java.time.LocalDate.now();
+        Page<Movie> moviePage = movieRepo.findByReleaseDateAfterAndIsActive(today, true, pageable);
+        return moviePage.map(this::mapToDto);
+    }
+
+    @Override
+    public Page<MovieDto> getMoviesByGenre(Long genreId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Movie> moviePage = movieRepo.findByGenreId(genreId, pageable);
+        return moviePage.map(this::mapToDto);
+    }
 
     private MovieDto mapToDto(Movie movie) {
         MovieDto dto = new MovieDto();

@@ -87,9 +87,8 @@ public class ShowServiceImpl implements ShowService {
         show.setShowDate(showDto.getShowDate());
         show.setShowTime(showDto.getShowTime());
         show.setEndTime(showDto.getEndTime());
+        show.setLanguage(showDto.getLanguage()); // Explicit language for this show
         show.setTotalSeats(screen.getTotalSeats());
-//        show.setBasePrice(showDto.getBasePrice()); // optional, just for record
-
         show.setStatus(showDto.getStatus() != null ? showDto.getStatus() : ShowStatus.UPCOMING);
         show.setCreatedBy(currentUserId);
         show.setCreatedAt(LocalDateTime.now());
@@ -130,6 +129,8 @@ public class ShowServiceImpl implements ShowService {
         responseDto.setShowDate(show.getShowDate());
         responseDto.setShowTime(show.getShowTime());
         responseDto.setEndTime(show.getEndTime());
+        responseDto.setLanguage(show.getLanguage());
+        responseDto.setScreenType(show.getScreen().getScreenType().name());
         responseDto.setTotalSeats(show.getTotalSeats());
         responseDto.setStatus(show.getStatus());
         responseDto.setSeatPrices(manualSeatPrices);
@@ -168,6 +169,11 @@ public class ShowServiceImpl implements ShowService {
         // Optional: Update status
         if (showDto.getStatus() != null) {
             show.setStatus(showDto.getStatus());
+        }
+
+        // Optional: Update language
+        if (showDto.getLanguage() != null) {
+            show.setLanguage(showDto.getLanguage());
         }
 
         // Optional: Update movie
@@ -396,6 +402,8 @@ public class ShowServiceImpl implements ShowService {
         dto.setShowDate(show.getShowDate());
         dto.setShowTime(show.getShowTime());
         dto.setEndTime(show.getEndTime());
+        dto.setLanguage(show.getLanguage());
+        dto.setScreenType(show.getScreen() != null && show.getScreen().getScreenType() != null ? show.getScreen().getScreenType().name() : "REGULAR");
         dto.setTotalSeats(show.getTotalSeats());
         dto.setAvailableSeats(show.getAvailableSeats());
         dto.setStatus(show.getStatus());

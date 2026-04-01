@@ -19,5 +19,12 @@ public interface MovieRepo extends JpaRepository<Movie, Long> {
 
     Page<Movie> findAll(Pageable pageable);
 
+    @Query("SELECT m FROM Movie m JOIN m.genres mg WHERE mg.genre.id = :genreId")
+    Page<Movie> findByGenreId(@Param("genreId") Long genreId, Pageable pageable);
+
+    Page<Movie> findByReleaseDateBeforeAndIsActive(java.time.LocalDate date, boolean isActive, Pageable pageable);
+
+    Page<Movie> findByReleaseDateAfterAndIsActive(java.time.LocalDate date, boolean isActive, Pageable pageable);
+
 }
 

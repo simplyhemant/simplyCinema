@@ -58,6 +58,7 @@ public class AppConfig {
                                 "/api/cities/**",                // cities and location
                                 "/api/show/**",                  // show availability
                                 "/api/show-seats/**",            // show seat availability
+                                "/api/languages/**",             // movie languages
                                 "/api/search/**",                // search movies, theatres
                                 "/api/content/**",               // recommendations, trending
                                 "/api/reviews/**",               // read reviews

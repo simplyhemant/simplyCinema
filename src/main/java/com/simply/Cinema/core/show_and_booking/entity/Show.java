@@ -35,6 +35,7 @@ public class Show {
     private LocalDate showDate;
     private LocalTime showTime;
     private LocalTime endTime;
+    private String language; // Track specific language of the show (e.g. Hindi, English)
 
    // private Double basePrice;
    // private Double dynamicPriceMultiplier;

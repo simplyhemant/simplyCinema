@@ -24,6 +24,8 @@ public class ShowDto {
     private LocalDate showDate;
     private LocalTime showTime;
     private LocalTime endTime;
+    private String language;
+    private String screenType; // Transformed from Screen.screenType
 
 //    private Double basePrice;
 //    private Double dynamicPriceMultiplier;

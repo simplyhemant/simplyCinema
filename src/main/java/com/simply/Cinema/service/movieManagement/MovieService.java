@@ -23,4 +23,10 @@ public interface MovieService {
     Page<MovieDto> searchMovies(String keyword, int page, int size) throws ValidationException ;
 
     Page<MovieDto> getAllMovies(int page, int size) ;
+
+    Page<MovieDto> getNowShowingMovies(int page, int size);
+
+    Page<MovieDto> getUpcomingMovies(int page, int size);
+
+    Page<MovieDto> getMoviesByGenre(Long genreId, int page, int size);
 }

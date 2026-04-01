@@ -22,8 +22,8 @@ public class MovieController {
 
         private final MovieService movieService;
 
-        @Operation(summary = "Create Movie", description = "Creates a new movie (THEATRE_OWNER or ADMIN only)", security = @SecurityRequirement(name = "bearerAuth"))
-        @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+        @Operation(summary = "Create Movie", description = "Creates a new movie (ADMIN only)", security = @SecurityRequirement(name = "bearerAuth"))
+        @PreAuthorize("hasRole('ADMIN')")
         @PostMapping("/create")
         public ResponseEntity<MovieDto> createMovie(@RequestBody MovieDto movieDto) {
                 log.info("Creating movie: {}", movieDto.getTitle());
@@ -32,8 +32,8 @@ public class MovieController {
                 return ResponseEntity.ok(created);
         }
 
-        @Operation(summary = "Update Movie", description = "Updates an existing movie (THEATRE_OWNER only)", security = @SecurityRequirement(name = "bearerAuth"))
-        @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+        @Operation(summary = "Update Movie", description = "Updates an existing movie (ADMIN only)", security = @SecurityRequirement(name = "bearerAuth"))
+        @PreAuthorize("hasRole('ADMIN')")
         @PutMapping("/update/{movieId}")
         public ResponseEntity<MovieDto> updateMovie(@RequestBody MovieDto movieDto,
                         @PathVariable(name = "movieId") Long movieId) {
@@ -43,8 +43,8 @@ public class MovieController {
                 return ResponseEntity.ok(updated);
         }
 
-        @Operation(summary = "Delete Movie", description = "Deletes a movie by ID (THEATRE_OWNER only)", security = @SecurityRequirement(name = "bearerAuth"))
-        @PreAuthorize("hasAnyRole('THEATRE_OWNER', 'ADMIN')")
+        @Operation(summary = "Delete Movie", description = "Deletes a movie by ID (ADMIN only)", security = @SecurityRequirement(name = "bearerAuth"))
+        @PreAuthorize("hasRole('ADMIN')")
         @DeleteMapping("/delete/{movieId}")
         public ResponseEntity<Void> deleteMovie(@PathVariable(name = "movieId") Long movieId) {
                 log.warn("Deleting movie with ID: {}", movieId);
@@ -79,5 +79,30 @@ public class MovieController {
                 log.debug("Searching movies with keyword='{}', pageNo={}, pageSize={}", keyword, pageNo, pageSize);
                 Page<MovieDto> search = movieService.searchMovies(keyword, pageNo, pageSize);
                 return ResponseEntity.ok(search);
+        }
+
+        @Operation(summary = "Get Now Showing Movies", description = "Fetch movies that are currently in theatres")
+        @GetMapping("/now-showing")
+        public ResponseEntity<Page<MovieDto>> getNowShowingMovies(
+                        @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+                return ResponseEntity.ok(movieService.getNowShowingMovies(pageNo, pageSize));
+        }
+
+        @Operation(summary = "Get Upcoming Movies", description = "Fetch movies that are slated for future release")
+        @GetMapping("/upcoming")
+        public ResponseEntity<Page<MovieDto>> getUpcomingMovies(
+                        @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+                return ResponseEntity.ok(movieService.getUpcomingMovies(pageNo, pageSize));
+        }
+
+        @Operation(summary = "Get Movies By Genre", description = "Fetch movies filtered by a specific genre ID")
+        @GetMapping("/genre/{genreId}")
+        public ResponseEntity<Page<MovieDto>> getMoviesByGenre(
+                        @PathVariable(name = "genreId") Long genreId,
+                        @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+                return ResponseEntity.ok(movieService.getMoviesByGenre(genreId, pageNo, pageSize));
         }
 }
