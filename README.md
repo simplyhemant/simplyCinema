@@ -6,10 +6,18 @@ SimplyCinema is a production-grade, full-stack movie ticket booking platform des
 ---
 
 ## 🔗 Project Ecosystem
-*   **Live Application:** [simplycinema.vercel.app](https://simplycinema.vercel.app)
-*   **Frontend Repository (Public):** [github.com/simplyhemant/simplyCinema-frontend](https://github.com/simplyhemant/simplyCinema-frontend)
-*   **API Documentation (Swagger):** [Deployment-IP:8080/swagger-ui/index.html](http://your-aws-ip-or-dns:8080/swagger-ui/index.html)
-*   **Postman Collection:** [Download API Specs](https://github.com/simplyhemant/simplyCinema-backend/blob/main/docs/SimplyCinema_Postman.json)
+
+[![Live Demo](https://img.shields.io/badge/LIVE_DEMO-brightgreen?style=for-the-badge&logo=vercel)](https://simplycinema.vercel.app)
+[![Frontend Repo](https://img.shields.io/badge/FRONTEND_REPO-blue?style=for-the-badge&logo=github)](https://github.com/simplyhemant/simplyCinema-frontend)
+[![Swagger API](https://img.shields.io/badge/SWAGGER_DOCS-orange?style=for-the-badge&logo=swagger)](http://13.201.58.222:8080/swagger-ui/index.html)
+[![Postman](https://img.shields.io/badge/POSTMAN_SPEC-FF6C37?style=for-the-badge&logo=postman&logoColor=white)]( https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV)
+
+---
+
+### 🚀 Quick Access
+* **Web App:** [simplycinema.vercel.app](https://simplycinema.vercel.app)
+* **API Specs:** [Swagger Documentation](http://your-aws-ip-or-dns:8080/swagger-ui/index.html)
+* **Dev Resources:** [Postman Collection](https://github.com/simplyhemant/simplyCinema-backend/blob/main/docs/SimplyCinema_Postman.json)
 
 
 ## 🏗️ System Architecture
