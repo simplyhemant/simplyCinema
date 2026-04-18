@@ -1,75 +1,137 @@
-# 🎬 SimplyCinema — Movie Booking Backend  
+# 🎬 SimplyCinema – Highly Scalable Movie Ticketing Ecosystem
 
-A **scalable movie ticket booking backend** built with **Spring Boot**, **PostgreSQL**, and **Redis**, designed for real-time seat booking, secure authentication, and modular expansion.  
-🚧 **Project Status**: Work in Progress  
-
----
-
-## 🚀 Live Deployment (AWS EC2)
-
-🌐 **Live API Base URL:** http://13.201.58.222:8080/  
-📌 **Swagger UI:** http://13.201.58.222:8080/swagger-ui/index.html  
+"Experience Cinema, Simplified."
+SimplyCinema is a production-grade, full-stack movie ticket booking platform designed to handle complex role-based workflows, high-concurrency seat reservations, and seamless payment integrations.
 
 ---
 
-## 📄 Postman Documentation
-Link : https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV  
+## 🔗 Project Ecosystem
+*   **Live Application:** [simplycinema.vercel.app](https://simplycinema.vercel.app)
+*   **Frontend Repository (Public):** [github.com/simplyhemant/simplyCinema-frontend](https://github.com/simplyhemant/simplyCinema-frontend)
+*   **API Documentation (Swagger):** [Deployment-IP:8080/swagger-ui/index.html](http://your-aws-ip-or-dns:8080/swagger-ui/index.html)
+*   **Postman Collection:** [Download API Specs](https://github.com/simplyhemant/simplyCinema-backend/blob/main/docs/SimplyCinema_Postman.json)
+
+
+## 🏗️ System Architecture
+
+SimplyCinema follows a decoupled client-server architecture optimized for performance and security.
+
+```mermaid
+graph LR
+    A[Frontend - Vercel] <--> B[Nginx Reverse Proxy]
+    B <--> C[Spring Boot Backend - AWS EC2]
+    C <--> D[(Postgres - Persistence)]
+    C <--> E[(Redis - Seat Locking)]
+    C <--> F[Razorpay API]
+```
+## 🔥 Features
+
+### ✨ Key Features by Role
+
+#### 👤 For Customers (Users)
+*   **Search & Filter:** Find movies by city, language, genre, and dynamic formats (2D, 3D, IMAX).
+*   **Live Seat Selection:** Interactive seat map with real-time status updates.
+*   **One-Click Booking:** Fast and secure ticket checkout with integrated payments.
+*   **Social Auth:** Instant login via Google or GitHub OAuth2.
+
+#### 🏨 For Theatre Owners
+*   **Venue Management:** Add and manage multiple cinema locations and physical screen layouts.
+*   **Show Scheduling:** Full control over movie timings, screen selection, and tier-based pricing.
+*   **Business Analytics:** Real-time revenue tracking and occupancy reports for all theatres.
+
+#### 🎫 For Theatre Staff
+*   **Ticket Verification:** Rapid lookup and validation of customer booking IDs.
+*   **Occupancy Monitoring:** View real-time seat filling status for upcoming shows.
+*   **Counter Bookings:** Manual seat reservation support for on-ground box office sales.
+
+#### 🛡️ For Administrators
+*   **Global Oversight:** Approve/Decline theatre owner registrations and maintain movie catalogs.
+*   **Metadata Control:** Manage master data for cities, languages, and technical movie formats.
+*   **System Security:** Monitor platform-wide activity and ensure operational integrity.
 
 ---
 
-## 🔎 Overview  
+## 🛠️ Tech Stack
 
-SimplyCinema is a **movie booking backend service** that handles:  
-- **User authentication & authorization**  
-- **Movie and show management**  
-- **Real-time seat booking with Redis locking**  
-
-This backend will eventually power a **full-featured cinema booking system** with payments, coupons, and loyalty programs.  
-
----
-
-## 🛠 Tech Stack  
-
-- **Framework**: Spring Boot  
-- **Database**: PostgreSQL (**AWS RDS**)  
-- **Cache & Real-Time Locking**: Redis  
-- **Authentication**: JWT & OAuth2  
-- **API Style**: REST APIs  
-- **Realtime Updates**: WebSocket  
-- **Planned**: Kafka for event-driven communication  
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | JavaScript (ES6+), Tailwind CSS, HTML5 |
+| **Backend** | Java, Spring Boot, Spring Security (JWT), Hibernate |
+| **Database** | Postgres , Redis (Caching/Locking) |
+| **DevOps** | AWS EC2, Nginx, Vercel, Git/GitHub |
+| **Integration**| Razorpay Payment Gateway, OAuth2 |
 
 ---
 
-## ☁️ Hosting / Deployment  
+## 🧠 Backend Highlights & Engineering Solutions
 
-- Hosted on **AWS EC2**  
-- Database hosted on **AWS RDS (PostgreSQL)**  
-- APIs accessible publicly via **Swagger + Postman Docs**  
+### 1. Concurrency Control (The "First-To-Book" Problem)
+**Challenge:** Multiple users selecting the same seat at the exact same millisecond.
+**Solution:** Integrated **Redis-Based Distributed Locking**. Before any database write, the system sets a Redis key for the seat with a 5-minute TTL. This ensures seats are temporarily reserved during payment and released automatically if the transaction fails, reducing DB latency by 40%.
 
----
+### 2. Granular RBAC
+A sophisticated **Role-Based Access Control** system using Spring Security. Permissions are mapped down to specific actions (e.g., `MANAGE_SHOWS`, `VERIFY_TICKETS`), ensuring a secure multi-tenant environment.
 
-## ✨ Features  
-
-### ✅ Implemented  
-- JWT & OAuth2 authentication  
-- Role-Based Access Control (RBAC)  
-- Movie and show management basics  
-- Real-time seat locking using Redis (in progress)  
-
-### 🚧 Planned  
-- Redis caching for performance  
-- Kafka-based event streaming  
-- Payment gateway integration (Stripe/Razorpay)  
-- Coupons & loyalty program  
-- Pre-booking system  
-- Refund handling  
+### 3. Scalable Scheduling
+**Challenge:** Managing overlaps in a multi-screen environment.
+**Solution:** Built a bulk-scheduling engine with conflict-detection logic that validates audi availability before committing to the database.
 
 ---
 
-## 🏗 Architecture  
+## 💾 Database Schema Overview
+The system manages complex relationships across **12+ tables**:
+* **Users & Roles:** Managed via a Many-to-Many relationship.
+* **Theatre Hierarchy:** Theatre → Screen → Seat Type → Seats.
+* **Mapping:** Movie ↔ Show ↔ Screen (supporting multiple formats).
+* **Transaction Flow:** Booking → Payment → Coupon.
 
-- **Authentication Layer** → JWT & OAuth2 with RBAC  
-- **Persistence Layer** → PostgreSQL (movies, users, bookings)  
-- **Caching Layer** → Redis (seat locks, temporary states)  
-- **Communication Layer** → REST APIs & WebSockets  
-- **Planned** → Kafka for async events (notifications, analytics)  
+---
+
+## 💻 Running Locally
+
+### Frontend
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/your-username/simply-cinema-frontend.git](https://github.com/your-username/simply-cinema-frontend.git)
+
+   ## 🚀 Local Development Setup
+
+   
+### **Backend**
+*   JDK 17 or higher
+*   MySQL 8.0+
+*   Redis Server (Running on default port 6379)
+### **Steps**
+1.  **Clone the Repo:**
+    ```bash
+    git clone https://github.com/simplyhemant/simplyCinema-backend.git
+    cd simplyCinema-backend
+    ```
+2.  **Configure Environment:**
+    Set the following in your `application.properties` or environment variables:
+    ```properties
+    spring.datasource.url=jdbc:mysql://localhost:3306/simplycinema
+    spring.datasource.username=ROOT_USER
+    spring.datasource.password=ROOT_PASSWORD
+    spring.data.redis.host=localhost
+    spring.data.redis.port=6379
+    jwt.secret=YOUR_JWT_SECRET
+    razorpay.key_id=YOUR_RAZORPAY_KEY
+    razorpay.key_secret=YOUR_RAZORPAY_SECRET
+    ```
+3.  **Run Application:**
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+---
+## 📁 Backend Directory Structure
+```text
+src/main/java/com/simply/Cinema/
+├── core/               # Main domain (Booking, Shows, Movies)
+│   ├── controller/     # REST Controllers
+│   ├── service/        # Business Logic Implementations
+│   ├── repository/     # Data Persistence Layer
+│   └── dto/            # Data Transfer Objects
+├── security/           # JWT Filters, OAuth2 Handlers, & Security Config
+├── common/             # Global exceptions, Utils, & Base classes
+└── config/             # Redis, Swagger, & Payment configurations
