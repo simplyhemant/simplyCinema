@@ -45,7 +45,7 @@ graph LR
     C <--> D[(Postgres - Persistence)]
     C <--> E[(Redis - Seat Locking)]
     C <--> G[WebSocket - App State Push]
-    C <--> F[Razorpay AP]
+    C <--> F[Razorpay API]
 ```
 
 ---
