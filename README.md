@@ -28,9 +28,9 @@ To see the platform in action, check out the demonstration videos for each role:
 | Role | Demonstration Video |
 | :--- | :--- |
 | **🛡️ System Admin** | [Watch Admin Workflow](https://www.loom.com/share/6a64e412f4f34a51bd962e3a58871a19) |
-| **🏨 Theatre Owner** | [Watch Owner Workflow](YOUR_VIDEO_URL_HERE) |
-| **🎫 Theatre Staff** | [Watch Staff Workflow](YOUR_VIDEO_URL_HERE) |
-| **👤 Customer** | [Watch Customer Workflow](YOUR_VIDEO_URL_HERE) |
+| **🏨 Theatre Owner** | [Watch Owner Workflow](https://www.loom.com/share/3082f221b7de4635a095c8963d920db6) |
+| **🎫 Theatre Staff** | [Watch Staff Workflow](https://www.loom.com/share/18feffee61284a37b61feff8615a0ccf) |
+| **👤 Customer** | [Watch Customer Workflow](https://www.loom.com/share/53ae449ead224e0b8a59a9cf8d2d7d5f) |
 
 ---
 
