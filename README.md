@@ -44,7 +44,8 @@ graph LR
     B <--> C[Spring Boot Backend - AWS EC2]
     C <--> D[(Postgres - Persistence)]
     C <--> E[(Redis - Seat Locking)]
-    C <--> F[Razorpay API]
+    C <--> G[WebSocket - App State Push]
+    C <--> F[Razorpay AP]
 ```
 
 ---
@@ -85,7 +86,7 @@ graph LR
 | Layer | Technologies |
 | :--- | :--- |
 | **Frontend** | JavaScript (ES6+), Tailwind CSS, HTML5 |
-| **Backend** | Java, Spring Boot, Spring Security (JWT), Hibernate |
+| **Backend** | Java, Spring Boot, Spring WebSocket, Spring Security (JWT), Hibernate |
 | **Database** | Postgres , Redis (Caching/Locking) |
 | **DevOps** | AWS EC2, Nginx, Vercel, Git/GitHub |
 | **Integration**| Razorpay Payment Gateway, OAuth2 |
@@ -94,16 +95,16 @@ graph LR
 
 ## 🧠 Backend Highlights & Engineering Solutions
 
-### 1. Concurrency Control (The "First-To-Book" Problem)
+### 1. Real-Time Synchronization (WebSockets)
+**Challenge**: Users previously relied on HTTP polling (5s intervals), leading to race conditions where two users might select the same seat between polls.
+**Solution**: Migrated to a Push-Based WebSocket architecture. Using STOMP/SockJS, the backend now broadcasts Redis lock/release events to specific showId topics, delivering near-instant status updates to all customers.
+
+### 2. Concurrency Control (The "First-To-Book" Problem)
 **Challenge:** Multiple users selecting the same seat at the exact same millisecond.
 **Solution:** Integrated **Redis-Based Distributed Locking**. Before any database write, the system sets a Redis key for the seat with a 5-minute TTL. This ensures seats are temporarily reserved during payment and released automatically if the transaction fails, reducing DB latency by 40%.
 
-### 2. Granular RBAC
-A sophisticated **Role-Based Access Control** system using Spring Security. Permissions are mapped down to specific actions (e.g., `MANAGE_SHOWS`, `VERIFY_TICKETS`), ensuring a secure multi-tenant environment.
-
-### 3. Scalable Scheduling
-**Challenge:** Managing overlaps in a multi-screen environment.
-**Solution:** Built a bulk-scheduling engine with conflict-detection logic that validates audi availability before committing to the database.
+### 3. Granular RBAC
+A sophisticated **Role-Based Access Control** system using Spring Security. Permissions are mapped down to specific actions (e.g., `MANAGE_SHOWS`, `VERIFY_TICKETS`), ensuring a secure multi-tenant environment.                           
 
 ---
 
