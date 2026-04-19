@@ -15,7 +15,7 @@ SimplyCinema is a production-grade, full-stack movie ticket booking platform des
 ---
 
 ### 🚀 Quick Access
-* **Web App:** [simplycinema.vercel.app](https://simplycinema.vercel.app)
+* **Web App:** [simplycinema.vercel.app](https://simply-cinema-frontend.vercel.app/)
 * **API Specs:** [Swagger Documentation](http://your-aws-ip-or-dns:8080/swagger-ui/index.html)
 * **Dev Resources:** [Postman Collection](https://github.com/simplyhemant/simplyCinema-backend/blob/main/docs/SimplyCinema_Postman.json)
 
