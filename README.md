@@ -54,26 +54,26 @@ graph LR
 ### ✨ Key Features & Demos
 
 #### 👤 For Customers (Users)
-> 📺 **Video Demo:** [Customer Booking Journey](YOUR_VIDEO_URL_HERE)
+> 📺 **Video Demo:** [Customer Booking Journey](https://www.loom.com/share/53ae449ead224e0b8a59a9cf8d2d7d5f)
 *   **Search & Filter:** Find movies by city, language, genre, and dynamic formats (2D, 3D, IMAX).
 *   **Live Seat Selection:** Interactive seat map with real-time status updates.
 *   **One-Click Booking:** Fast and secure ticket checkout with integrated payments.
 *   **Social Auth:** Instant login via Google or GitHub OAuth2.
 
 #### 🏨 For Theatre Owners
-> 📺 **Video Demo:** [Theatre Management & Analytics](YOUR_VIDEO_URL_HERE)
+> 📺 **Video Demo:** [Theatre Management & Analytics](https://www.loom.com/share/3082f221b7de4635a095c8963d920db6)
 *   **Venue Management:** Add and manage multiple cinema locations and physical screen layouts.
 *   **Show Scheduling:** Full control over movie timings, screen selection, and tier-based pricing.
 *   **Business Analytics:** Real-time revenue tracking and occupancy reports for all theatres.
 
 #### 🎫 For Theatre Staff
-> 📺 **Video Demo:** [Box Office & Validation](YOUR_VIDEO_URL_HERE)
+> 📺 **Video Demo:** [Box Office & Validation](https://www.loom.com/share/18feffee61284a37b61feff8615a0ccf)
 *   **Ticket Verification:** Rapid lookup and validation of customer booking IDs.
 *   **Occupancy Monitoring:** View real-time seat filling status for upcoming shows.
 *   **Counter Bookings:** Manual seat reservation support for on-ground box office sales.
 
 #### 🛡️ For Administrators
-> 📺 **Video Demo:** [Global Oversight](YOUR_VIDEO_URL_HERE)
+> 📺 **Video Demo:** [Global Oversight](https://www.loom.com/share/6a64e412f4f34a51bd962e3a58871a19)
 *   **Global Oversight:** Approve/Decline theatre owner registrations and maintain movie catalogs.
 *   **Metadata Control:** Manage master data for cities, languages, and technical movie formats.
 *   **System Security:** Monitor platform-wide activity and ensure operational integrity.
