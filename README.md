@@ -10,15 +10,29 @@ SimplyCinema is a production-grade, full-stack movie ticket booking platform des
 [![Live Demo](https://img.shields.io/badge/LIVE_DEMO-brightgreen?style=for-the-badge&logo=vercel)](https://simply-cinema-frontend.vercel.app/)
 [![Frontend Repo](https://img.shields.io/badge/FRONTEND_REPO-blue?style=for-the-badge&logo=github)](https://github.com/simplyhemant/simplyCinema-frontend)
 [![Swagger API](https://img.shields.io/badge/SWAGGER_DOCS-orange?style=for-the-badge&logo=swagger)](http://13.201.58.222:8080/swagger-ui/index.html)
-[![Postman](https://img.shields.io/badge/POSTMAN_SPEC-FF6C37?style=for-the-badge&logo=postman&logoColor=white)]( https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV)
+[![Postman](https://img.shields.io/badge/POSTMAN_SPEC-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV)
 
 ---
 
 ### 🚀 Quick Access
-* **Web App:** [simplycinema.vercel.app](https://simply-cinema-frontend.vercel.app/)
-* **API Specs:** [Swagger Documentation](http://your-aws-ip-or-dns:8080/swagger-ui/index.html)
-* **Dev Resources:** [Postman Collection](https://github.com/simplyhemant/simplyCinema-backend/blob/main/docs/SimplyCinema_Postman.json)
+*   **Web App:** [simply-cinema-frontend.vercel.app](https://simply-cinema-frontend.vercel.app/)
+*   **API Specs:** [Swagger Documentation](http://13.201.58.222:8080/swagger-ui/index.html)
+*   **Dev Resources:** [Postman Collection](https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV)
 
+---
+
+## 🎥 Role-Based Video Walkthroughs
+
+To see the platform in action, check out the demonstration videos for each role:
+
+| Role | Demonstration Video |
+| :--- | :--- |
+| **🛡️ System Admin** | [Watch Admin Workflow](YOUR_VIDEO_URL_HERE) |
+| **🏨 Theatre Owner** | [Watch Owner Workflow](YOUR_VIDEO_URL_HERE) |
+| **🎫 Theatre Staff** | [Watch Staff Workflow](YOUR_VIDEO_URL_HERE) |
+| **👤 Customer** | [Watch Customer Workflow](YOUR_VIDEO_URL_HERE) |
+
+---
 
 ## 🏗️ System Architecture
 
@@ -32,27 +46,34 @@ graph LR
     C <--> E[(Redis - Seat Locking)]
     C <--> F[Razorpay API]
 ```
+
+---
+
 ## 🔥 Features
 
-### ✨ Key Features by Role
+### ✨ Key Features & Demos
 
 #### 👤 For Customers (Users)
+> 📺 **Video Demo:** [Customer Booking Journey](YOUR_VIDEO_URL_HERE)
 *   **Search & Filter:** Find movies by city, language, genre, and dynamic formats (2D, 3D, IMAX).
 *   **Live Seat Selection:** Interactive seat map with real-time status updates.
 *   **One-Click Booking:** Fast and secure ticket checkout with integrated payments.
 *   **Social Auth:** Instant login via Google or GitHub OAuth2.
 
 #### 🏨 For Theatre Owners
+> 📺 **Video Demo:** [Theatre Management & Analytics](YOUR_VIDEO_URL_HERE)
 *   **Venue Management:** Add and manage multiple cinema locations and physical screen layouts.
 *   **Show Scheduling:** Full control over movie timings, screen selection, and tier-based pricing.
 *   **Business Analytics:** Real-time revenue tracking and occupancy reports for all theatres.
 
 #### 🎫 For Theatre Staff
+> 📺 **Video Demo:** [Box Office & Validation](YOUR_VIDEO_URL_HERE)
 *   **Ticket Verification:** Rapid lookup and validation of customer booking IDs.
 *   **Occupancy Monitoring:** View real-time seat filling status for upcoming shows.
 *   **Counter Bookings:** Manual seat reservation support for on-ground box office sales.
 
 #### 🛡️ For Administrators
+> 📺 **Video Demo:** [Global Oversight](YOUR_VIDEO_URL_HERE)
 *   **Global Oversight:** Approve/Decline theatre owner registrations and maintain movie catalogs.
 *   **Metadata Control:** Manage master data for cities, languages, and technical movie formats.
 *   **System Security:** Monitor platform-wide activity and ensure operational integrity.
@@ -95,21 +116,18 @@ The system manages complex relationships across **12+ tables**:
 
 ---
 
-## 💻 Running Locally
+## 🚀 Local Development Setup
 
-### Frontend
+### **Frontend**
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/your-username/simply-cinema-frontend.git](https://github.com/your-username/simply-cinema-frontend.git)
+   git clone https://github.com/simplyhemant/simplyCinema-frontend.git
+   cd simplyCinema-frontend
+   ```
+2. Open `index.html` or serve with any local HTTP server.
 
-   ## 🚀 Local Development Setup
-
-   
 ### **Backend**
-*   JDK 17 or higher
-*   MySQL 8.0+
-*   Redis Server (Running on default port 6379)
-### **Steps**
+*   **Requirements:** JDK 17+, MySQL 8.0+, Redis Server (6379)
 1.  **Clone the Repo:**
     ```bash
     git clone https://github.com/simplyhemant/simplyCinema-backend.git
@@ -131,8 +149,10 @@ The system manages complex relationships across **12+ tables**:
     ```bash
     ./mvnw spring-boot:run
     ```
+
 ---
-## 📁 Backend Directory Structure
+
+## 📁 Project Structure
 ```text
 src/main/java/com/simply/Cinema/
 ├── core/               # Main domain (Booking, Shows, Movies)
@@ -143,3 +163,4 @@ src/main/java/com/simply/Cinema/
 ├── security/           # JWT Filters, OAuth2 Handlers, & Security Config
 ├── common/             # Global exceptions, Utils, & Base classes
 └── config/             # Redis, Swagger, & Payment configurations
+```
