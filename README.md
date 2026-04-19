@@ -56,6 +56,8 @@ graph LR
 
 #### 👤 For Customers (Users)
 > 📺 **Video Demo:** [Customer Booking Journey](https://www.loom.com/share/53ae449ead224e0b8a59a9cf8d2d7d5f)
+*   **Real-Time Seat selection**: Live seat map powered by WebSockets (STOMP) for instant availability updates across all client sessions.
+*   **Zero-Latency Sync**: Multiple users see seat locks/releases in real-time without refreshing.
 *   **Search & Filter:** Find movies by city, language, genre, and dynamic formats (2D, 3D, IMAX).
 *   **Live Seat Selection:** Interactive seat map with real-time status updates.
 *   **One-Click Booking:** Fast and secure ticket checkout with integrated payments.
