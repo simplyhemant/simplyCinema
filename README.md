@@ -9,7 +9,7 @@ SimplyCinema is a production-grade, full-stack movie ticket booking platform des
 
 [![Live Demo](https://img.shields.io/badge/LIVE_DEMO-brightgreen?style=for-the-badge&logo=vercel)](https://simply-cinema-frontend.vercel.app/)
 [![Frontend Repo](https://img.shields.io/badge/FRONTEND_REPO-blue?style=for-the-badge&logo=github)](https://github.com/simplyhemant/simplyCinema-frontend)
-[![Swagger API](https://img.shields.io/badge/SWAGGER_DOCS-orange?style=for-the-badge&logo=swagger)](http://13.201.58.222:8080/swagger-ui/index.html)
+[![Swagger API](https://img.shields.io/badge/SWAGGER_DOCS-orange?style=for-the-badge&logo=swagger)](https://simplycinema-hemant.duckdns.org/swagger-ui/index.html)
 [![Postman](https://img.shields.io/badge/POSTMAN_SPEC-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://documenter.getpostman.com/view/39898850/2sB3Wnv1eV)
 
 ---
